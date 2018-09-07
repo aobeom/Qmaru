@@ -19,23 +19,30 @@ const styles = ({
     },
     stCardTitle: {
         textAlign: "left",
+        color: "#552b55",
+        cursor: "default",
+        padding: "10px",
+    },
+    stText:{
+        color: "#552b55",
+        cursor: "default",
     },
     resultImg: {
         width: "100%",
     },
     btnTime: {
-        backgroundColor: "#cc3399",
+        backgroundColor: "#9941ac",
     },
     btnLabel: {
         color: "#fff",
     },
     customBtn: {
         color: "#fff",
-        backgroundColor: "#33cc00",
+        backgroundColor: "#cc61cc",
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {
-            backgroundColor: "#339900",
+            backgroundColor: "#800080",
         },
     },
 })
@@ -84,7 +91,7 @@ class Stchannel extends React.Component {
                 <div className={classes.stCard} key={"s" + s}>
                     <Card>
                         <CardContent style={{paddingBottom: "16px"}}>
-                            <Typography component="p">
+                            <Typography component="p" className={classes.stText}>
                                 {sdata.date}
                             </Typography>
                             <Typography className={classes.stCardTitle} dangerouslySetInnerHTML = {{__html:sdata.title}} >

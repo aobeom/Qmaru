@@ -24,7 +24,7 @@ const styles = {
     dateInfo: {
         flexBasis: '25%',
         flexShrink: 0,
-        color: "#cc3399",
+        color: "#9941ac",
     },
     urlInfo: {
         flexBasis: '60%',
@@ -40,7 +40,7 @@ const styles = {
         flexShrink: 0,
     },
     topTime: {
-        color: "#cc3399", 
+        color: "#9941ac", 
         cursor: "default",
     },
     tvbtText: {
@@ -50,20 +50,20 @@ const styles = {
         padding: "5px",
     },
     fixBtn: {
-        color: "#cc3399",
+        color: "#9941ac",
     },
     btnGroup: {
         paddingBottom: "10px",
     },
     btnTime: {
-        backgroundColor: "#cc3399",
+        backgroundColor: "#9941ac",
     },
     btnLabel: {
         color: "#fff",
     },
     customBtn: {
         color: "#fff",
-        backgroundColor: "#CD96CD",
+        backgroundColor: "#cc61cc",
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {

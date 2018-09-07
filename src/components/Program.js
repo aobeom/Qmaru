@@ -2,6 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
 
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,18 +26,45 @@ const styles = ({
     progCard:{
         padding: "5px",
     },
+    progLabel:{
+        color: "#cc61cc",
+        cursor: "default",
+    },
     errorInfo:{
-        margin: "10px"
+        margin: "10px",
+        backgroundColor: "#9941ac",
     },
     customInput: {
         minWidth: "150px",
+        '&:hover': {
+            borderBottomColor: "#f9e8fd",
+        },
     },
     customUnderline: {
+        color: "#9941ac",
+        '&:hover:not($disabled):before': {
+            borderBottom: "2px solid #c36bd6 !important",
+        },
         '&:before': {
             borderBottomColor: "#CD96CD",
         },
         '&:after': {
             borderBottomColor: "#800080",
+        },
+    },
+    customIcon: {
+        '&:hover': {
+            backgroundColor: "#f9e8fd",
+        },
+        color: "#c36bd6",
+    },
+    customBtn: {
+        color: "#fff",
+        backgroundColor: "#cc61cc",
+        fontSize: "0.85rem",
+        margin: "5px",
+        '&:hover': {
+            backgroundColor: "#800080",
         },
     },
 })
@@ -98,7 +126,6 @@ class Program extends React.Component {
                         values: data.data,
                         origin: "yahoo",
                         btndisp: {display: "block", padding: "20px"},
-                        color: "primary",
                         error: false,
                     })
                 }
@@ -129,8 +156,7 @@ class Program extends React.Component {
                 <div key="title" style={this.state.btndisp}>
                     <a href={url} target="_blank">
                     <Button 
-                        variant="contained" 
-                        color={this.state.color}
+                        variant="contained" className={classNames(classes.customBtn)}
                     >
                         {origin}
                     </Button>
@@ -249,7 +275,7 @@ class Program extends React.Component {
                         {/* <MenuItem value="" disabled>沖縄</MenuItem> */}
                             <MenuItem value={62}>沖縄</MenuItem>
                     </Select>
-                    <FormHelperText>District</FormHelperText>
+                    <FormHelperText className={classes.progLabel}>District</FormHelperText>
                     </FormControl>
                     <Input
                     classes={{root: classes.customInput, underline: classes.customUnderline,}}
@@ -262,6 +288,7 @@ class Program extends React.Component {
                 <IconButton 
                     aria-label="youtube_searched_for" 
                     onClick={this.progClick.bind(this)}
+                    classes={{root: classes.customIcon}}
                 >
                     <YoutubeSearchedFor />
                 </IconButton>

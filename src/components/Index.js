@@ -14,12 +14,19 @@ const styles = ({
     },
     indexCard:{
         margin: "10px",
+        cursor: "default",
     },
     indexSpacing: {
-        padding: "5px",
+        color: "#552b55",
+        padding: "6px",
     },
     indexCardMainText: {
+        color: "#552b55",
         textAlign: "left",
+        padding: "8px",
+    },
+    indexBtn:{
+        color: "#552b55",
     }
 })
 
@@ -31,7 +38,7 @@ class IndexPage extends React.Component {
             intro:[
                 {
                     name: "Picture",
-                    info: "You can get some picture urls from <b style='color:red'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
+                    info: "You can get some picture urls from <b style='color:#800080'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
                     path: "/picture",
                 },
                 {
@@ -66,7 +73,7 @@ class IndexPage extends React.Component {
                         </Typography>
                         <Typography className={classes.indexCardMainText} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
                         <Typography component="p" className={classes.indexSpacing}>
-                            <a href={i.path}><Button variant="outlined" size="small">Go to {i.name}</Button></a>
+                            <a href={i.path}><Button variant="outlined" size="small" className={classes.indexBtn}>Go to {i.name}</Button></a>
                         </Typography>
                     </CardContent>
                 </Card>

@@ -25,7 +25,8 @@ const styles = ({
         padding: "10px",
     },
     errorInfo:{
-        margin: "10px"
+        margin: "10px",
+        backgroundColor: "#9941ac",
     },
     resultImg:{
         width: "90%",
@@ -37,16 +38,26 @@ const styles = ({
         display: "block",
     },
     customInput: {
+        color: "#9941ac",
         minWidth: "220px",
     },
     customUnderline: {
+        '&:hover:not($disabled):before': {
+            borderBottom: "2px solid #c36bd6 !important",
+        },
         '&:before': {
             borderBottomColor: "#CD96CD",
         },
         '&:after': {
             borderBottomColor: "#800080",
-        }
+        },
     },
+    customIcon: {
+        '&:hover': {
+            backgroundColor: "#f9e8fd",
+        },
+        color: "#c36bd6",
+    }
 })
 
 
@@ -198,6 +209,7 @@ class Picture extends React.Component {
                 <IconButton 
                     aria-label="image_search" 
                     onClick={this.picClick.bind(this)}
+                    classes={{root: classes.customIcon}}
                 >
                     <ImageSearch />
                 </IconButton>
