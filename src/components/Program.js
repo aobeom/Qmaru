@@ -68,7 +68,7 @@ class Program extends React.Component {
 
     progClick () {
         let kw = this.state.keyword
-        if (kw === undefined) {
+        if (kw === undefined || kw === "") {
             this.setState({
                 error: true,
                 info: "KEYWORD ERROR"
@@ -90,10 +90,8 @@ class Program extends React.Component {
                 if (prog_info_obj.length === 0) {
                     this.setState({
                         values: 0,
-                        origin: "No Data",
-                        btndisp: {display: "block", padding: "20px"},
-                        color: "secondary",
-                        error: false,
+                        error: true,
+                        info: "No Data",
                     })
                 } else {
                     this.setState({
@@ -156,9 +154,7 @@ class Program extends React.Component {
                                 <Typography color="textSecondary">
                                     {pinfo.station}
                                 </Typography>
-                                <Typography component="p">
-                                    {pinfo.title}
-                                </Typography>
+                                <Typography dangerouslySetInnerHTML = {{__html:pinfo.title}} ></Typography>
                                 <Typography >
                                     <a href={pinfo.url} target="_blank"><Button size="small">Learn More</Button></a>
                                 </Typography>
