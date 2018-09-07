@@ -1,25 +1,34 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 
-const indexCSS = {
-    root:{
+const styles = ({
+    wrapper:{
         padding: "40px",
     },
-    card:{
+    indexCard:{
         margin: "10px",
+    },
+    indexSpacing: {
+        padding: "5px",
+    },
+    indexCardMainText: {
+        textAlign: "left",
     }
-}
+})
 
 
 class IndexPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            Intro:[
+            intro:[
                 {
                     name: "Picture",
                     info: "You can get some picture urls from <b style='color:red'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
@@ -44,18 +53,19 @@ class IndexPage extends React.Component {
         }
     }
     render() {
-        const intro = this.state.Intro
-        const cards = []
-        cards.push(
-            <div key="index" style={indexCSS.root}>
+        const intro = this.state.intro
+        const { classes } = this.props
+        const cardTmp = []
+        cardTmp.push(
+            <div key="index" className={classes.wrapper}>
             {intro.map((i, index) => (
-                <Card key={"c" + index} style={indexCSS.card}>
+                <Card key={"c" + index} className={classes.indexCard}>
                     <CardContent>
-                        <Typography variant="headline" component="h2" style={{padding: "5px"}}>
+                        <Typography variant="headline" component="h2" className={classes.indexSpacing}>
                         {i.name}
                         </Typography>
-                        <Typography style={{textAlign: "left"}} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
-                        <Typography component="p" style={{padding: "5px"}}>
+                        <Typography className={classes.indexCardMainText} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
+                        <Typography component="p" className={classes.indexSpacing}>
                             <a href={i.path}><Button variant="outlined" size="small">Go to {i.name}</Button></a>
                         </Typography>
                     </CardContent>
@@ -65,10 +75,14 @@ class IndexPage extends React.Component {
         )
         return (
             <div>
-                {cards}
+                {cardTmp}
             </div>
         )
     }
 }
 
-export default IndexPage;
+IndexPage.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+  
+export default withStyles(styles)(IndexPage);

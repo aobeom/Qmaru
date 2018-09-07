@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route,Link, Switch} from 'react-router-dom';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
 import IndexPage from './components/Index';
 import Picture from './components/Picture';
 import Drama from './components/Drama';
 import Program from './components/Program';
 import Stchannel from './components/Stchannel';
+import RikaMsg from './components/RikaMsg';
+import NotFoundPage from './components/NotFoundPage';
 
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,14 +18,16 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 
 
-const styles = {
-  root:{
+const styles = ({
+  wrapper:{
     margin: "0 auto",
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
   },
-  header:{},
+  header:{
+    backgroundColor: "#800080",
+  },
   main:{
     flex: "1",
     margin: "0 auto",
@@ -36,15 +43,20 @@ const styles = {
     textAlign: "center",
     fontSize: "16px",
     height: "30px" ,
-  }
-}
+  },
+  footerSpan:{
+    height: "50px",
+    color: "#800080",
+    cursor: "default",
+  },
+})
 
 class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      titles: ["PICTURE", "DRAMA", "PROGRAM", "STCHANNEL"],
-      paths: ["picture", "drama", "program", "stchannel"],
+      titles: ["PICTURE", "DRAMA", "PROGRAM", "STCHANNEL", "RIKAMSG"],
+      paths: ["picture", "drama", "program", "stchannel", "rikamsg"],
       site:{
         color: "#FCFCFC",
         fontWeight: "1000",
@@ -109,7 +121,8 @@ class App extends Component {
             {name: "PICTURE", id: "0"},
             {name: "DRAMA", id: "1"},
             {name: "PROGRAM", id: "2"},
-            {name: "STCHANNEL", id: "3"}
+            {name: "STCHANNEL", id: "3"},
+            {name: "RIKAMSG", id: "4"},
           ],
         })
       } else if ( width > 400 & width < 450) {
@@ -147,10 +160,11 @@ class App extends Component {
             margin: "0"
           },
           titles: [
-            {name: "PICTURE", id: "0"},
+            {name: "PIC", id: "0"},
             {name: "DRAMA", id: "1"},
-            {name: "PROGRAM", id: "2"},
-            {name: "STCHAN", id: "3"}
+            {name: "PROG", id: "2"},
+            {name: "ST", id: "3"},
+            {name: "RIKA", id: "4"},
           ],
         })
       } else if ( width < 400) {
@@ -189,9 +203,10 @@ class App extends Component {
           },
           titles: [
             {name: "PIC", id: "0"},
-            {name: "DRAMA", id: "1"},
+            {name: "DRA", id: "1"},
             {name: "PROG", id: "2"},
-            {name: "ST", id: "3"}
+            {name: "ST", id: "3"},
+            {name: "RIKA", id: "4"},
           ],
         })
       }
@@ -234,7 +249,8 @@ class App extends Component {
             {name: "PICTURE", id: "0"},
             {name: "DRAMA", id: "1"},
             {name: "PROGRAM", id: "2"},
-            {name: "STCHANNEL", id: "3"}
+            {name: "STCHANNEL", id: "3"},
+            {name: "RIKAMSG", id: "4"},
           ],
         })
       }
@@ -249,6 +265,7 @@ class App extends Component {
   render() {
     const titles = this.state.titles
     const paths = this.state.paths
+    const { classes } = this.props
     let tabs = titles.map(function(t, index) {
     let linkUp = this.state.linkUp
     let linkDown = this.state.linkDown
@@ -264,10 +281,10 @@ class App extends Component {
     }.bind(this))
     return (
       <BrowserRouter>
-      <div style={styles.root}>
+      <div className={classes.wrapper}>
 
-        <div style={styles.header}>
-          <AppBar position="static" color="default" style={{backgroundColor: "#800080"}}>
+        <div>
+          <AppBar position="static" color="default" className={classes.header}>
           <Toolbar>
               <Typography variant="title" color="inherit" key="title">
                     <Typography style={this.state.site} color="inherit">
@@ -279,18 +296,20 @@ class App extends Component {
           </AppBar>
         </div>
 
-        <div style={styles.main}>
+        <div className={classes.main}>
           <Switch>
-          <Route path="/" exact component={IndexPage}/>
+            <Route path="/" exact component={IndexPage}/>
             <Route path="/picture" exact component={Picture}/>
             <Route path="/drama" exact component={Drama}/>
             <Route path="/program" exact component={Program}/>
             <Route path="/stchannel" exact component={Stchannel}/>
+            <Route path="/rikamsg" exact component={RikaMsg}/>
+            <Route path="*" exact component={NotFoundPage} />
           </Switch>
         </div>
 
-        <div style={styles.footer}>
-          <span style={{height: "50px"}}>© 2017-2018 AoBeom v3.0 Beta</span>
+        <div className={classes.footer}>
+          <span className={classes.footerSpan}>© 2017-2018 AoBeom v3.0 Beta</span>
         </div>
 
       </div>
@@ -300,4 +319,8 @@ class App extends Component {
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(App);

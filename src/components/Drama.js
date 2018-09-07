@@ -1,8 +1,11 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import classNames from 'classnames';
+
 import Button from '@material-ui/core/Button';
 import AccessTime from '@material-ui/icons/AccessTime';
-
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -11,42 +14,62 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import '../config';
 
-const dramaCss = {
-    container:{
+const styles = {
+    wrapper: {
         paddingTop: "40px",
         justifyContent: "center",
         textAlign: "center",
         width: "100%",
     },
-    timec:{
-      padding: "20px",
-      width: "100%",
-    },
-    hr:{
-      width: "100%"
-    },
-    point:{
-      textAlign: "center",
-    },
-    content:{
-        justifyContent: "center",
-    },
-    dateInfo:{
+    dateInfo: {
         flexBasis: '25%',
         flexShrink: 0,
+        color: "#cc3399",
     },
-    urlInfo:{
+    urlInfo: {
         flexBasis: '60%',
         flexShrink: 0,
+        fontWeight: "500",
     },
-    urlfix:{
+    urlFixsub: {
         flexBasis: '100%',
         flexShrink: 0,
     },
-    epInfo:{
+    epInfo: {
         flexBasis: '100%',
         flexShrink: 0,
-    }
+    },
+    topTime: {
+        color: "#cc3399", 
+        cursor: "default",
+    },
+    tvbtText: {
+        textAlign: "left",
+    },
+    tvbtAtag: {
+        padding: "5px",
+    },
+    fixBtn: {
+        color: "#cc3399",
+    },
+    btnGroup: {
+        paddingBottom: "10px",
+    },
+    btnTime: {
+        backgroundColor: "#cc3399",
+    },
+    btnLabel: {
+        color: "#fff",
+    },
+    customBtn: {
+        color: "#fff",
+        backgroundColor: "#CD96CD",
+        fontSize: "0.85rem",
+        margin: "5px",
+        '&:hover': {
+            backgroundColor: "#800080",
+        },
+    },
 }
 
 class Drama extends React.Component {
@@ -59,10 +82,14 @@ class Drama extends React.Component {
             day: "",
             hour: "00",
             minute: "00",
-            second: "00"
+            second: "00",
+            expanded: null,
         }
     }
-    PressButton (site, event) {
+    PressButton (site) {
+        this.setState({
+            values: [],
+        })
         let url = `${global.constants.api}/api/v1/drama/${site}`
         fetch(url, {
             method: 'GET',
@@ -74,15 +101,11 @@ class Drama extends React.Component {
                 })
             })
     }
-    state = {
-        expanded: null,
-      };
-    
-      handleChange = panel => (event, expanded) => {
+    handleChange = panel => (event, expanded) => {
         this.setState({
-          expanded: expanded ? panel : false,
+            expanded: expanded ? panel : false,
         });
-      };
+    };
     componentWillMount () {
         let url = `${global.constants.api}/api/v1/drama/time`
         fetch(url, {
@@ -134,12 +157,11 @@ class Drama extends React.Component {
         const hour = this.state.hour
         const minute = this.state.minute
         const second = this.state.second
+        const expanded = this.state.expanded
+        const { classes } = this.props
         let dramaTmp = []
-
-
         let dramaSite = values.name
         let dramaData = values.entities
-        const { expanded } = this.state;
         if(dramaSite === "tvbt") {
             for(let i in dramaData) {
                 let tvbt_info = dramaData[i] 
@@ -149,18 +171,18 @@ class Drama extends React.Component {
                     <div key={"tvbt" + i}>
                     <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                         <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography style={dramaCss.dateInfo} component="p" color="textPrimary">
+                            <Typography className={classes.dateInfo} component="p" color="textPrimary">
                             {tvbt_info.date}
                             </Typography>
-                            <Typography style={dramaCss.urlInfo} color="textSecondary">
+                            <Typography className={classes.urlInfo} color="textSecondary">
                             <a href={tvbt_info.url} target="_blank">{tvbt_info.title}</a>
                             </Typography>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Typography style={{textAlign: "left"}}>
+                            <Typography className={classes.tvbtText}>
                                     {tvbt_ep.map((ep, index) => (
-                                    <a style={{padding: "5px"}} key={'t' + index} href={ep[1] + '#' + ep[2]} target="_blank">
-                                        <Button style={{margin: "5px"}} variant="contained" color="primary">
+                                    <a className={classes.tvbtAtag} key={'t' + index} href={ep[1] + '#' + ep[2]} target="_blank">
+                                        <Button variant="contained" className={classNames(classes.customBtn)}>
                                         {'EP' + ep[0]}
                                         </Button>
                                     </a>
@@ -179,20 +201,20 @@ class Drama extends React.Component {
                 let panel = 'panel' + j
                 if (typeof (subpig_ep) !== "undefined"){
                     dramaTmp.push(
-                        <div key={"subpig" + j} style={{width: "auto"}}>
+                        <div key={"subpig" + j} >
                             <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography style={dramaCss.dateInfo} component="p" color="textPrimary">
+                                    <Typography className={classes.dateInfo} component="p" color="textPrimary">
                                     {subpig_info.date}
                                     </Typography>
-                                    <Typography style={dramaCss.urlInfo} color="textSecondary">
+                                    <Typography className={classes.urlInfo} color="textSecondary">
                                     <a href={subpig_info.url} target="_blank">{subpig_info.title}</a>
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
-                                    <Typography style={dramaCss.epInfo}>
+                                    <Typography className={classes.epInfo}>
                                         <a key={'t' + j} href={subpig_ep[0] + '#' + subpig_ep[1]} target="_blank">
-                                            <Button variant="contained" color="primary">
+                                            <Button variant="contained" className={classNames(classes.customBtn)}>
                                             BAIDU
                                             </Button>
                                         </a>
@@ -214,23 +236,25 @@ class Drama extends React.Component {
                     <div key={"fixsub" + k}>
                         <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography style={dramaCss.urlfix} color="textSecondary">
+                                    <Typography className={classes.urlFixsub} color="textSecondary">
                                     <a href={fixsub_info.url} target="_blank">{fixsub_info.title}</a>
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
-                                    <Typography component="div" style={dramaCss.epInfo}>
+                                    <Typography component="div" className={classes.epInfo}>
                                         {fixsub_ep.map((ep, index) => (
                                             <span key={"f" + index}>
-                                                <p style={{margin: "2px"}}><Button color="primary">{'EP' + ep[0]}</Button></p>
+                                                <p className={classes.fixBtn}>
+                                                    <Button disabled classes={{label:classes.fixBtn}}>{'EP' + ep[0]}</Button>
+                                                </p>
                                                 <a href={ep[1]} target="_blank">
-                                                    <Button style={{margin: "2px"}} variant="contained" color="primary">BD</Button>
+                                                    <Button variant="contained" className={classNames(classes.customBtn)}>BD</Button>
                                                 </a>
                                                 <a href={ep[2]} target="_blank">
-                                                    <Button style={{margin: "2px"}} variant="contained" color="primary">MG</Button>
+                                                    <Button variant="contained" className={classNames(classes.customBtn)}>MG</Button>
                                                 </a>
                                                 <a href={ep[3]} target="_blank">
-                                                    <Button style={{margin: "2px"}} variant="contained" color="primary">E2K</Button>
+                                                    <Button variant="contained" className={classNames(classes.customBtn)}>E2K</Button>
                                                 </a>
                                             </span>
                                         ))}
@@ -241,33 +265,36 @@ class Drama extends React.Component {
                 )
             }
         }
-
         return (
-            <div style={dramaCss.container}>
-                <p>
-                {time}
+            <div className={classes.wrapper}>
+                <p className={classes.topTime}>
+                    {time}
                 </p>
-               
-                <Button variant="contained" color="primary" size="medium" >
+                <Button disabled size="medium" classes={{label:classes.btnLabel,disabled: classes.btnTime}}>
                     <AccessTime  />
                     &nbsp; {hour + ":" + minute + ":" + second }
                 </Button>
                 <br />
                 <br />
-                <Button variant="flat" color="primary" onClick={this.PressButton.bind(this, "tvbt")}>
+                <div className={classes.btnGroup}>
+                <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.PressButton.bind(this, "tvbt")}>
                     tvbt
                 </Button>
-                <Button variant="flat" color="primary" onClick={this.PressButton.bind(this, "subpig")}>
+                <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.PressButton.bind(this, "subpig")}>
                     subpig
                 </Button>
-                <Button variant="flat" color="primary" onClick={this.PressButton.bind(this, "fixsub")}>
+                <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.PressButton.bind(this, "fixsub")}>
                     fixsub
                 </Button>
+                </div>  
             {dramaTmp}
             </div>
         )
-
     }
 }
 
-export default Drama;
+Drama.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+  
+export default withStyles(styles)(Drama);

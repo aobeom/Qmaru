@@ -1,5 +1,8 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import YoutubeSearchedFor from '@material-ui/icons/YoutubeSearchedFor';
@@ -8,24 +11,35 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
-
+import Chip from '@material-ui/core/Chip';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 import yahooLogo from '../static/img/yahoo.png';
 
-const progCSS = {
-    logo:{
+const styles = ({
+    topLogo:{
         paddingTop: "40px",
     },
-    input:{
+    progCard:{
+        padding: "5px",
+    },
+    errorInfo:{
+        margin: "10px"
+    },
+    customInput: {
         minWidth: "150px",
     },
-    card:{
-        padding: "5px",
-    }
-}
+    customUnderline: {
+        '&:before': {
+            borderBottomColor: "#CD96CD",
+        },
+        '&:after': {
+            borderBottomColor: "#800080",
+        },
+    },
+})
 
 class Program extends React.Component {
     constructor(props) {
@@ -35,6 +49,7 @@ class Program extends React.Component {
             origin: "",
             btndisp: {display: "none"},
             district: '',
+            error: "",
         }
     }
     changeText(event){
@@ -53,6 +68,13 @@ class Program extends React.Component {
 
     progClick () {
         let kw = this.state.keyword
+        if (kw === undefined) {
+            this.setState({
+                error: true,
+                info: "KEYWORD ERROR"
+            })
+            return false
+        }
         let district = this.state.district
         if (district === ""){
             district = '23'
@@ -70,14 +92,16 @@ class Program extends React.Component {
                         values: 0,
                         origin: "No Data",
                         btndisp: {display: "block", padding: "20px"},
-                        color: "secondary"
+                        color: "secondary",
+                        error: false,
                     })
                 } else {
                     this.setState({
                         values: data.data,
                         origin: "yahoo",
                         btndisp: {display: "block", padding: "20px"},
-                        color: "primary"
+                        color: "primary",
+                        error: false,
                     })
                 }
                 
@@ -86,53 +110,68 @@ class Program extends React.Component {
     render() {
         const values = this.state.values;
         const origin = this.state.origin
+        const error = this.state.error
+        const info = this.state.info
+        const { classes } = this.props
         let progTmp = []
         let progTitle = []
         let url = values.ori_url
-        progTitle.push(
-            <div key="title" style={this.state.btndisp}>
-                <a href={url} target="_blank">
-                <Button 
-                    variant="contained" 
-                    color={this.state.color}
-                >
-                    {origin}
-                </Button>
-                </a>
-            </div>
-        )
-        if (values !== 0) {
-            let prog_info = values.entities
-            for(let p in prog_info) {
-                let pinfo = prog_info[p]
-                progTmp.push(
-                    <div style={progCSS.card} key={"prog" + p}>
-                        <Card>
-                            <CardContent>
-                            <Typography variant="headline" component="h2">
-                                {pinfo.date}
-                            </Typography>
-                            <Typography color="textSecondary" >
-                                {pinfo.time}
-                            </Typography>
-                            <Typography color="textSecondary">
-                                {pinfo.station}
-                            </Typography>
-                            <Typography component="p">
-                                {pinfo.title}
-                            </Typography>
-                            <Typography >
-                                <a href={pinfo.url} target="_blank"><Button size="small">Learn More</Button></a>
-                            </Typography>
-                            </CardContent>
-                    </Card>
-                    </div>
-                )
+        if ( error === true) {
+            progTitle.push(
+                <div key="error">
+                    <Chip
+                        className={classes.errorInfo}
+                        label={info}
+                        color="secondary"
+                    />
+                </div>
+            )
+        } else {
+            progTitle.push(
+                <div key="title" style={this.state.btndisp}>
+                    <a href={url} target="_blank">
+                    <Button 
+                        variant="contained" 
+                        color={this.state.color}
+                    >
+                        {origin}
+                    </Button>
+                    </a>
+                </div>
+            )
+            if (values !== 0) {
+                let prog_info = values.entities
+                for(let p in prog_info) {
+                    let pinfo = prog_info[p]
+                    progTmp.push(
+                        <div className={classes.progCard} key={"prog" + p}>
+                            <Card>
+                                <CardContent>
+                                <Typography variant="headline" component="h2">
+                                    {pinfo.date}
+                                </Typography>
+                                <Typography color="textSecondary" >
+                                    {pinfo.time}
+                                </Typography>
+                                <Typography color="textSecondary">
+                                    {pinfo.station}
+                                </Typography>
+                                <Typography component="p">
+                                    {pinfo.title}
+                                </Typography>
+                                <Typography >
+                                    <a href={pinfo.url} target="_blank"><Button size="small">Learn More</Button></a>
+                                </Typography>
+                                </CardContent>
+                        </Card>
+                        </div>
+                    )
+                }
             }
         }
         return (
             <div>
-                <p style={progCSS.logo}>
+                <p className={classes.topLogo}>
                     <a href="https://tv.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">
                         <img src={yahooLogo} style={{width: "200px"}} alt="" />
                     </a>
@@ -143,6 +182,7 @@ class Program extends React.Component {
                         onChange={this.handleChange}
                         name="district"
                         displayEmpty
+                        className={classes.customUnderline}
                     >
                         <MenuItem value="" disabled>地区</MenuItem>
                             <MenuItem value={23}>東京</MenuItem>
@@ -216,7 +256,7 @@ class Program extends React.Component {
                     <FormHelperText>District</FormHelperText>
                     </FormControl>
                     <Input
-                    style={progCSS.input}
+                    classes={{root: classes.customInput, underline: classes.customUnderline,}}
                     onChange={event=>this.changeText(event)}
                     placeholder="keyword"
                     inputProps={{'aria-label': 'Description'}}
@@ -236,4 +276,8 @@ class Program extends React.Component {
     }
 }
 
-export default Program;
+Program.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+  
+export default withStyles(styles)(Program);

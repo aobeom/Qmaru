@@ -1,5 +1,8 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+
 import Input from '@material-ui/core/Input';
 import IconButton from '@material-ui/core/IconButton';
 import ImageSearch from '@material-ui/icons/ImageSearch';
@@ -12,31 +15,39 @@ import MDPR from '../static/img/mdpr.png'
 import ORICON from '../static/img/oricon.png'
 import TPL from '../static/img/tpl.png'
 
-const picCSS = {
-    container:{
+const styles = ({
+    wrapper:{
         justifyContent: "center",
         textAlign: "center",
         paddingTop: "40px",
     },
-    logo:{
+    topLogo:{
         padding: "10px",
     },
-    input:{
-        minWidth: "220px",
-    },
-    error:{
+    errorInfo:{
         margin: "10px"
     },
-    img:{
+    resultImg:{
         width: "90%",
         padding: "5px"
     },
-    video:{
+    resultVideo:{
         height: "100%",
         width: "90%",
         display: "block",
-    }
-}
+    },
+    customInput: {
+        minWidth: "220px",
+    },
+    customUnderline: {
+        '&:before': {
+            borderBottomColor: "#CD96CD",
+        },
+        '&:after': {
+            borderBottomColor: "#800080",
+        }
+    },
+})
 
 
 class Picture extends React.Component {
@@ -50,7 +61,6 @@ class Picture extends React.Component {
             btndisp: {display: "none"},
         }
     }
-
     changeText(event){
         this.setState({
             url: event.target.value
@@ -110,12 +120,13 @@ class Picture extends React.Component {
         const error = this.state.error
         const info = this.state.info
         const status = this.state.status
+        const { classes } = this.props
         let mediaTmp = []
         if ( error === true){
             mediaTmp.push(
                 <div key="error">
                     <Chip
-                        style={picCSS.error}
+                        className={classes.errorInfo}
                         label={info}
                         color="secondary"
                     />
@@ -129,14 +140,14 @@ class Picture extends React.Component {
                         if (urls[u].indexOf(".mp4") > 0) {
                             mediaTmp.push(
                                 <div key={"video" + u}>
-                                    <video style={picCSS.video} src={urls[u]} controls="controls" />
+                                    <video className={classes.resultVideo} src={urls[u]} controls="controls" />
                                     <hr />
                                 </div>
                             )
                         } else {
                             mediaTmp.push(
                                 <div key={"img" + u}>
-                                    <img style={picCSS.img} src={urls[u]} alt="" />
+                                    <img className={classes.resultImg} src={urls[u]} alt="" />
                                     <hr />
                                 </div>
                             )
@@ -159,7 +170,7 @@ class Picture extends React.Component {
                     mediaTmp.push(
                     <div key="nodata" style={this.state.btndisp}>
                         <Chip
-                            style={picCSS.error}
+                            className={classes.errorInfo}
                             label="No data"
                             color="secondary"
                         />
@@ -168,20 +179,21 @@ class Picture extends React.Component {
             }
         }
         return (
-            <div style={picCSS.container}>
+            <div className={classes.wrapper}>
                 <p>
-                    <img style={picCSS.logo} src={IG} alt="ig"/>
-                    <img style={picCSS.logo} src={MDPR} alt="mdpr" />
-                    <img style={picCSS.logo} src={TPL} alt="tpl" />
-                    <img style={picCSS.logo} src={ORICON} alt="oricon" />
+                    <img className={classes.topLogo} src={IG} alt="ig"/>
+                    <img className={classes.topLogo} src={MDPR} alt="mdpr" />
+                    <img className={classes.topLogo} src={TPL} alt="tpl" />
+                    <img className={classes.topLogo} src={ORICON} alt="oricon" />
                 </p>
                 <Input
-                    style={picCSS.input}
+                    classes={{root: classes.customInput, underline: classes.customUnderline}}
                     onChange={event=>this.changeText(event)}
                     placeholder="URL"
                     inputProps={{'aria-label': 'Description'}}
                     autoFocus={false}
                     onKeyUp={this.onKeyUp}
+                    disableUnderline={false}
                 />
                 <IconButton 
                     aria-label="image_search" 
@@ -195,4 +207,8 @@ class Picture extends React.Component {
     }
 }
 
-export default Picture;
+Picture.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+  
+export default withStyles(styles)(Picture);
