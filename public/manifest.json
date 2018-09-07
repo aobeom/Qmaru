@@ -1,6 +1,6 @@
 {
-  "short_name": "WebTools",
-  "name": "WebTools",
+  "short_name": "Qmaru",
+  "name": "Qmaru",
   "icons": [
     {
       "src": "./favicon.png",
@@ -9,14 +9,14 @@
     }
   ],
   "ios": {
-      "apple-mobile-web-app-title": "WebTools",
-      "apple-mobile-web-app-status-bar-style": "#000000",
+      "apple-mobile-web-app-title": "Qmaru",
+      "apple-mobile-web-app-status-bar-style": "#800080",
       "apple-mobile-web-app-capable": "yes",
       "apple-touch-icon": "./favicon.png"
   },
   "scope": "/",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#d900d9",
+  "theme_color": "#800080",
   "background_color": "#ffffff"
 }

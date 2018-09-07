@@ -288,7 +288,7 @@ class App extends Component {
           <Toolbar>
               <Typography variant="title" color="inherit" key="title">
                     <Typography style={this.state.site} color="inherit">
-                      ToolBox
+                      Qmaru
                     </Typography>
               </Typography>
                 {tabs}
@@ -309,7 +309,7 @@ class App extends Component {
         </div>
 
         <div className={classes.footer}>
-          <span className={classes.footerSpan}>© 2017-2018 AoBeom v3.0 Beta</span>
+          <span className={classes.footerSpan}>© 2017-2018 AoBeom v3.0</span>
         </div>
 
       </div>
