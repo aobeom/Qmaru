@@ -42,7 +42,7 @@ const styles = ({
         minWidth: "220px",
     },
     customUnderline: {
-        '&:hover:not($disabled):before': {
+        '&:hover:not(disabled):before': {
             borderBottom: "2px solid #c36bd6 !important",
         },
         '&:before': {

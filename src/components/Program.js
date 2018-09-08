@@ -30,6 +30,10 @@ const styles = ({
         color: "#cc61cc",
         cursor: "default",
     },
+    progItem:{
+        color: "#552b55",
+        cursor: "default",
+    },
     errorInfo:{
         margin: "10px",
         backgroundColor: "#9941ac",
@@ -42,7 +46,7 @@ const styles = ({
     },
     customUnderline: {
         color: "#9941ac",
-        '&:hover:not($disabled):before': {
+        '&:hover:not(disabled):before': {
             borderBottom: "2px solid #c36bd6 !important",
         },
         '&:before': {
@@ -78,6 +82,68 @@ class Program extends React.Component {
             btndisp: {display: "none"},
             district: '',
             error: "",
+            districtName:[
+                {code: '', name: "地区", division: "title", status: true},
+                {code: '23', name: "東京", division: "regular", status: false},
+                {code: '23', name: "東京", division: "regular", status: false},
+                {code: '40', name: "大阪", division: "regular", status: false},
+                {code: '24', name: "神奈川", division: "regular", status: false},
+                {code: '33', name: "愛知", division: "regular", status: false},
+                {code: '55', name: "福岡", division: "regular", status: false},
+                {code: '10', name: "北海道（札幌）", division: "北海道", status: false},
+                {code: '11', name: "北海道（函館）", division: "北海道", status: false},
+                {code: '12', name: "北海道（旭川）", division: "北海道", status: false},
+                {code: '13', name: "北海道（帯広）", division: "北海道", status: false},
+                {code: '14', name: "北海道（釧路）", division: "北海道", status: false},
+                {code: '15', name: "北海道（北見）", division: "北海道", status: false},
+                {code: '16', name: "北海道（室蘭）", division: "北海道", status: false},
+                {code: '22', name: "青森", division: "東北地方", status: false},
+                {code: '20', name: "岩手", division: "東北地方", status: false},
+                {code: '18', name: "秋田", division: "東北地方", status: false},
+                {code: '17', name: "宮城", division: "東北地方", status: false},
+                {code: '19', name: "山形", division: "東北地方", status: false},
+                {code: '21', name: "福島", division: "東北地方", status: false},
+                {code: '26', name: "茨城", division: "関東地方", status: false},
+                {code: '28', name: "栃木", division: "関東地方", status: false},
+                {code: '25', name: "群馬", division: "関東地方", status: false},
+                {code: '29', name: "埼玉", division: "関東地方", status: false},
+                {code: '27', name: "千葉", division: "関東地方", status: false},
+                {code: '23', name: "東京", division: "関東地方", status: false},
+                {code: '24', name: "神奈川", division: "関東地方", status: false},
+                {code: '32', name: "山梨", division: "関東地方", status: false},
+                {code: '30', name: "長野", division: "関東地方", status: false},
+                {code: '31', name: "新潟", division: "関東地方", status: false},
+                {code: '37', name: "富山", division: "関東地方", status: false},
+                {code: '34', name: "石川", division: "関東地方", status: false},
+                {code: '36', name: "福井", division: "関東地方", status: false},
+                {code: '35', name: "静岡", division: "関東地方", status: false},
+                {code: '33', name: "愛知", division: "関東地方", status: false},
+                {code: '39', name: "岐阜", division: "関東地方", status: false},
+                {code: '38', name: "三重", division: "関東地方", status: false},
+                {code: '45', name: "滋賀", division: "近畿地方", status: false},
+                {code: '41', name: "京都", division: "近畿地方", status: false},
+                {code: '40', name: "大阪", division: "近畿地方", status: false},
+                {code: '42', name: "兵庫", division: "近畿地方", status: false},
+                {code: '44', name: "奈良", division: "近畿地方", status: false},
+                {code: '43', name: "和歌山", division: "近畿地方", status: false},
+                {code: '49', name: "鳥取", division: "中国地方", status: false},
+                {code: '48', name: "島根", division: "中国地方", status: false},
+                {code: '47', name: "岡山", division: "中国地方", status: false},
+                {code: '46', name: "広島", division: "中国地方", status: false},
+                {code: '50', name: "山口", division: "中国地方", status: false},
+                {code: '52', name: "香川", division: "四国地方", status: false},
+                {code: '51', name: "愛媛", division: "四国地方", status: false},
+                {code: '53', name: "徳島", division: "四国地方", status: false},
+                {code: '54', name: "高知", division: "四国地方", status: false},
+                {code: '55', name: "福岡", division: "九州地方", status: false},
+                {code: '61', name: "佐賀", division: "九州地方", status: false},
+                {code: '57', name: "長崎", division: "九州地方", status: false},
+                {code: '56', name: "熊本", division: "九州地方", status: false},
+                {code: '60', name: "大分", division: "九州地方", status: false},
+                {code: '59', name: "宮崎", division: "九州地方", status: false},
+                {code: '58', name: "鹿児島", division: "九州地方", status: false},
+                {code: '62', name: "沖縄", division: "沖縄", status: false},    
+            ]
         }
     }
     changeText(event){
@@ -137,10 +203,24 @@ class Program extends React.Component {
         const origin = this.state.origin
         const error = this.state.error
         const info = this.state.info
+        const districtName = this.state.districtName
         const { classes } = this.props
         let progTmp = []
         let progTitle = []
+        let districtTmp = []
         let url = values.ori_url
+        for (let i in districtName){
+            let dn = districtName[i]
+            districtTmp.push(
+                <MenuItem 
+                    key={"d" + i}  
+                    value={dn.code}
+                    className={classes.progItem}
+                >
+                    {dn.name}
+                </MenuItem>
+            )
+        }
         if ( error === true) {
             progTitle.push(
                 <div key="error">
@@ -206,74 +286,7 @@ class Program extends React.Component {
                         displayEmpty
                         className={classes.customUnderline}
                     >
-                        <MenuItem value="" disabled>地区</MenuItem>
-                            <MenuItem value={23}>東京</MenuItem>
-                            <MenuItem value={40}>大阪</MenuItem>
-                            <MenuItem value={24}>神奈川</MenuItem>
-                            <MenuItem value={33}>愛知</MenuItem>
-                            <MenuItem value={55}>福岡</MenuItem>
-                        {/* <MenuItem value="" disabled>北海道</MenuItem> */}
-                            <MenuItem value={10}>北海道（札幌）</MenuItem>
-                            <MenuItem value={11}>北海道（函館）</MenuItem>
-                            <MenuItem value={12}>北海道（旭川）</MenuItem>
-                            <MenuItem value={13}>北海道（帯広）</MenuItem>
-                            <MenuItem value={14}>北海道（釧路）</MenuItem>
-                            <MenuItem value={15}>北海道（北見）</MenuItem>
-                            <MenuItem value={16}>北海道（室蘭）</MenuItem>
-                        {/* <MenuItem value="" disabled>東北地方</MenuItem> */}
-                            <MenuItem value={22}>青森</MenuItem>
-                            <MenuItem value={20}>岩手</MenuItem>
-                            <MenuItem value={18}>秋田</MenuItem>
-                            <MenuItem value={17}>宮城</MenuItem>
-                            <MenuItem value={19}>山形</MenuItem>
-                            <MenuItem value={21}>福島</MenuItem>
-                        {/* <MenuItem value="" disabled>関東地方</MenuItem> */}
-                            <MenuItem value={26}>茨城</MenuItem>
-                            <MenuItem value={28}>栃木</MenuItem>
-                            <MenuItem value={25}>群馬</MenuItem>
-                            <MenuItem value={29}>埼玉</MenuItem>
-                            <MenuItem value={27}>千葉</MenuItem>
-                            <MenuItem value={23}>東京</MenuItem>
-                            <MenuItem value={24}>神奈川</MenuItem>
-                        {/* <MenuItem value="" disabled>中部地方</MenuItem> */}
-                            <MenuItem value={32}>山梨</MenuItem>
-                            <MenuItem value={30}>長野</MenuItem>
-                            <MenuItem value={31}>新潟</MenuItem>
-                            <MenuItem value={37}>富山</MenuItem>
-                            <MenuItem value={34}>石川</MenuItem>
-                            <MenuItem value={36}>福井</MenuItem>
-                            <MenuItem value={35}>静岡</MenuItem>
-                            <MenuItem value={33}>愛知</MenuItem>
-                            <MenuItem value={39}>岐阜</MenuItem>
-                            <MenuItem value={38}>三重</MenuItem>
-                        {/* <MenuItem value="" disabled>近畿地方</MenuItem> */}
-                            <MenuItem value={45}>滋賀</MenuItem>
-                            <MenuItem value={41}>京都</MenuItem>
-                            <MenuItem value={40}>大阪</MenuItem>
-                            <MenuItem value={42}>兵庫</MenuItem>
-                            <MenuItem value={44}>奈良</MenuItem>
-                            <MenuItem value={43}>和歌山</MenuItem>
-                        {/* <MenuItem value="" disabled>中国地方</MenuItem> */}
-                            <MenuItem value={49}>鳥取</MenuItem>
-                            <MenuItem value={48}>島根</MenuItem>
-                            <MenuItem value={47}>岡山</MenuItem>
-                            <MenuItem value={46}>広島</MenuItem>
-                            <MenuItem value={50}>山口</MenuItem>
-                        {/* <MenuItem value="" disabled>四国地方</MenuItem> */}
-                            <MenuItem value={52}>香川</MenuItem>
-                            <MenuItem value={51}>愛媛</MenuItem>
-                            <MenuItem value={53}>徳島</MenuItem>
-                            <MenuItem value={54}>高知</MenuItem>
-                        {/* <MenuItem value="" disabled>九州地方</MenuItem> */}
-                            <MenuItem value={55}>福岡</MenuItem>
-                            <MenuItem value={61}>佐賀</MenuItem>
-                            <MenuItem value={57}>長崎</MenuItem>
-                            <MenuItem value={56}>熊本</MenuItem>
-                            <MenuItem value={60}>大分</MenuItem>
-                            <MenuItem value={59}>宮崎</MenuItem>
-                            <MenuItem value={58}>鹿児島</MenuItem>
-                        {/* <MenuItem value="" disabled>沖縄</MenuItem> */}
-                            <MenuItem value={62}>沖縄</MenuItem>
+                    {districtTmp}
                     </Select>
                     <FormHelperText className={classes.progLabel}>District</FormHelperText>
                     </FormControl>
