@@ -197,6 +197,13 @@ class Program extends React.Component {
                 }
                 
             })
+            .catch(
+                () => this.setState({
+                    values: 0,
+                    info: "Server Error",
+                    error: true,
+                })
+            )
     }
     render() {
         const values = this.state.values;

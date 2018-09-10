@@ -121,10 +121,19 @@ class Picture extends React.Component {
                     this.setState({
                         error: false,
                         status: status,
+                        info: "No Data",
                         btndisp: {display: "block"},
                     })
                 }
             })
+            .catch(
+                () => this.setState({
+                    error: false,
+                    status: 1,
+                    info: "Server Error",
+                    btndisp: {display: "block"},
+                })
+            )
     }
     render() {
         const values = this.state.values
@@ -182,7 +191,7 @@ class Picture extends React.Component {
                     <div key="nodata" style={this.state.btndisp}>
                         <Chip
                             className={classes.errorInfo}
-                            label="No data"
+                            label={info}
                             color="secondary"
                         />
                     </div>

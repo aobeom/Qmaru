@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import InsertPhoto from '@material-ui/icons/InsertPhoto';
 import VideoLibrary from '@material-ui/icons/VideoLibrary';
 import SettingsVoice from '@material-ui/icons/SettingsVoice';
-
+import Chip from '@material-ui/core/Chip';
 
 const styles = ({
     wrapper: {
@@ -24,6 +24,10 @@ const styles = ({
     },
     cardSpacing: {
         margin: "15px",
+    },
+    errorInfo:{
+        margin: "10px",
+        backgroundColor: "#9941ac",
     },
     avatarImg: {
         width: "100%",
@@ -71,6 +75,7 @@ class RikaMsg extends React.Component {
             nextPage: 1,
             loadBtn: false,
             loadDis: false,
+            btndisp: {display: "none"},
         }
     }
     msgTypeChooice (type) {
@@ -79,6 +84,7 @@ class RikaMsg extends React.Component {
             values: [],
             nextPage: 1,
             loadBtn: false,
+            btndisp: {display: "none"},
         })
         let firstPage = this.state.firstPage
         let pageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}`
@@ -89,39 +95,60 @@ class RikaMsg extends React.Component {
         }).then(res => res.json())
             .then(data => {
                 let pageData = data.data.pages
-                if (pageData === 0) {
-                    this.setState({
-                        loadBtn: true,
-                        loadDis: true,
-                        loadText: "NO DATA",
-                    })
+                let status = data.status
+                if ( status === 0) {
+                    if (pageData === 0) {
+                        this.setState({
+                            status: status,
+                            loadBtn: true,
+                            loadDis: true,
+                            loadText: "NO DATA",
+                        })
+                    } else {
+                        this.setState({
+                            status: status,
+                            pages: pageData,
+                        })
+                    }
                 } else {
                     this.setState({
-                        pages: pageData,
+                        status: status,
+                        values: "No Data",
+                        btndisp: {display: "block"},
                     })
                 }
-        })
+            })
+            .catch(
+                () => this.setState({
+                    status: 1,
+                    values: "Network Error",
+                    btndisp: {display: "block"},
+                })
+            )
         fetch(firstPageUrl, {
             method: 'GET',
             dataType: 'json'
         }).then(res => res.json())
             .then(data => {
-                let msgData = data.data.entities
-                if(msgData !== undefined){
-                    if(msgData.length < 10){
-                        this.setState({
-                            values: msgData,
-                            loadBtn: true,
-                            loadText: "NO MORE",
-                            loadDis: true,
-                        })
-                    } else {
-                        this.setState({
-                            values: msgData,
-                            loadBtn: true,
-                            loadText: "LOAD",
-                            loadDis: false,
-                        })
+                let status = data.status
+                if ( status === 0) {
+                    let msgData = data.data.entities
+                    if(msgData !== undefined){
+                        if(msgData.length < 10){
+                            this.setState({
+                                values: msgData,
+                                loadBtn: true,
+                                loadText: "NO MORE",
+                                loadDis: true,
+                            })
+                        } else {
+                            this.setState({
+                                values: msgData,
+                                loadBtn: true,
+                                loadText: "LOAD",
+                                loadDis: false,
+                            })
+                        }
                     }
                 }
         })
@@ -171,99 +198,112 @@ class RikaMsg extends React.Component {
         const loadBtn = this.state.loadBtn
         const loadText = this.state.loadText
         const { classes } = this.props
+        const status = this.state.status
         let msgTmp = []
         let loadTmp = []
-        if (loadBtn === true) {
-            loadTmp.push(
-                <div key="load" className={classes.loadBtn}>
-                    <Button disabled={this.state.loadDis} variant="contained" className={classNames(classes.customBtn)} onClick={this.loadMoreData.bind(this)}>
-                       {loadText} 
-                    </Button>
-                </div>
-            )
-        }
-        for (let e in entities) {
-            let message = entities[e]
-            let panel = "panel" + e
-            let mediaType = message.type
-            let mediaIcon = []
-            let mediaUrl = []
-            if ( mediaType === 1) {
-                mediaIcon.push(
-                    <IconButton
-                            onClick={this.handleExpandClick.bind(this, panel)}
-                            aria-expanded={expanded === panel}
-                            aria-label="Show more"
-                            key={"imgPart" + e}
-                        >
-                    <InsertPhoto />
-                    </IconButton>
-                )
-                mediaUrl.push(
-                    <img key={"img" + e} src={"/media" + message.media} className={classes.mediaAuto} alt={message.tid}/>
-                )
-            } else if (mediaType === 2) {
-                mediaIcon.push(
-                    <IconButton
-                            onClick={this.handleExpandClick.bind(this, panel)}
-                            aria-expanded={expanded === panel}
-                            aria-label="Show more"
-                            key={"videoPart" + e}
-                        >
-                    <VideoLibrary />
-                    </IconButton>
-                )
-                mediaUrl.push(
-                    <video key={"video" + e} src={"/media" + message.media} className={classes.mediaAuto} controls="controls"></video>
-                )
-            } else if (mediaType === 3 ) {
-                mediaIcon.push(
-                    <IconButton
-                            onClick={this.handleExpandClick.bind(this, panel)}
-                            aria-expanded={expanded === panel}
-                            aria-label="Show more"
-                            key={"audioPart" + e}
-                        >
-                    <SettingsVoice />
-                    </IconButton>
-                )
-                mediaUrl.push(
-                    <video key={"audio" + e} src={"/media" + message.media} className={classes.mediaAuto} controls="controls"></video>
-                )
-            } else {
-                mediaIcon.push(
-                    <span key={"null" + e}></span>
+        if ( status === 0) {
+            if (loadBtn === true) {
+                loadTmp.push(
+                    <div key="load" className={classes.loadBtn}>
+                        <Button disabled={this.state.loadDis} variant="contained" className={classNames(classes.customBtn)} onClick={this.loadMoreData.bind(this)}>
+                        {loadText} 
+                        </Button>
+                    </div>
                 )
             }
-            msgTmp.push(
-                <div key={"msg" + e} className={classes.cardSpacing}>
-                    <Card>
-                        <CardHeader
-                        avatar={
-                            <Avatar aria-label="Recipe" classes={{root: classes.avatarImg}}>
-                                <img src={require('./../static/img/avatar.png')} alt="rikaAvatar"/>
-                            </Avatar>
-                        }
-                        title={message.date}
-                        classes={{title: classes.avatarTitle}}
-                        />
-                    
-                        <CardContent className={classes.cardContent}>
-                            <Typography component="p" className={classes.msgText}>
-                            {message.text}
-                            </Typography>
-                        </CardContent>
-                    
-                        <CardActions disableActionSpacing style={{padding: "4px"}}>
-                            {mediaIcon}
-                        </CardActions>
-                    
-                        <Collapse in={expanded === panel} timeout="auto" unmountOnExit>
-                            <CardContent>
-                                {mediaUrl}
+            for (let e in entities) {
+                let message = entities[e]
+                let panel = "panel" + e
+                let mediaType = message.type
+                let mediaIcon = []
+                let mediaUrl = []
+                if ( mediaType === 1) {
+                    mediaIcon.push(
+                        <IconButton
+                                onClick={this.handleExpandClick.bind(this, panel)}
+                                aria-expanded={expanded === panel}
+                                aria-label="Show more"
+                                key={"imgPart" + e}
+                            >
+                        <InsertPhoto />
+                        </IconButton>
+                    )
+                    mediaUrl.push(
+                        <img key={"img" + e} src={"/media" + message.media} className={classes.mediaAuto} alt={message.tid}/>
+                    )
+                } else if (mediaType === 2) {
+                    mediaIcon.push(
+                        <IconButton
+                                onClick={this.handleExpandClick.bind(this, panel)}
+                                aria-expanded={expanded === panel}
+                                aria-label="Show more"
+                                key={"videoPart" + e}
+                            >
+                        <VideoLibrary />
+                        </IconButton>
+                    )
+                    mediaUrl.push(
+                        <video key={"video" + e} src={"/media" + message.media} className={classes.mediaAuto} controls="controls"></video>
+                    )
+                } else if (mediaType === 3 ) {
+                    mediaIcon.push(
+                        <IconButton
+                                onClick={this.handleExpandClick.bind(this, panel)}
+                                aria-expanded={expanded === panel}
+                                aria-label="Show more"
+                                key={"audioPart" + e}
+                            >
+                        <SettingsVoice />
+                        </IconButton>
+                    )
+                    mediaUrl.push(
+                        <video key={"audio" + e} src={"/media" + message.media} className={classes.mediaAuto} controls="controls"></video>
+                    )
+                } else {
+                    mediaIcon.push(
+                        <span key={"null" + e}></span>
+                    )
+                }
+                msgTmp.push(
+                    <div key={"msg" + e} className={classes.cardSpacing}>
+                        <Card>
+                            <CardHeader
+                            avatar={
+                                <Avatar aria-label="Recipe" classes={{root: classes.avatarImg}}>
+                                    <img src={require('./../static/img/avatar.png')} alt="rikaAvatar"/>
+                                </Avatar>
+                            }
+                            title={message.date}
+                            classes={{title: classes.avatarTitle}}
+                            />
+                        
+                            <CardContent className={classes.cardContent}>
+                                <Typography component="p" className={classes.msgText}>
+                                {message.text}
+                                </Typography>
                             </CardContent>
-                        </Collapse>
-                    </Card>
+                        
+                            <CardActions disableActionSpacing style={{padding: "4px"}}>
+                                {mediaIcon}
+                            </CardActions>
+                        
+                            <Collapse in={expanded === panel} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    {mediaUrl}
+                                </CardContent>
+                            </Collapse>
+                        </Card>
+                    </div>
+                )
+            }
+        } else {
+            msgTmp.push(
+                <div key="error" style={this.state.btndisp}>
+                    <Chip
+                        className={classes.errorInfo}
+                        label={this.state.values}
+                        color="secondary"
+                    />
                 </div>
             )
         }

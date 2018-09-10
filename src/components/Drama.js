@@ -11,6 +11,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Chip from '@material-ui/core/Chip';
 
 import '../config';
 
@@ -20,6 +21,10 @@ const styles = {
         justifyContent: "center",
         textAlign: "center",
         width: "100%",
+    },
+    errorInfo:{
+        margin: "10px",
+        backgroundColor: "#9941ac",
     },
     dateInfo: {
         flexBasis: '25%',
@@ -77,29 +82,46 @@ class Drama extends React.Component {
         super(props)
         this.state = {
             values: [],
-            time: "2000-00-00 00:00:00",
-            sectotal: "",
             day: "",
+            time: "2000-00-00 00:00:00",
             hour: "00",
             minute: "00",
             second: "00",
             expanded: null,
+            btndisp: {display: "none"},
         }
     }
     PressButton (site) {
-        this.setState({
-            values: [],
-        })
+        // this.setState({
+        //     values: [],
+        // })
         let url = `${global.constants.api}/api/v1/drama/${site}`
         fetch(url, {
             method: 'GET',
             dataType: 'json'
         }).then(res => res.json())
             .then(data => {
-                this.setState({
-                    values: data.data,
-                })
+                let status = data.status
+                if (status === 0) {
+                    this.setState({
+                        status: status,
+                        values: data.data,
+                    })
+                } else {
+                    this.setState({
+                        status: status,
+                        values: "No Data",
+                        btndisp: {display: "block"},
+                    })
+                }
             })
+            .catch(
+                () => this.setState({
+                    status: 1,
+                    values: "Server Error",
+                    btndisp: {display: "block"},
+                }),
+            )
     }
     handleChange = panel => (event, expanded) => {
         this.setState({
@@ -113,15 +135,32 @@ class Drama extends React.Component {
             dataType: 'json'
         }).then(res => res.json())
             .then(data => {
+                let status = data.status
                 let tdata = data.data
                 let time = tdata.time
                 let sectotal = data.data.second
-                this.setState({
-                    time: time,
-                    sectotal: sectotal
-            })
+                if(status === 0){
+                    this.setState({
+                        status: status,
+                        time: time,
+                        sectotal: sectotal
+                    })
+                } else {
+                    this.setState({
+                        status: status,
+                        time: "2000-00-00 00:00:00",
+                        sectotal: 0
+                    })
+                }
             this.count()
         })
+        .catch(
+            () => this.setState({
+                status: 1,
+                time: "2000-00-00 00:00:00",
+                sectotal: 0
+            })
+        )
     }
     count = () => {
         let sectotal = this.state.sectotal
@@ -158,112 +197,125 @@ class Drama extends React.Component {
         const minute = this.state.minute
         const second = this.state.second
         const expanded = this.state.expanded
+        const status = this.state.status
         const { classes } = this.props
         let dramaTmp = []
-        let dramaSite = values.name
-        let dramaData = values.entities
-        if(dramaSite === "tvbt") {
-            for(let i in dramaData) {
-                let tvbt_info = dramaData[i] 
-                let tvbt_ep = tvbt_info["dlurls"]
-                let panel = 'panel' + i
-                dramaTmp.push(
-                    <div key={"tvbt" + i}>
-                    <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                            <Typography className={classes.dateInfo} component="p" color="textPrimary">
-                            {tvbt_info.date}
-                            </Typography>
-                            <Typography className={classes.urlInfo} color="textSecondary">
-                            <a href={tvbt_info.url} target="_blank">{tvbt_info.title}</a>
-                            </Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
-                            <Typography className={classes.tvbtText}>
-                                    {tvbt_ep.map((ep, index) => (
-                                    <a className={classes.tvbtAtag} key={'t' + index} href={ep[1] + '#' + ep[2]} target="_blank">
-                                        <Button variant="contained" className={classNames(classes.customBtn)}>
-                                        {'EP' + ep[0]}
-                                        </Button>
-                                    </a>
-                                ))}
-                            </Typography>
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    </div>
-                )
-            }
-        }
-        if(dramaSite === "subpig") {
-            for(let j in dramaData) {
-                let subpig_info = dramaData[j]
-                let subpig_ep = subpig_info["dlurls"]
-                let panel = 'panel' + j
-                if (typeof (subpig_ep) !== "undefined"){
+        if ( status === 0) {
+            let dramaSite = values.name
+            let dramaData = values.entities
+            if(dramaSite === "tvbt") {
+                for(let i in dramaData) {
+                    let tvbt_info = dramaData[i] 
+                    let tvbt_ep = tvbt_info["dlurls"]
+                    let panel = 'panel' + i
                     dramaTmp.push(
-                        <div key={"subpig" + j} >
-                            <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography className={classes.dateInfo} component="p" color="textPrimary">
-                                    {subpig_info.date}
-                                    </Typography>
-                                    <Typography className={classes.urlInfo} color="textSecondary">
-                                    <a href={subpig_info.url} target="_blank">{subpig_info.title}</a>
-                                    </Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <Typography className={classes.epInfo}>
-                                        <a key={'t' + j} href={subpig_ep[0] + '#' + subpig_ep[1]} target="_blank">
+                        <div key={"tvbt" + i}>
+                        <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography className={classes.dateInfo} component="p" color="textPrimary">
+                                {tvbt_info.date}
+                                </Typography>
+                                <Typography className={classes.urlInfo} color="textSecondary">
+                                <a href={tvbt_info.url} target="_blank">{tvbt_info.title}</a>
+                                </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Typography className={classes.tvbtText}>
+                                        {tvbt_ep.map((ep, index) => (
+                                        <a className={classes.tvbtAtag} key={'t' + index} href={ep[1] + '#' + ep[2]} target="_blank">
                                             <Button variant="contained" className={classNames(classes.customBtn)}>
-                                            BAIDU
+                                            {'EP' + ep[0]}
                                             </Button>
                                         </a>
-                                    </Typography>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
+                                    ))}
+                                </Typography>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
                         </div>
-                        
                     )
                 }
             }
-        }
-        if(dramaSite === "fixsub") {
-            for(let k in dramaData) {
-                let fixsub_info = dramaData[k]
-                let fixsub_ep = fixsub_info["dlurls"]
-                let panel = 'panel' + k
-                dramaTmp.push(
-                    <div key={"fixsub" + k}>
-                        <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography className={classes.urlFixsub} color="textSecondary">
-                                    <a href={fixsub_info.url} target="_blank">{fixsub_info.title}</a>
-                                    </Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <Typography component="div" className={classes.epInfo}>
-                                        {fixsub_ep.map((ep, index) => (
-                                            <span key={"f" + index}>
-                                                <p className={classes.fixBtn}>
-                                                    <Button disabled classes={{label:classes.fixBtn}}>{'EP' + ep[0]}</Button>
-                                                </p>
-                                                <a href={ep[1]} target="_blank">
-                                                    <Button variant="contained" className={classNames(classes.customBtn)}>BD</Button>
-                                                </a>
-                                                <a href={ep[2]} target="_blank">
-                                                    <Button variant="contained" className={classNames(classes.customBtn)}>MG</Button>
-                                                </a>
-                                                <a href={ep[3]} target="_blank">
-                                                    <Button variant="contained" className={classNames(classes.customBtn)}>E2K</Button>
-                                                </a>
-                                            </span>
-                                        ))}
-                                    </Typography>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                    </div>
-                )
+            if(dramaSite === "subpig") {
+                for(let j in dramaData) {
+                    let subpig_info = dramaData[j]
+                    let subpig_ep = subpig_info["dlurls"]
+                    let panel = 'panel' + j
+                    if (typeof (subpig_ep) !== "undefined"){
+                        dramaTmp.push(
+                            <div key={"subpig" + j} >
+                                <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
+                                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                        <Typography className={classes.dateInfo} component="p" color="textPrimary">
+                                        {subpig_info.date}
+                                        </Typography>
+                                        <Typography className={classes.urlInfo} color="textSecondary">
+                                        <a href={subpig_info.url} target="_blank">{subpig_info.title}</a>
+                                        </Typography>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails>
+                                        <Typography className={classes.epInfo}>
+                                            <a key={'t' + j} href={subpig_ep[0] + '#' + subpig_ep[1]} target="_blank">
+                                                <Button variant="contained" className={classNames(classes.customBtn)}>
+                                                BAIDU
+                                                </Button>
+                                            </a>
+                                        </Typography>
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
+                            </div>
+                            
+                        )
+                    }
+                }
             }
+            if(dramaSite === "fixsub") {
+                for(let k in dramaData) {
+                    let fixsub_info = dramaData[k]
+                    let fixsub_ep = fixsub_info["dlurls"]
+                    let panel = 'panel' + k
+                    dramaTmp.push(
+                        <div key={"fixsub" + k}>
+                            <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
+                                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                        <Typography className={classes.urlFixsub} color="textSecondary">
+                                        <a href={fixsub_info.url} target="_blank">{fixsub_info.title}</a>
+                                        </Typography>
+                                    </ExpansionPanelSummary>
+                                    <ExpansionPanelDetails>
+                                        <Typography component="div" className={classes.epInfo}>
+                                            {fixsub_ep.map((ep, index) => (
+                                                <span key={"f" + index}>
+                                                    <p className={classes.fixBtn}>
+                                                        <Button disabled classes={{label:classes.fixBtn}}>{'EP' + ep[0]}</Button>
+                                                    </p>
+                                                    <a href={ep[1]} target="_blank">
+                                                        <Button variant="contained" className={classNames(classes.customBtn)}>BD</Button>
+                                                    </a>
+                                                    <a href={ep[2]} target="_blank">
+                                                        <Button variant="contained" className={classNames(classes.customBtn)}>MG</Button>
+                                                    </a>
+                                                    <a href={ep[3]} target="_blank">
+                                                        <Button variant="contained" className={classNames(classes.customBtn)}>E2K</Button>
+                                                    </a>
+                                                </span>
+                                            ))}
+                                        </Typography>
+                                    </ExpansionPanelDetails>
+                                </ExpansionPanel>
+                        </div>
+                    )
+                }
+            } 
+        } else {
+            dramaTmp.push(
+                <div key="error" style={this.state.btndisp}>
+                    <Chip
+                        className={classes.errorInfo}
+                        label={values}
+                        color="secondary"
+                    />
+                </div>
+            )
         }
         return (
             <div className={classes.wrapper}>
