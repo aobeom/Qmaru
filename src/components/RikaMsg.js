@@ -89,9 +89,12 @@ class RikaMsg extends React.Component {
         let firstPage = this.state.firstPage
         let pageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}`
         let firstPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}&page=${firstPage}`
+        let token = sessionStorage.getItem("token")
+        if (token) {
         fetch(pageUrl, {
             method: 'GET',
-            dataType: 'json'
+            dataType: 'json',
+            headers: {Authorization: 'Bearer ' + token},
         }).then(res => res.json())
             .then(data => {
                 let pageData = data.data.pages
@@ -127,7 +130,8 @@ class RikaMsg extends React.Component {
             )
         fetch(firstPageUrl, {
             method: 'GET',
-            dataType: 'json'
+            dataType: 'json',
+            headers: {Authorization: 'Bearer ' + token},
         }).then(res => res.json())
             .then(data => {
                 let status = data.status
@@ -151,7 +155,10 @@ class RikaMsg extends React.Component {
                         }
                     }
                 }
-        })
+            })
+        } else {
+            this.props.history.push('/auth')
+        }
     }
     loadMoreData () {
         let values = this.state.values

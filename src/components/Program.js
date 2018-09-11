@@ -56,6 +56,9 @@ const styles = ({
             borderBottomColor: "#800080",
         },
     },
+    customSel: {
+        minHeight: "0",
+    },
     customIcon: {
         '&:hover': {
             backgroundColor: "#f9e8fd",
@@ -292,6 +295,7 @@ class Program extends React.Component {
                         name="district"
                         displayEmpty
                         className={classes.customUnderline}
+                        classes={{select: classes.customSel}}
                     >
                     {districtTmp}
                     </Select>

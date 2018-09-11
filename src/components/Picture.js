@@ -9,6 +9,7 @@ import ImageSearch from '@material-ui/icons/ImageSearch';
 import Chip from '@material-ui/core/Chip';
 import Button from '@material-ui/core/Button';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import Fade from '@material-ui/core/Fade';
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -145,11 +146,14 @@ class Picture extends React.Component {
         if ( error === true){
             mediaTmp.push(
                 <div key="error">
-                    <Chip
-                        className={classes.errorInfo}
-                        label={info}
-                        color="secondary"
-                    />
+                    <Fade in={error}>
+                        <Chip
+                            className={classes.errorInfo}
+                            label={info}
+                            color="secondary"
+                        />
+                    </Fade>
+                    
                 </div>
             )
         } else {
@@ -189,11 +193,13 @@ class Picture extends React.Component {
             } else {
                     mediaTmp.push(
                     <div key="nodata" style={this.state.btndisp}>
+                    <Fade in={status}>
                         <Chip
                             className={classes.errorInfo}
                             label={info}
                             color="secondary"
                         />
+                    </Fade>  
                     </div>
                 )
             }

@@ -11,6 +11,7 @@ import Program from './components/Program';
 import Stchannel from './components/Stchannel';
 import RikaMsg from './components/RikaMsg';
 import NotFoundPage from './components/NotFoundPage';
+import Auth from './components/Auth'
 
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
@@ -304,6 +305,7 @@ class App extends Component {
             <Route path="/program" exact component={Program}/>
             <Route path="/stchannel" exact component={Stchannel}/>
             <Route path="/rikamsg" exact component={RikaMsg}/>
+            <Route path="/auth" exact component={Auth}/>
             <Route path="*" exact component={NotFoundPage} />
           </Switch>
         </div>
