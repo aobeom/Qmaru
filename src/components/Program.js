@@ -39,7 +39,7 @@ const styles = ({
         backgroundColor: "#9941ac",
     },
     customInput: {
-        minWidth: "150px",
+        width: "140px",
         '&:hover': {
             borderBottomColor: "#f9e8fd",
         },
@@ -300,13 +300,12 @@ class Program extends React.Component {
                     {districtTmp}
                     </Select>
                     <FormHelperText className={classes.progLabel}>District</FormHelperText>
-                    </FormControl>
-                    <Input
+                </FormControl>
+                <Input
                     classes={{root: classes.customInput, underline: classes.customUnderline,}}
                     onChange={event=>this.changeText(event)}
                     placeholder="keyword"
                     inputProps={{'aria-label': 'Description'}}
-                    autoFocus={true}
                     onKeyUp={this.onKeyUp}
                 />
                 <IconButton 

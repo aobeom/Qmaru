@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 
 const styles = ({
     wrapper:{
-        padding: "40px",
+        padding: "30px",
     },
     indexCard:{
         margin: "10px",

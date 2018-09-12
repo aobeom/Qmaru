@@ -92,9 +92,9 @@ class Drama extends React.Component {
         }
     }
     PressButton (site) {
-        // this.setState({
-        //     values: [],
-        // })
+        this.setState({
+            expanded: null,
+        })
         let url = `${global.constants.api}/api/v1/drama/${site}`
         fetch(url, {
             method: 'GET',

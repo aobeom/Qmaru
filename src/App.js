@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route,Link, Switch} from 'react-router-dom';
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -10,8 +11,9 @@ import Drama from './components/Drama';
 import Program from './components/Program';
 import Stchannel from './components/Stchannel';
 import RikaMsg from './components/RikaMsg';
-import NotFoundPage from './components/NotFoundPage';
 import Auth from './components/Auth'
+
+import NotFoundPage from './components/NotFoundPage';
 
 import Button from '@material-ui/core/Button';
 import AppBar from '@material-ui/core/AppBar';
@@ -65,6 +67,16 @@ class App extends Component {
         margin: "0"
       },
       width: props.width || -1,
+      routers: [
+        {"path": "/", "component": IndexPage},
+        {"path": "/picture", "component": Picture},
+        {"path": "/drama", "component": Drama},
+        {"path": "/program", "component": Program},
+        {"path": "/stchannel", "component": Stchannel},
+        {"path": "/rikamsg", "component": RikaMsg},
+        {"path": "/auth", "component": Auth},
+        {"path": "*", "component": NotFoundPage},
+      ]
     }
   }
   componentDidMount() {
@@ -267,6 +279,8 @@ class App extends Component {
     const titles = this.state.titles
     const paths = this.state.paths
     const { classes } = this.props
+    const routers = this.state.routers
+    const routeKey = window.location.pathname.split('/')[1] || '/'
     let tabs = titles.map(function(t, index) {
     let linkUp = this.state.linkUp
     let linkDown = this.state.linkDown
@@ -298,16 +312,21 @@ class App extends Component {
         </div>
 
         <div className={classes.main}>
-          <Switch>
-            <Route path="/" exact component={IndexPage}/>
-            <Route path="/picture" exact component={Picture}/>
-            <Route path="/drama" exact component={Drama}/>
-            <Route path="/program" exact component={Program}/>
-            <Route path="/stchannel" exact component={Stchannel}/>
-            <Route path="/rikamsg" exact component={RikaMsg}/>
-            <Route path="/auth" exact component={Auth}/>
-            <Route path="*" exact component={NotFoundPage} />
-          </Switch>
+            <TransitionGroup>
+                <CSSTransition
+                      timeout={300}
+                      classNames="spec"
+                      unmountOnExit
+                      appear
+                      key={routeKey}
+                    >
+                 <Switch > 
+                  {routers.map((route, index) => (
+                        <Route key={"r" + index} path={route.path} exact component={route.component}/>
+                  ))}
+                </Switch>
+                </CSSTransition>
+              </TransitionGroup>
         </div>
 
         <div className={classes.footer}>

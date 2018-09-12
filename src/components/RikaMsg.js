@@ -69,6 +69,13 @@ class RikaMsg extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            btnGroup: [
+                {"name": "All", "type": 100},
+                {"name": "Text", "type": 0},
+                {"name": "Pic", "type": 1},
+                {"name": "Vid", "type": 2},
+                {"name": "Aud", "type": 3},
+            ],
             expanded: null ,
             values: [],
             firstPage: 1,
@@ -76,6 +83,13 @@ class RikaMsg extends React.Component {
             loadBtn: false,
             loadDis: false,
             btndisp: {display: "none"},
+        }
+    }
+    componentWillMount() {
+        let token = sessionStorage.getItem("token")
+        if (!token) {
+            // this.props.history.push('/auth')
+            window.location.href="/auth"
         }
     }
     msgTypeChooice (type) {
@@ -95,7 +109,15 @@ class RikaMsg extends React.Component {
             method: 'GET',
             dataType: 'json',
             headers: {Authorization: 'Bearer ' + token},
-        }).then(res => res.json())
+        }).then(
+            function(res){
+                if(res.status === 401) {
+                    sessionStorage.removeItem('token')
+                    window.history.go(0)
+                } else {
+                    return res.json()
+                }
+            })
             .then(data => {
                 let pageData = data.data.pages
                 let status = data.status
@@ -128,11 +150,23 @@ class RikaMsg extends React.Component {
                     btndisp: {display: "block"},
                 })
             )
+        } else {
+            // this.props.history.push('/auth')
+            window.location.href="/auth"
+        }
         fetch(firstPageUrl, {
             method: 'GET',
             dataType: 'json',
             headers: {Authorization: 'Bearer ' + token},
-        }).then(res => res.json())
+        }).then(
+            function(res){
+                if(res.status === 401) {
+                    sessionStorage.removeItem('token')
+                    window.history.go(0)
+                } else {
+                    return res.json()
+                }
+            })
             .then(data => {
                 let status = data.status
                 if ( status === 0) {
@@ -156,9 +190,6 @@ class RikaMsg extends React.Component {
                     }
                 }
             })
-        } else {
-            this.props.history.push('/auth')
-        }
     }
     loadMoreData () {
         let values = this.state.values
@@ -206,6 +237,7 @@ class RikaMsg extends React.Component {
         const loadText = this.state.loadText
         const { classes } = this.props
         const status = this.state.status
+        const btnGroup = this.state.btnGroup
         let msgTmp = []
         let loadTmp = []
         if ( status === 0) {
@@ -316,23 +348,11 @@ class RikaMsg extends React.Component {
         }
         return(
             <div className={classes.wrapper}>
-                
-                <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, 100)}>
-                    All
-                </Button>
-                <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, 0)}>
-                    Text
-                </Button>
-                <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, 1)}>
-                    Pic
-                </Button>
-                <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, 2)}>
-                    Vid
-                </Button>
-                <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, 3)}>
-                    Aud
-                </Button>
-
+                {btnGroup.map((btn, index) => (
+                    <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, btn.type)}>
+                        {btn.name}
+                    </Button>
+                ))}
                 <div>
                     {msgTmp}
                 </div>

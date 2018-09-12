@@ -15,7 +15,7 @@ import Fade from '@material-ui/core/Fade';
 
 const styles = ({
     wrapper: {
-        paddingTop: "120px",
+        paddingTop: "60px",
     },
     errorInfo:{
         margin: "10px",
@@ -179,13 +179,10 @@ class Auth extends React.Component {
                         }
                     }
                 />
-
                 <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.loginBtn.bind(this)}>
                         Submit
                 </Button>
             </FormControl>
-            
-
             </div>
         )
     }
