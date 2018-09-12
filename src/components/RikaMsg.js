@@ -196,25 +196,31 @@ class RikaMsg extends React.Component {
         let currentType = this.state.type
         let totalPage = this.state.pages
         let nextPage = this.state.nextPage
-        if (nextPage < totalPage){
-            nextPage = nextPage + 1
-            let nextPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${currentType}&page=${nextPage}`
-            fetch(nextPageUrl, {
-                method: 'GET',
-                dataType: 'json'
-            }).then(res => res.json())
-                .then(data => {
-                    let msgData = data.data.entities
-                    this.setState({
-                        values: values.concat(msgData),
-                        nextPage: nextPage,
-                    })
-            })
+        let token = sessionStorage.getItem("token")
+        if(token){
+            if (nextPage < totalPage){
+                nextPage = nextPage + 1
+                let nextPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${currentType}&page=${nextPage}`
+                fetch(nextPageUrl, {
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: {Authorization: 'Bearer ' + token},
+                }).then(res => res.json())
+                    .then(data => {
+                        let msgData = data.data.entities
+                        this.setState({
+                            values: values.concat(msgData),
+                            nextPage: nextPage,
+                        })
+                })
+            } else {
+                this.setState({
+                    loadText: "NO MORE",
+                    loadDis: true,
+                })
+            }
         } else {
-            this.setState({
-                loadText: "NO MORE",
-                loadDis: true,
-            })
+            window.location.href="/auth"
         }
     }
     handleExpandClick(panel) {
