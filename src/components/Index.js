@@ -59,6 +59,11 @@ class IndexPage extends React.Component {
             ]
         }
     }
+    componentWillUnmount(){
+        this.setState = ()=>{
+            return
+        }
+    }
     render() {
         const intro = this.state.intro
         const { classes } = this.props

@@ -208,6 +208,11 @@ class Program extends React.Component {
                 })
             )
     }
+    componentWillUnmount(){
+        this.setState = ()=>{
+            return
+        }
+    }
     render() {
         const values = this.state.values;
         const origin = this.state.origin

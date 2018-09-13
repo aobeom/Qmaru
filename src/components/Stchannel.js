@@ -94,6 +94,11 @@ class Stchannel extends React.Component {
                 })
             )
     }
+    componentWillUnmount(){
+        this.setState = ()=>{
+            return
+        }
+    }
     render() {
         const st_info = this.state.values
         const time = this.state.time

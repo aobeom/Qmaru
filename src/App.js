@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route,Link, Switch} from 'react-router-dom';
+import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 
 import PropTypes from 'prop-types';
@@ -80,17 +80,23 @@ class App extends Component {
     }
   }
   componentDidMount() {
-    let uri = window.location.href.split("/")
-    let aid = uri[uri.length - 1]
+    this.updateSize()
+    window.addEventListener('resize', () => this.updateSize())
+    this.updateBar()
+    window.addEventListener('popstate', () => this.updateBar())
+    window.addEventListener('popstate', function() {
+      window.history.pushState({}, '')
+    })
+  }
+  updateBar() {
+    let uri = window.location.pathname.split('/')[1]
     let index = ""
-    if (this.state.paths.indexOf(aid) !== "-1"){
-      index = this.state.paths.indexOf(aid)
-    }
+    if (this.state.paths.indexOf(uri) !== "-1"){
+      index = this.state.paths.indexOf(uri)
+    } 
     this.setState({
       currentindex: String(index)
     })
-    this.updateSize();
-    window.addEventListener('resize', () => this.updateSize());
   }
   updateSize() {
     let { width } = this.props;
@@ -275,6 +281,11 @@ class App extends Component {
       currentindex: id
     })
   }
+  componentWillUnmount(){
+    this.setState = ()=>{
+        return
+    }
+}
   render() {
     const titles = this.state.titles
     const paths = this.state.paths

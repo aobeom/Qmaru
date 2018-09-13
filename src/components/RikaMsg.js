@@ -90,7 +90,7 @@ class RikaMsg extends React.Component {
         if (!token) {
             // this.props.history.push('/auth')
             window.location.href="/auth"
-        }
+        } 
     }
     msgTypeChooice (type) {
         this.setState({
@@ -236,6 +236,11 @@ class RikaMsg extends React.Component {
             expanded: panelMode,
         })
     }
+    componentWillUnmount(){
+        this.setState = ()=>{
+            return
+        }
+    }
     render(){
         const entities = this.state.values
         const expanded = this.state.expanded
@@ -355,7 +360,7 @@ class RikaMsg extends React.Component {
         return(
             <div className={classes.wrapper}>
                 {btnGroup.map((btn, index) => (
-                    <Button variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, btn.type)}>
+                    <Button key={"r" + index} variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, btn.type)}>
                         {btn.name}
                     </Button>
                 ))}

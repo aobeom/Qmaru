@@ -71,6 +71,12 @@ class Auth extends React.Component {
             error: false,
         }
     }
+    componentWillMount() {
+        let token = sessionStorage.getItem("token")
+        if (token) {
+            this.props.history.push('/rikamsg')
+        }
+    }
     changeUser(event) {
         this.setState({
             username: event.target.value
@@ -129,6 +135,11 @@ class Auth extends React.Component {
     }
     onKeyUp = (e) => {
         e.keyCode === 13 && this.loginBtn()
+    }
+    componentWillUnmount(){
+        this.setState = ()=>{
+            return
+        }
     }
     render (){
         const { classes } = this.props

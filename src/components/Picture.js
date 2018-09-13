@@ -136,6 +136,11 @@ class Picture extends React.Component {
                 })
             )
     }
+    componentWillUnmount(){
+        this.setState = ()=>{
+            return
+        }
+    }
     render() {
         const values = this.state.values
         const error = this.state.error
