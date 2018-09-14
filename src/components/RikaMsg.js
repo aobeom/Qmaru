@@ -1,22 +1,22 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import InsertPhoto from '@material-ui/icons/InsertPhoto';
-import VideoLibrary from '@material-ui/icons/VideoLibrary';
-import SettingsVoice from '@material-ui/icons/SettingsVoice';
-import Chip from '@material-ui/core/Chip';
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Collapse from '@material-ui/core/Collapse'
+import Avatar from '@material-ui/core/Avatar'
+import IconButton from '@material-ui/core/IconButton'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import InsertPhoto from '@material-ui/icons/InsertPhoto'
+import VideoLibrary from '@material-ui/icons/VideoLibrary'
+import SettingsVoice from '@material-ui/icons/SettingsVoice'
+import Chip from '@material-ui/core/Chip'
 
 const styles = ({
     wrapper: {
@@ -25,7 +25,7 @@ const styles = ({
     cardSpacing: {
         margin: "15px",
     },
-    errorInfo:{
+    errorInfo: {
         margin: "10px",
         backgroundColor: "#9941ac",
     },
@@ -34,9 +34,9 @@ const styles = ({
         height: "100%",
     },
     avatarTitle: {
-      fontSize:'1rem',
-      color: "#71C671",
-      cursor: "default",
+        fontSize: '1rem',
+        color: "#71C671",
+        cursor: "default",
     },
     cardContent: {
         textAlign: "left",
@@ -69,110 +69,136 @@ class RikaMsg extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            btnGroup: [
-                {"name": "All", "type": 100},
-                {"name": "Text", "type": 0},
-                {"name": "Pic", "type": 1},
-                {"name": "Vid", "type": 2},
-                {"name": "Aud", "type": 3},
+            btnGroup: [{
+                    "name": "All",
+                    "type": 100,
+                },
+                {
+                    "name": "Text",
+                    "type": 0,
+                },
+                {
+                    "name": "Pic",
+                    "type": 1,
+                },
+                {
+                    "name": "Vid",
+                    "type": 2,
+                },
+                {
+                    "name": "Aud",
+                    "type": 3,
+                },
             ],
-            expanded: null ,
+            expanded: null,
             values: [],
             firstPage: 1,
             nextPage: 1,
             loadBtn: false,
             loadDis: false,
-            btndisp: {display: "none"},
+            btndisp: {
+                display: "none",
+            },
         }
     }
     componentWillMount() {
         let token = sessionStorage.getItem("token")
         if (!token) {
             // this.props.history.push('/auth')
-            window.location.href="/auth"
-        } 
+            window.location.href = "/auth"
+        }
     }
-    msgTypeChooice (type) {
+    msgTypeChooice(type) {
         this.setState({
             type: type,
             values: [],
             nextPage: 1,
             loadBtn: false,
-            btndisp: {display: "none"},
+            btndisp: {
+                display: "none"
+            },
         })
         let firstPage = this.state.firstPage
         let pageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}`
         let firstPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}&page=${firstPage}`
         let token = sessionStorage.getItem("token")
         if (token) {
-        fetch(pageUrl, {
-            method: 'GET',
-            dataType: 'json',
-            headers: {Authorization: 'Bearer ' + token},
-        }).then(
-            function(res){
-                if(res.status === 401) {
-                    sessionStorage.removeItem('token')
-                    window.history.go(0)
-                } else {
-                    return res.json()
-                }
-            })
-            .then(data => {
-                let pageData = data.data.pages
-                let status = data.status
-                if ( status === 0) {
-                    if (pageData === 0) {
-                        this.setState({
-                            status: status,
-                            loadBtn: true,
-                            loadDis: true,
-                            loadText: "NO DATA",
-                        })
+            fetch(pageUrl, {
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                    },
+                }).then(
+                    function (res) {
+                        if (res.status === 401) {
+                            sessionStorage.removeItem('token')
+                            window.history.go(0)
+                        } else {
+                            return res.json()
+                        }
+                    })
+                .then(data => {
+                    let pageData = data.data.pages
+                    let status = data.status
+                    if (status === 0) {
+                        if (pageData === 0) {
+                            this.setState({
+                                status: status,
+                                loadBtn: true,
+                                loadDis: true,
+                                loadText: "NO DATA",
+                            })
+                        } else {
+                            this.setState({
+                                status: status,
+                                pages: pageData,
+                            })
+                        }
                     } else {
                         this.setState({
                             status: status,
-                            pages: pageData,
+                            values: "No Data",
+                            btndisp: {
+                                display: "block",
+                            },
                         })
                     }
-                } else {
-                    this.setState({
-                        status: status,
-                        values: "No Data",
-                        btndisp: {display: "block"},
-                    })
-                }
-            })
-            .catch(
-                () => this.setState({
-                    status: 1,
-                    values: "Network Error",
-                    btndisp: {display: "block"},
                 })
-            )
+                .catch(
+                    () => this.setState({
+                        status: 1,
+                        values: "Network Error",
+                        btndisp: {
+                            display: "block",
+                        },
+                    })
+                )
         } else {
             // this.props.history.push('/auth')
-            window.location.href="/auth"
+            window.location.href = "/auth"
         }
         fetch(firstPageUrl, {
-            method: 'GET',
-            dataType: 'json',
-            headers: {Authorization: 'Bearer ' + token},
-        }).then(
-            function(res){
-                if(res.status === 401) {
-                    sessionStorage.removeItem('token')
-                    window.history.go(0)
-                } else {
-                    return res.json()
-                }
-            })
+                method: 'GET',
+                dataType: 'json',
+                headers: {
+                    Authorization: 'Bearer ' + token,
+                },
+            }).then(
+                function (res) {
+                    if (res.status === 401) {
+                        sessionStorage.removeItem('token')
+                        window.history.go(0)
+                    } else {
+                        return res.json()
+                    }
+                })
             .then(data => {
                 let status = data.status
-                if ( status === 0) {
+                if (status === 0) {
                     let msgData = data.data.entities
-                    if(msgData !== undefined){
-                        if(msgData.length < 10){
+                    if (msgData !== undefined) {
+                        if (msgData.length < 10) {
                             this.setState({
                                 values: msgData,
                                 loadBtn: true,
@@ -191,28 +217,30 @@ class RikaMsg extends React.Component {
                 }
             })
     }
-    loadMoreData () {
+    loadMoreData() {
         let values = this.state.values
         let currentType = this.state.type
         let totalPage = this.state.pages
         let nextPage = this.state.nextPage
         let token = sessionStorage.getItem("token")
-        if(token){
-            if (nextPage < totalPage){
+        if (token) {
+            if (nextPage < totalPage) {
                 nextPage = nextPage + 1
                 let nextPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${currentType}&page=${nextPage}`
                 fetch(nextPageUrl, {
-                    method: 'GET',
-                    dataType: 'json',
-                    headers: {Authorization: 'Bearer ' + token},
-                }).then(res => res.json())
+                        method: 'GET',
+                        dataType: 'json',
+                        headers: {
+                            Authorization: 'Bearer ' + token,
+                        },
+                    }).then(res => res.json())
                     .then(data => {
                         let msgData = data.data.entities
                         this.setState({
                             values: values.concat(msgData),
                             nextPage: nextPage,
                         })
-                })
+                    })
             } else {
                 this.setState({
                     loadText: "NO MORE",
@@ -220,14 +248,14 @@ class RikaMsg extends React.Component {
                 })
             }
         } else {
-            window.location.href="/auth"
+            window.location.href = "/auth"
         }
     }
     handleExpandClick(panel) {
         let panelMode
         if (this.state.expanded === null) {
             panelMode = panel
-        } else if  (this.state.expanded === panel) {
+        } else if (this.state.expanded === panel) {
             panelMode = null
         } else {
             panelMode = panel
@@ -236,8 +264,8 @@ class RikaMsg extends React.Component {
             expanded: panelMode,
         })
     }
-    componentWillUnmount(){
-        this.setState = ()=>{
+    componentWillUnmount() {
+        this.setState = () => {
             return
         }
     }
@@ -251,7 +279,7 @@ class RikaMsg extends React.Component {
         const btnGroup = this.state.btnGroup
         let msgTmp = []
         let loadTmp = []
-        if ( status === 0) {
+        if (status === 0) {
             if (loadBtn === true) {
                 loadTmp.push(
                     <div key="load" className={classes.loadBtn}>
@@ -270,11 +298,11 @@ class RikaMsg extends React.Component {
                 if ( mediaType === 1) {
                     mediaIcon.push(
                         <IconButton
-                                onClick={this.handleExpandClick.bind(this, panel)}
-                                aria-expanded={expanded === panel}
-                                aria-label="Show more"
-                                key={"imgPart" + e}
-                            >
+                            onClick={this.handleExpandClick.bind(this, panel)}
+                            aria-expanded={expanded === panel}
+                            aria-label="Show more"
+                            key={"imgPart" + e}
+                        >
                         <InsertPhoto />
                         </IconButton>
                     )
@@ -284,25 +312,25 @@ class RikaMsg extends React.Component {
                 } else if (mediaType === 2) {
                     mediaIcon.push(
                         <IconButton
-                                onClick={this.handleExpandClick.bind(this, panel)}
-                                aria-expanded={expanded === panel}
-                                aria-label="Show more"
-                                key={"videoPart" + e}
-                            >
+                            onClick={this.handleExpandClick.bind(this, panel)}
+                            aria-expanded={expanded === panel}
+                            aria-label="Show more"
+                            key={"videoPart" + e}
+                        >
                         <VideoLibrary />
                         </IconButton>
                     )
                     mediaUrl.push(
                         <video key={"video" + e} src={"/media" + message.media} className={classes.mediaAuto} controls="controls"></video>
                     )
-                } else if (mediaType === 3 ) {
+                } else if (mediaType === 3) {
                     mediaIcon.push(
                         <IconButton
-                                onClick={this.handleExpandClick.bind(this, panel)}
-                                aria-expanded={expanded === panel}
-                                aria-label="Show more"
-                                key={"audioPart" + e}
-                            >
+                            onClick={this.handleExpandClick.bind(this, panel)}
+                            aria-expanded={expanded === panel}
+                            aria-label="Show more"
+                            key={"audioPart" + e}
+                        >
                         <SettingsVoice />
                         </IconButton>
                     )
@@ -318,18 +346,18 @@ class RikaMsg extends React.Component {
                     <div key={"msg" + e} className={classes.cardSpacing}>
                         <Card>
                             <CardHeader
-                            avatar={
-                                <Avatar aria-label="Recipe" classes={{root: classes.avatarImg}}>
-                                    <img src={require('./../static/img/avatar.png')} alt="rikaAvatar"/>
-                                </Avatar>
-                            }
-                            title={message.date}
-                            classes={{title: classes.avatarTitle}}
+                                avatar={
+                                    <Avatar aria-label="Recipe" classes={{root: classes.avatarImg}}>
+                                        <img src={require('./../static/img/avatar.png')} alt="rikaAvatar"/>
+                                    </Avatar>
+                                }
+                                title={message.date}
+                                classes={{title: classes.avatarTitle}}
                             />
                         
                             <CardContent className={classes.cardContent}>
                                 <Typography component="p" className={classes.msgText}>
-                                {message.text}
+                                    {message.text}
                                 </Typography>
                             </CardContent>
                         
@@ -375,6 +403,6 @@ class RikaMsg extends React.Component {
 
 RikaMsg.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
   
-export default withStyles(styles)(RikaMsg);
+export default withStyles(styles)(RikaMsg)

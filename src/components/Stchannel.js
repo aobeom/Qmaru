@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button';
-import Info from '@material-ui/icons/Info';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button'
+import Info from '@material-ui/icons/Info'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Typography from '@material-ui/core/Typography'
+import Chip from '@material-ui/core/Chip'
 
 const styles = ({
     wrapper: {
@@ -24,11 +24,11 @@ const styles = ({
         cursor: "default",
         padding: "10px",
     },
-    stText:{
+    stText: {
         color: "#552b55",
         cursor: "default",
     },
-    errorInfo:{
+    errorInfo: {
         margin: "10px",
         backgroundColor: "#9941ac",
     },
@@ -58,15 +58,17 @@ class Stchannel extends React.Component {
         this.state = {
             values: [],
             time: "2000-00-00 00:00:00",
-            btndisp: {display: "none"},
+            btndisp: {
+                display: "none",
+            },
         }
     }
-    componentWillMount () {
+    componentWillMount() {
         let url = `${global.constants.api}/api/v1/stchannel`
         fetch(url, {
-            method: 'GET',
-            dataType: 'json'
-        }).then(res => res.json())
+                method: 'GET',
+                dataType: 'json',
+            }).then(res => res.json())
             .then(data => {
                 let sdata = data.data
                 let status = data.status
@@ -74,14 +76,17 @@ class Stchannel extends React.Component {
                     this.setState({
                         status: status,
                         values: sdata.entities,
-                        time: sdata.time
+                        time: sdata.time,
                     })
                 } else {
                     this.setState({
                         status: status,
                         values: "No data",
                         time: "2000-00-00 00:00:00",
-                        btndisp: {display: "block", padding: "20px"},
+                        btndisp: {
+                            display: "block",
+                            padding: "20px",
+                        },
                     })
                 }
             })
@@ -90,12 +95,15 @@ class Stchannel extends React.Component {
                     status: 1,
                     values: "Network Error",
                     time: "2000-00-00 00:00:00",
-                    btndisp: {display: "block", padding: "20px"},
+                    btndisp: {
+                        display: "block",
+                        padding: "20px",
+                    },
                 })
             )
     }
-    componentWillUnmount(){
-        this.setState = ()=>{
+    componentWillUnmount() {
+        this.setState = () => {
             return
         }
     }
@@ -117,7 +125,7 @@ class Stchannel extends React.Component {
             </div>
         )
         if (status === 0) {
-            for(let s in st_info){
+            for (let s in st_info) {
                 let sdata = st_info[s]
                 stTmp.push(
                     <div className={classes.stCard} key={"s" + s}>
@@ -158,12 +166,12 @@ class Stchannel extends React.Component {
                 {stTime}
                 {stTmp}
             </div> 
-        );
+        )
     }
 }
 
 Stchannel.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
   
-export default withStyles(styles)(Stchannel);
+export default withStyles(styles)(Stchannel)

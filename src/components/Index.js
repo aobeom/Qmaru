@@ -1,18 +1,18 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
 
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
 
 const styles = ({
-    wrapper:{
+    wrapper: {
         padding: "30px",
     },
-    indexCard:{
+    indexCard: {
         margin: "10px",
         cursor: "default",
     },
@@ -25,7 +25,7 @@ const styles = ({
         textAlign: "left",
         padding: "8px",
     },
-    indexBtn:{
+    indexBtn: {
         color: "#552b55",
     }
 })
@@ -35,8 +35,7 @@ class IndexPage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            intro:[
-                {
+            intro: [{
                     name: "Picture",
                     info: "You can get some picture urls from <b style='color:#800080'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
                     path: "/picture",
@@ -56,11 +55,11 @@ class IndexPage extends React.Component {
                     info: "You can get <a href='https://st-channel.jp/' target='_blank'>STchannel</a>'s video.",
                     path: "/stchannel",
                 },
-            ]
+            ],
         }
     }
-    componentWillUnmount(){
-        this.setState = ()=>{
+    componentWillUnmount() {
+        this.setState = () => {
             return
         }
     }
@@ -70,19 +69,19 @@ class IndexPage extends React.Component {
         const cardTmp = []
         cardTmp.push(
             <div key="index" className={classes.wrapper}>
-            {intro.map((i, index) => (
-                <Card key={"c" + index} className={classes.indexCard}>
-                    <CardContent>
-                        <Typography variant="headline" component="h2" className={classes.indexSpacing}>
-                        {i.name}
-                        </Typography>
-                        <Typography className={classes.indexCardMainText} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
-                        <Typography component="p" className={classes.indexSpacing}>
-                            <a href={i.path}><Button variant="outlined" size="small" className={classes.indexBtn}>Go to {i.name}</Button></a>
-                        </Typography>
-                    </CardContent>
-                </Card>
-            ))}
+                {intro.map((i, index) => (
+                    <Card key={"c" + index} className={classes.indexCard}>
+                        <CardContent>
+                            <Typography variant="headline" component="h2" className={classes.indexSpacing}>
+                                {i.name}
+                            </Typography>
+                            <Typography className={classes.indexCardMainText} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
+                            <Typography component="p" className={classes.indexSpacing}>
+                                <a href={i.path}><Button variant="outlined" size="small" className={classes.indexBtn}>Go to {i.name}</Button></a>
+                            </Typography>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
         )
         return (
@@ -95,6 +94,6 @@ class IndexPage extends React.Component {
 
 IndexPage.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
   
-export default withStyles(styles)(IndexPage);
+export default withStyles(styles)(IndexPage)

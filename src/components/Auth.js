@@ -1,27 +1,27 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button';
-import FormControl from '@material-ui/core/FormControl';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import TextField from '@material-ui/core/TextField';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import Lock from '@material-ui/icons/Lock';
-import Chip from '@material-ui/core/Chip';
-import Fade from '@material-ui/core/Fade';
+import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import TextField from '@material-ui/core/TextField'
+import AccountCircle from '@material-ui/icons/AccountCircle'
+import Lock from '@material-ui/icons/Lock'
+import Chip from '@material-ui/core/Chip'
+import Fade from '@material-ui/core/Fade'
 
 const styles = ({
-    wrapper: {
+wrapper: {
         paddingTop: "60px",
     },
-    errorInfo:{
+    errorInfo: {
         margin: "10px",
         backgroundColor: "#9941ac",
     },
-    authInput:{
+    authInput: {
         margin: "10px auto",
         maxWidth: "250px",
         display: "flex",
@@ -67,7 +67,9 @@ class Auth extends React.Component {
             values: [],
             userCheck: true,
             passCheck: true,
-            btndisp: {visibility: "hidden"},
+            btndisp: {
+                visibility: "hidden",
+            },
             error: false,
         }
     }
@@ -79,12 +81,12 @@ class Auth extends React.Component {
     }
     changeUser(event) {
         this.setState({
-            username: event.target.value
+            username: event.target.value,
         })
     }
-    changePass(event){
+    changePass(event) {
         this.setState({
-            password: event.target.value
+            password: event.target.value,
         })
     }
     loginBtn() {
@@ -93,7 +95,7 @@ class Auth extends React.Component {
         })
         let username = this.state.username
         let password = this.state.password
-        if(username === undefined || username === ""){
+        if (username === undefined || username === "") {
             this.setState({
                 userCheck: false,
             })
@@ -102,7 +104,7 @@ class Auth extends React.Component {
                 userCheck: true,
             })
         }
-        if(password === undefined || password === ""){
+        if (password === undefined || password === "") {
             this.setState({
                 passCheck: false,
             })
@@ -112,22 +114,29 @@ class Auth extends React.Component {
             })
         }
         let url = `${global.constants.api}/api/v1/auth/token`
-        let authData = {"username": username, "password": password}
+        let authData = {
+            "username": username,
+            "password": password,
+        }
         fetch(url, {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body:JSON.stringify(authData),
-            dataType: 'json',
-        }).then(res => res.json())
+                method: 'POST',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(authData),
+                dataType: 'json',
+            }).then(res => res.json())
             .then(data => {
                 let status = data.status
-                if ( status === 0) {
+                if (status === 0) {
                     let token = data.data.token
                     sessionStorage.setItem("token", token)
                     this.props.history.push('/rikamsg')
                 } else {
                     this.setState({
-                        btndisp: {visibility: "visible"},
+                        btndisp: {
+                            visibility: "visible",
+                        },
                         error: true,
                     })
                 }
@@ -136,8 +145,8 @@ class Auth extends React.Component {
     onKeyUp = (e) => {
         e.keyCode === 13 && this.loginBtn()
     }
-    componentWillUnmount(){
-        this.setState = ()=>{
+    componentWillUnmount() {
+        this.setState = () => {
             return
         }
     }
@@ -147,53 +156,53 @@ class Auth extends React.Component {
         const passCheck = this.state.passCheck
         return (
             <div className={classes.wrapper}>
-            <FormControl >
-                <Fade in={this.state.error}>
-                    <Chip 
-                        label="username or password is Invalid" 
-                        className={classes.errorInfo}
-                        color="primary"
-                        style={this.state.btndisp}
-                    />
-                </Fade>
-                
-                <TextField
-                    required={userCheck}
-                    error={!userCheck}
-                    placeholder="Username"
-                    classes={{root: classes.authInput}}
-                    onChange={event=>this.changeUser(event)}
-                    InputProps={
-                        {
-                            startAdornment: (
-                                <InputAdornment position="start" className={classes.customIcon}><AccountCircle /></InputAdornment>
-                            ),
-                            className: this.props.classes.customUnderline
-                        }
-                    }
-                />
+                <FormControl >
+                    <Fade in={this.state.error}>
+                        <Chip
+                            label="username or password is Invalid"
+                            className={classes.errorInfo}
+                            color="primary"
+                            style={this.state.btndisp}
+                        />
+                    </Fade>
 
-                <TextField
-                    required={passCheck}
-                    error={!passCheck}
-                    placeholder="Password"
-                    className={classes.authInput}
-                    type="password"
-                    onChange={event=>this.changePass(event)}
-                    onKeyUp={this.onKeyUp}
-                    InputProps={
-                        {
-                            startAdornment: (
-                                <InputAdornment position="start" className={classes.customIcon}><Lock /></InputAdornment>
-                            ),
-                            className: this.props.classes.customUnderline
+                    <TextField
+                        required={userCheck}
+                        error={!userCheck}
+                        placeholder="Username"
+                        classes={{ root: classes.authInput }}
+                        onChange={event => this.changeUser(event)}
+                        InputProps={
+                            {
+                                startAdornment: (
+                                    <InputAdornment position="start" className={classes.customIcon}><AccountCircle /></InputAdornment>
+                                ),
+                                className: this.props.classes.customUnderline
+                            }
                         }
-                    }
-                />
-                <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.loginBtn.bind(this)}>
+                    />
+
+                    <TextField
+                        required={passCheck}
+                        error={!passCheck}
+                        placeholder="Password"
+                        className={classes.authInput}
+                        type="password"
+                        onChange={event => this.changePass(event)}
+                        onKeyUp={this.onKeyUp}
+                        InputProps={
+                            {
+                                startAdornment: (
+                                    <InputAdornment position="start" className={classes.customIcon}><Lock /></InputAdornment>
+                                ),
+                                className: this.props.classes.customUnderline
+                            }
+                        }
+                    />
+                    <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.loginBtn.bind(this)}>
                         Submit
-                </Button>
-            </FormControl>
+                    </Button>
+                </FormControl>
             </div>
         )
     }
@@ -201,6 +210,6 @@ class Auth extends React.Component {
 
 Auth.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
   
-export default withStyles(styles)(Auth);
+export default withStyles(styles)(Auth)

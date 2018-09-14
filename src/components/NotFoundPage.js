@@ -1,10 +1,10 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import classNames from 'classnames';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
-import Button from '@material-ui/core/Button';
+import Button from '@material-ui/core/Button'
 
 const styles = ({
     wrapper: {
@@ -29,7 +29,7 @@ const styles = ({
 })
 
 class NotFoundPage extends React.Component {
-    render (){
+    render() {
         const { classes } = this.props
         return (
             <div className={classes.wrapper}>
@@ -50,6 +50,6 @@ class NotFoundPage extends React.Component {
 
 NotFoundPage.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
   
-export default withStyles(styles)(NotFoundPage);
+export default withStyles(styles)(NotFoundPage)

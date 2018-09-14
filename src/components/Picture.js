@@ -1,15 +1,15 @@
-import React from 'react';
+import React from 'react'
 
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types'
+import { withStyles } from '@material-ui/core/styles'
 
-import Input from '@material-ui/core/Input';
-import IconButton from '@material-ui/core/IconButton';
-import ImageSearch from '@material-ui/icons/ImageSearch';
-import Chip from '@material-ui/core/Chip';
-import Button from '@material-ui/core/Button';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import Fade from '@material-ui/core/Fade';
+import Input from '@material-ui/core/Input'
+import IconButton from '@material-ui/core/IconButton'
+import ImageSearch from '@material-ui/icons/ImageSearch'
+import Chip from '@material-ui/core/Chip'
+import Button from '@material-ui/core/Button'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
+import Fade from '@material-ui/core/Fade'
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -17,23 +17,23 @@ import ORICON from '../static/img/oricon.png'
 import TPL from '../static/img/tpl.png'
 
 const styles = ({
-    wrapper:{
+    wrapper: {
         justifyContent: "center",
         textAlign: "center",
         paddingTop: "40px",
     },
-    topLogo:{
+    topLogo: {
         padding: "10px",
     },
-    errorInfo:{
+    errorInfo: {
         margin: "10px",
         backgroundColor: "#9941ac",
     },
-    resultImg:{
+    resultImg: {
         width: "90%",
         padding: "5px"
     },
-    resultVideo:{
+    resultVideo: {
         height: "100%",
         width: "90%",
         display: "block",
@@ -70,36 +70,38 @@ class Picture extends React.Component {
             error: "",
             btnSta: "outlined",
             btnInfo: "Copy to potplayer",
-            btndisp: {display: "none"},
+            btndisp: {
+                display: "none",
+            },
         }
     }
-    changeText(event){
+    changeText(event) {
         this.setState({
-            url: event.target.value
+            url: event.target.value,
         })
     }
     onKeyUp = (e) => {
         e.keyCode === 13 && this.picClick()
     }
-    picClick () {
+    picClick() {
         let url = this.state.url
         let uri = ""
         if (url === "undefined") {
             this.setState({
                 error: true,
-                info: "URL ERROR / NO RESULT FOUND"
+                info: "URL ERROR / NO RESULT FOUND",
             })
-            return false;
+            return false
         }
         var regex = /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/
         if (regex.test(url) !== true) {
             this.setState({
                 error: true,
-                info: "URL ERROR / NO RESULT FOUND"
+                info: "URL ERROR / NO RESULT FOUND",
             })
-            return false;
-        } else  {
-            if (url.indexOf("showroom") !== -1 || url.indexOf("line") !== -1){
+            return false
+        } else {
+            if (url.indexOf("showroom") !== -1 || url.indexOf("line") !== -1) {
                 uri = "/hls"
             } else {
                 uri = "/news"
@@ -107,9 +109,9 @@ class Picture extends React.Component {
         }
         url = `${global.constants.api}/api/v1/media${uri}?url=${encodeURIComponent(url)}`
         fetch(url, {
-            method: 'GET',
-            dataType: 'json'
-        }).then(res => res.json())
+                method: 'GET',
+                dataType: 'json',
+            }).then(res => res.json())
             .then(data => {
                 let status = data.status
                 if (status === 0) {
@@ -123,7 +125,9 @@ class Picture extends React.Component {
                         error: false,
                         status: status,
                         info: "No Data",
-                        btndisp: {display: "block"},
+                        btndisp: {
+                            display: "block",
+                        },
                     })
                 }
             })
@@ -132,12 +136,14 @@ class Picture extends React.Component {
                     error: false,
                     status: 1,
                     info: "Server Error",
-                    btndisp: {display: "block"},
+                    btndisp: {
+                        display: "block",
+                    },
                 })
             )
     }
-    componentWillUnmount(){
-        this.setState = ()=>{
+    componentWillUnmount() {
+        this.setState = () => {
             return
         }
     }
@@ -148,7 +154,7 @@ class Picture extends React.Component {
         const status = this.state.status
         const { classes } = this.props
         let mediaTmp = []
-        if ( error === true){
+        if (error === true) {
             mediaTmp.push(
                 <div key="error">
                     <Fade in={error}>
@@ -158,12 +164,11 @@ class Picture extends React.Component {
                             color="secondary"
                         />
                     </Fade>
-                    
                 </div>
             )
         } else {
-            if ( status === 0) {
-                if(values.type === "news") {
+            if (status === 0) {
+                if (values.type === "news") {
                     let urls = values.entities
                     for (let u in urls) {
                         if (urls[u].indexOf(".mp4") > 0) {
@@ -235,12 +240,12 @@ class Picture extends React.Component {
                 </IconButton>
                 {mediaTmp}
             </div>
-        );
+        )
     }
 }
 
 Picture.propTypes = {
     classes: PropTypes.object.isRequired,
-};
+}
   
-export default withStyles(styles)(Picture);
+export default withStyles(styles)(Picture)
