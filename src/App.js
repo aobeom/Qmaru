@@ -20,6 +20,7 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 
+const theme = global.constants.theme
 
 const styles = ({
     wrapper: {
@@ -29,7 +30,7 @@ const styles = ({
         minHeight: "100vh",
     },
     header: {
-        backgroundColor: "#800080",
+        backgroundColor: theme.tipColor,
     },
     main: {
         flex: "1",
@@ -49,7 +50,7 @@ const styles = ({
     },
     footerSpan: {
         height: "50px",
-        color: "#800080",
+        color: theme.primaryColor,
         cursor: "default",
     },
 })
@@ -61,7 +62,7 @@ class App extends Component {
             titles: ["PICTURE", "DRAMA", "PROGRAM", "STCHANNEL", "RIKAMSG"],
             paths: ["picture", "drama", "program", "stchannel", "rikamsg"],
             site: {
-                color: "#FCFCFC",
+                color: theme.textColor,
                 fontWeight: "1000",
                 fontSize: "1.5rem",
                 margin: "0",
@@ -107,31 +108,31 @@ class App extends Component {
                     btnUp: {
                         padding: "10px",
                         fontWeight: "600",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         minWidth: "32px",
                     },
                     btnDown: {
                         padding: "10px",
                         fontWeight: "600",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         minWidth: "32px",
                     },
                     linkUp: {
                         position: "relative",
                         left: "20px",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     linkDown: {
                         position: "relative",
                         left: "20px",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     site: {
-                        color: "#FCFCFC",
+                        color: theme.otherColor,
                         fontWeight: "1000",
                         fontSize: "1.35rem",
                         margin: "0"
@@ -149,31 +150,31 @@ class App extends Component {
                     btnUp: {
                         padding: "8px",
                         fontWeight: "600",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         minWidth: "32px",
                     },
                     btnDown: {
                         padding: "8px",
                         fontWeight: "600",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         minWidth: "32px",
                     },
                     linkUp: {
                         position: "relative",
                         left: "8px",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     linkDown: {
                         position: "relative",
                         left: "8px",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     site: {
-                        color: "#FCFCFC",
+                        color: theme.otherColor,
                         fontWeight: "1000",
                         fontSize: "1.2rem",
                         margin: "0"
@@ -190,32 +191,32 @@ class App extends Component {
                 this.setState({
                     btnUp: {
                         fontWeight: "600",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         minWidth: "32px",
                         padding: "8px",
                     },
                     btnDown: {
                         fontWeight: "600",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         minWidth: "32px",
                         padding: "8px",
                     },
                     linkUp: {
                         position: "relative",
                         left: "4px",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     linkDown: {
                         position: "relative",
                         left: "4px",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     site: {
-                        color: "#FCFCFC",
+                        color: theme.otherColor,
                         fontWeight: "1000",
                         fontSize: "1.2rem",
                         margin: "0"
@@ -234,31 +235,31 @@ class App extends Component {
                     btnUp: {
                         padding: "10px",
                         fontWeight: "600",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         minWidth: "32px",
                     },
                     btnDown: {
                         padding: "10px",
                         fontWeight: "600",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         minWidth: "32px",
                     },
                     linkUp: {
                         position: "relative",
                         left: "50px",
-                        color: "#CD96CD",
+                        color: theme.thirdlyColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     linkDown: {
                         position: "relative",
                         left: "50px",
-                        color: "#FFFAFA",
+                        color: theme.otherColor,
                         textDecoration: "none",
                         display: "block",
                     },
                     site: {
-                        color: "#FCFCFC",
+                        color: theme.otherColor,
                         fontWeight: "1000",
                         fontSize: "1.5rem",
                         textDecoration: "none",

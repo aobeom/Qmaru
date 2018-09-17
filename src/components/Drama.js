@@ -13,28 +13,32 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Chip from '@material-ui/core/Chip'
 
-import '../config'
+const theme = global.constants.theme
 
-const styles = {
+const styles = ({
     wrapper: {
         paddingTop: "40px",
-        justifyContent: "center",
-        textAlign: "center",
         width: "100%",
     },
     errorInfo: {
         margin: "10px",
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     dateInfo: {
         flexBasis: '25%',
         flexShrink: 0,
-        color: "#9941ac",
+        color: theme.tipColor,
     },
     urlInfo: {
         flexBasis: '60%',
         flexShrink: 0,
         fontWeight: "500",
+    },
+    aTag: {
+        color: theme.thirdlyColor,
+        '&:hover': {
+            color: theme.tipColor,
+        }
     },
     urlFixsub: {
         flexBasis: '100%',
@@ -45,7 +49,7 @@ const styles = {
         flexShrink: 0,
     },
     topTime: {
-        color: "#9941ac",
+        color: theme.tipColor,
         cursor: "default",
     },
     tvbtText: {
@@ -55,27 +59,27 @@ const styles = {
         padding: "5px",
     },
     fixBtn: {
-        color: "#9941ac",
+        color: theme.tipColor,
     },
     btnGroup: {
         paddingBottom: "10px",
     },
     btnTime: {
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     btnLabel: {
-        color: "#fff",
+        color: theme.otherColor,
     },
     customBtn: {
-        color: "#fff",
-        backgroundColor: "#cc61cc",
+        color: theme.otherColor,
+        backgroundColor: theme.secondaryColor,
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {
-            backgroundColor: "#800080",
+            backgroundColor: theme.primaryColor,
         },
     },
-}
+})
 
 class Drama extends React.Component {
     constructor(props) {
@@ -228,7 +232,7 @@ class Drama extends React.Component {
                                     {tvbt_info.date}
                                 </Typography>
                                 <Typography className={classes.urlInfo} color="textSecondary">
-                                    <a href={tvbt_info.url} target="_blank">{tvbt_info.title}</a>
+                                    <a className={classes.aTag} href={tvbt_info.url} target="_blank">{tvbt_info.title}</a>
                                 </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
@@ -261,7 +265,7 @@ class Drama extends React.Component {
                                         {subpig_info.date}
                                     </Typography>
                                     <Typography className={classes.urlInfo} color="textSecondary">
-                                        <a href={subpig_info.url} target="_blank">{subpig_info.title}</a>
+                                        <a className={classes.aTag} href={subpig_info.url} target="_blank">{subpig_info.title}</a>
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
@@ -289,7 +293,7 @@ class Drama extends React.Component {
                             <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography className={classes.urlFixsub} color="textSecondary">
-                                        <a href={fixsub_info.url} target="_blank">{fixsub_info.title}</a>
+                                        <a className={classes.aTag} href={fixsub_info.url} target="_blank">{fixsub_info.title}</a>
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>

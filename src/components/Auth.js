@@ -13,13 +13,15 @@ import Lock from '@material-ui/icons/Lock'
 import Chip from '@material-ui/core/Chip'
 import Fade from '@material-ui/core/Fade'
 
+const theme = global.constants.theme
+
 const styles = ({
 wrapper: {
         paddingTop: "60px",
     },
     errorInfo: {
         margin: "10px",
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     authInput: {
         margin: "10px auto",
@@ -27,34 +29,34 @@ wrapper: {
         display: "flex",
     },
     authLabel: {
-        color: "#c36bd6",
+        color: theme.secondaryColor,
         '&:focus': {
             color: "red",
         },
     },
     customUnderline: {
-        color: "#c36bd6",
+        color: theme.secondaryColor,
         '&:hover:not(disabled):before': {
-            borderBottom: "2px solid #c36bd6 !important",
+            borderBottom: `1px solid ${theme.secondaryColor} !important`,
         },
         '&:before': {
-            borderBottomColor: "#CD96CD",
+            borderBottomColor: theme.thirdlyColor,
         },
         '&:after': {
-            borderBottomColor: "#800080",
+            borderBottomColor: theme.primaryColor,
         },
     },
     customIcon: {
-        color: "#c36bd6",
+        color: theme.secondaryColor,
     },
     customBtn: {
         color: "#fff",
         maxWidth: "100px",
-        backgroundColor: "#CD96CD",
+        backgroundColor: theme.secondaryColor,
         fontSize: "0.85rem",
         margin: "10px auto",
         '&:hover': {
-            backgroundColor: "#800080",
+            backgroundColor: theme.primaryColor,
         },
     },
 })

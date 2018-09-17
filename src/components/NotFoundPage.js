@@ -6,12 +6,14 @@ import classNames from 'classnames'
 
 import Button from '@material-ui/core/Button'
 
+const theme = global.constants.theme
+
 const styles = ({
     wrapper: {
         paddingTop: "60px",
     },
     errorCode: {
-        color: "#800080",
+        color: theme.primaryColor,
         fontSize: "4rem",
     },
     errorText: {
@@ -19,11 +21,11 @@ const styles = ({
     },
     customBtn: {
         color: "#fff",
-        backgroundColor: "#CD96CD",
+        backgroundColor: theme.secondaryColor,
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {
-            backgroundColor: "#800080",
+            backgroundColor: theme.primaryColor,
         },
     },
 })

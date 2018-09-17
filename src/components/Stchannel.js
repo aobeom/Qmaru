@@ -11,6 +11,8 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
 
+const theme = global.constants.theme
+
 const styles = ({
     wrapper: {
         paddingTop: "40px",
@@ -20,34 +22,34 @@ const styles = ({
     },
     stCardTitle: {
         textAlign: "left",
-        color: "#552b55",
+        color: theme.textColor,
         cursor: "default",
         padding: "10px",
     },
     stText: {
-        color: "#552b55",
+        color: theme.textColor,
         cursor: "default",
     },
     errorInfo: {
         margin: "10px",
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     resultImg: {
         width: "100%",
     },
     btnTime: {
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     btnLabel: {
         color: "#fff",
     },
     customBtn: {
         color: "#fff",
-        backgroundColor: "#cc61cc",
+        backgroundColor: theme.secondaryColor,
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {
-            backgroundColor: "#800080",
+            backgroundColor: theme.primaryColor,
         },
     },
 })

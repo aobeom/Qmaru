@@ -18,6 +18,8 @@ import VideoLibrary from '@material-ui/icons/VideoLibrary'
 import SettingsVoice from '@material-ui/icons/SettingsVoice'
 import Chip from '@material-ui/core/Chip'
 
+const theme = global.constants.msgTheme
+
 const styles = ({
     wrapper: {
         paddingTop: "40px",
@@ -27,7 +29,7 @@ const styles = ({
     },
     errorInfo: {
         margin: "10px",
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     avatarImg: {
         width: "100%",
@@ -35,18 +37,18 @@ const styles = ({
     },
     avatarTitle: {
         fontSize: '1rem',
-        color: "#71C671",
+        color: theme.tipColor,
         cursor: "default",
     },
     cardContent: {
         textAlign: "left",
     },
     msgBtn: {
-        color: "#698B69",
+        color: theme.tipColor,
         minWidth: "16px",
     },
     msgText: {
-        color: "#698B69",
+        color: theme.textColor,
     },
     mediaAuto: {
         width: "100%",
@@ -56,12 +58,18 @@ const styles = ({
     },
     customBtn: {
         color: "#fff",
-        backgroundColor: "#71C671",
+        backgroundColor: theme.secondaryColor,
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {
-            backgroundColor: "#698B69",
+            backgroundColor: theme.primaryColor,
         },
+    },
+    customIcon: {
+        '&:hover': {
+            backgroundColor: theme.otherColor,
+        },
+        color: theme.secondaryColor,
     },
 })
 
@@ -302,6 +310,7 @@ class RikaMsg extends React.Component {
                             aria-expanded={expanded === panel}
                             aria-label="Show more"
                             key={"imgPart" + e}
+                            classes={{root: classes.customIcon}}
                         >
                         <InsertPhoto />
                         </IconButton>
@@ -316,6 +325,7 @@ class RikaMsg extends React.Component {
                             aria-expanded={expanded === panel}
                             aria-label="Show more"
                             key={"videoPart" + e}
+                            classes={{root: classes.customIcon}}
                         >
                         <VideoLibrary />
                         </IconButton>
@@ -330,6 +340,7 @@ class RikaMsg extends React.Component {
                             aria-expanded={expanded === panel}
                             aria-label="Show more"
                             key={"audioPart" + e}
+                            classes={{root: classes.customIcon}}
                         >
                         <SettingsVoice />
                         </IconButton>

@@ -19,6 +19,8 @@ import Typography from '@material-ui/core/Typography'
 
 import yahooLogo from '../static/img/yahoo.png'
 
+const theme = global.constants.theme
+
 const styles = ({
     topLogo: {
         paddingTop: "40px",
@@ -27,33 +29,33 @@ const styles = ({
         padding: "5px",
     },
     progLabel: {
-        color: "#cc61cc",
+        color: theme.tipColor,
         cursor: "default",
     },
     progItem: {
-        color: "#552b55",
+        color: theme.tipColor,
         cursor: "default",
     },
     errorInfo: {
         margin: "10px",
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     customInput: {
         width: "140px",
         '&:hover': {
-            borderBottomColor: "#f9e8fd",
+            borderBottomColor: theme.secondaryColor,
         },
     },
     customUnderline: {
-        color: "#9941ac",
+        color: theme.secondaryColor,
         '&:hover:not(disabled):before': {
-            borderBottom: "2px solid #c36bd6 !important",
+            borderBottom: `1px solid ${theme.secondaryColor} !important`,
         },
         '&:before': {
-            borderBottomColor: "#CD96CD",
+            borderBottomColor: theme.thirdlyColor,
         },
         '&:after': {
-            borderBottomColor: "#800080",
+            borderBottomColor: theme.tipColor,
         },
     },
     customSel: {
@@ -61,17 +63,17 @@ const styles = ({
     },
     customIcon: {
         '&:hover': {
-            backgroundColor: "#f9e8fd",
+            backgroundColor: theme.otherColor,
         },
-        color: "#c36bd6",
+        color: theme.secondaryColor,
     },
     customBtn: {
-        color: "#fff",
-        backgroundColor: "#cc61cc",
+        color: theme.otherColor,
+        backgroundColor: theme.secondaryColor,
         fontSize: "0.85rem",
         margin: "5px",
         '&:hover': {
-            backgroundColor: "#800080",
+            backgroundColor: theme.primaryColor,
         },
     },
 })
@@ -92,12 +94,6 @@ class Program extends React.Component {
                     name: "地区",
                     division: "title",
                     status: true
-                },
-                {
-                    code: '23',
-                    name: "東京",
-                    division: "regular",
-                    status: false
                 },
                 {
                     code: '23',

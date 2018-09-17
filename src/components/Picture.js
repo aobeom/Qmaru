@@ -16,10 +16,10 @@ import MDPR from '../static/img/mdpr.png'
 import ORICON from '../static/img/oricon.png'
 import TPL from '../static/img/tpl.png'
 
+const theme = global.constants.theme
+
 const styles = ({
     wrapper: {
-        justifyContent: "center",
-        textAlign: "center",
         paddingTop: "40px",
     },
     topLogo: {
@@ -27,7 +27,7 @@ const styles = ({
     },
     errorInfo: {
         margin: "10px",
-        backgroundColor: "#9941ac",
+        backgroundColor: theme.tipColor,
     },
     resultImg: {
         width: "90%",
@@ -39,25 +39,25 @@ const styles = ({
         display: "block",
     },
     customInput: {
-        color: "#9941ac",
+        color: theme.secondaryColor,
         minWidth: "220px",
     },
     customUnderline: {
         '&:hover:not(disabled):before': {
-            borderBottom: "2px solid #c36bd6 !important",
+            borderBottom: `1px solid ${theme.secondaryColor} !important`,
         },
         '&:before': {
-            borderBottomColor: "#CD96CD",
+            borderBottomColor: theme.thirdlyColor,
         },
         '&:after': {
-            borderBottomColor: "#800080",
+            borderBottomColor: theme.tipColor,
         },
     },
     customIcon: {
         '&:hover': {
-            backgroundColor: "#f9e8fd",
+            backgroundColor: theme.otherColor,
         },
-        color: "#c36bd6",
+        color: theme.secondaryColor,
     }
 })
 

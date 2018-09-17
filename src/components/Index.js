@@ -8,6 +8,10 @@ import CardContent from '@material-ui/core/CardContent'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
+import '../config'
+
+const theme = global.constants.theme
+
 const styles = ({
     wrapper: {
         padding: "30px",
@@ -17,16 +21,16 @@ const styles = ({
         cursor: "default",
     },
     indexSpacing: {
-        color: "#552b55",
+        color: theme.textColor,
         padding: "6px",
     },
     indexCardMainText: {
-        color: "#552b55",
+        color: theme.textColor,
         textAlign: "left",
         padding: "8px",
     },
     indexBtn: {
-        color: "#552b55",
+        color: theme.textColor,
     }
 })
 
@@ -37,7 +41,7 @@ class IndexPage extends React.Component {
         this.state = {
             intro: [{
                     name: "Picture",
-                    info: "You can get some picture urls from <b style='color:#800080'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
+                    info: "You can get some picture urls from <b style='color:" + theme.textColor + "'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
                     path: "/picture",
                 },
                 {
@@ -95,5 +99,5 @@ class IndexPage extends React.Component {
 IndexPage.propTypes = {
     classes: PropTypes.object.isRequired,
 }
-  
+
 export default withStyles(styles)(IndexPage)
