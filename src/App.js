@@ -84,10 +84,6 @@ class App extends Component {
         this.updateSize()
         window.addEventListener('resize', () => this.updateSize())
         this.updateBar()
-        window.addEventListener('popstate', () => this.updateBar())
-        window.addEventListener('popstate', function () {
-            window.history.pushState({}, '')
-        })
     }
     updateBar() {
         let uri = window.location.pathname.split('/')[1]
@@ -300,7 +296,7 @@ class App extends Component {
             let btnDown = this.state.btnDown
             let linkStyle = t.id === this.state.currentindex ? linkDown : linkUp
             let btnStyle = t.id === this.state.currentindex ? btnDown : btnUp
-            return <Link to={paths[index]} style={linkStyle} key={"t" + index}>
+            return <Link to={paths[index]} style={linkStyle} key={"t" + index} replace>
                 <Button style={btnStyle} color="primary" onClick={this.tabChoiced.bind(this, t.id)}>
                     &nbsp;{t.name}
                 </Button>
@@ -331,10 +327,10 @@ class App extends Component {
                             appear
                             key={routeKey}
                         >
-                            <Switch > 
+                            <Switch location={window.location}> 
                                 {routers.map((route, index) => (
                                     <Route key={"r" + index} path={route.path} exact component={route.component} />
-                                ))}
+                                ))}              
                             </Switch>
                         </CSSTransition>
                     </TransitionGroup>

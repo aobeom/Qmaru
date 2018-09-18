@@ -112,8 +112,7 @@ class RikaMsg extends React.Component {
     componentWillMount() {
         let token = sessionStorage.getItem("token")
         if (!token) {
-            // this.props.history.push('/auth')
-            window.location.href = "/auth"
+            this.props.history.replace('/auth')
         }
     }
     msgTypeChooice(type) {
@@ -176,15 +175,14 @@ class RikaMsg extends React.Component {
                 .catch(
                     () => this.setState({
                         status: 1,
-                        values: "Network Error",
+                        values: "Server Error",
                         btndisp: {
                             display: "block",
                         },
                     })
                 )
         } else {
-            // this.props.history.push('/auth')
-            window.location.href = "/auth"
+            this.props.history.replace('/auth')
         }
         fetch(firstPageUrl, {
                 method: 'GET',
@@ -256,7 +254,7 @@ class RikaMsg extends React.Component {
                 })
             }
         } else {
-            window.location.href = "/auth"
+            this.props.history.replace('/auth')
         }
     }
     handleExpandClick(panel) {

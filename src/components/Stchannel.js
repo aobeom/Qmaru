@@ -95,7 +95,7 @@ class Stchannel extends React.Component {
             .catch(
                 () => this.setState({
                     status: 1,
-                    values: "Network Error",
+                    values: "Server Error",
                     time: "2000-00-00 00:00:00",
                     btndisp: {
                         display: "block",

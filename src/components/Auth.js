@@ -16,7 +16,7 @@ import Fade from '@material-ui/core/Fade'
 const theme = global.constants.theme
 
 const styles = ({
-wrapper: {
+    wrapper: {
         paddingTop: "60px",
     },
     errorInfo: {
@@ -73,6 +73,7 @@ class Auth extends React.Component {
                 visibility: "hidden",
             },
             error: false,
+            info: "",
         }
     }
     componentWillMount() {
@@ -127,7 +128,16 @@ class Auth extends React.Component {
                 },
                 body: JSON.stringify(authData),
                 dataType: 'json',
-            }).then(res => res.json())
+            }).then(
+                function (res) {
+                    if (res.status === 401) {
+                        sessionStorage.removeItem('token')
+                        window.history.go(0)
+                    } else {
+                        return res.json()
+                    }
+                }
+            )
             .then(data => {
                 let status = data.status
                 if (status === 0) {
@@ -136,13 +146,24 @@ class Auth extends React.Component {
                     this.props.history.push('/rikamsg')
                 } else {
                     this.setState({
+                        status: status,
                         btndisp: {
                             visibility: "visible",
                         },
                         error: true,
+                        info: "username or password is Invalid",
                     })
                 }
-            })
+            }).catch(
+                () => this.setState({
+                    status: 1,
+                    btndisp: {
+                        visibility: "visible",
+                    },
+                    error: true,
+                    info: "Server Error",
+                })
+            )
     }
     onKeyUp = (e) => {
         e.keyCode === 13 && this.loginBtn()
@@ -156,12 +177,13 @@ class Auth extends React.Component {
         const { classes } = this.props
         const userCheck = this.state.userCheck
         const passCheck = this.state.passCheck
+        const info = this.state.info
         return (
             <div className={classes.wrapper}>
                 <FormControl >
                     <Fade in={this.state.error}>
                         <Chip
-                            label="username or password is Invalid"
+                            label={info}
                             className={classes.errorInfo}
                             color="primary"
                             style={this.state.btndisp}

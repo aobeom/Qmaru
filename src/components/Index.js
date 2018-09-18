@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -41,7 +42,7 @@ class IndexPage extends React.Component {
         this.state = {
             intro: [{
                     name: "Picture",
-                    info: "You can get some picture urls from <b style='color:" + theme.textColor + "'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get some live url from linelive and showroom.",
+                    info: "You can get some picture urls from <b style='color:" + theme.textColor + "'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get a live url from linelive or showroom.",
                     path: "/picture",
                 },
                 {
@@ -81,7 +82,7 @@ class IndexPage extends React.Component {
                             </Typography>
                             <Typography className={classes.indexCardMainText} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
                             <Typography component="p" className={classes.indexSpacing}>
-                                <a href={i.path}><Button variant="outlined" size="small" className={classes.indexBtn}>Go to {i.name}</Button></a>
+                                <Link to={i.path} replace><Button variant="outlined" size="small" className={classes.indexBtn}>Go to {i.name}</Button></Link>
                             </Typography>
                         </CardContent>
                     </Card>
