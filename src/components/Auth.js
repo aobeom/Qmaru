@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -76,10 +77,10 @@ class Auth extends React.Component {
             info: "",
         }
     }
-    componentWillMount() {
-        let token = sessionStorage.getItem("token")
+    componentDidMount() {
+        let token = localStorage.getItem("token")
         if (token) {
-            this.props.history.push('/rikamsg')
+            this.props.history.replace('/rikamsg')
         }
     }
     changeUser(event) {
@@ -128,22 +129,13 @@ class Auth extends React.Component {
                 },
                 body: JSON.stringify(authData),
                 dataType: 'json',
-            }).then(
-                function (res) {
-                    if (res.status === 401) {
-                        sessionStorage.removeItem('token')
-                        window.history.go(0)
-                    } else {
-                        return res.json()
-                    }
-                }
-            )
+            }).then(res => res.json())
             .then(data => {
                 let status = data.status
                 if (status === 0) {
                     let token = data.data.token
-                    sessionStorage.setItem("token", token)
-                    this.props.history.push('/rikamsg')
+                    localStorage.setItem("token", token)
+                    this.props.history.replace('/rikamsg')
                 } else {
                     this.setState({
                         status: status,
@@ -236,4 +228,4 @@ Auth.propTypes = {
     classes: PropTypes.object.isRequired,
 }
   
-export default withStyles(styles)(Auth)
+export default withRouter(withStyles(styles)(Auth))

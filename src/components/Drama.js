@@ -143,7 +143,7 @@ class Drama extends React.Component {
             expanded: expanded ? panel : false,
         })
     }
-    componentWillMount() {
+    componentDidMount() {
         let url = `${global.constants.api}/api/v1/drama/time`
         fetch(url, {
                 method: 'GET',

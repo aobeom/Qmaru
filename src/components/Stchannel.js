@@ -65,7 +65,7 @@ class Stchannel extends React.Component {
             },
         }
     }
-    componentWillMount() {
+    componentDidMount() {
         let url = `${global.constants.api}/api/v1/stchannel`
         fetch(url, {
                 method: 'GET',

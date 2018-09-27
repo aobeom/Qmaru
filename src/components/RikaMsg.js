@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
@@ -110,15 +111,16 @@ class RikaMsg extends React.Component {
         }
     }
     componentWillMount() {
-        let token = sessionStorage.getItem("token")
+        let token = localStorage.getItem("token")
         if (!token) {
             this.props.history.replace('/auth')
         }
     }
     msgTypeChooice(type) {
+        const _this = this
+        let _status
         this.setState({
             type: type,
-            values: [],
             nextPage: 1,
             loadBtn: false,
             btndisp: {
@@ -128,7 +130,7 @@ class RikaMsg extends React.Component {
         let firstPage = this.state.firstPage
         let pageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}`
         let firstPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}&page=${firstPage}`
-        let token = sessionStorage.getItem("token")
+        let token = localStorage.getItem("token")
         if (token) {
             fetch(pageUrl, {
                     method: 'GET',
@@ -138,9 +140,11 @@ class RikaMsg extends React.Component {
                     },
                 }).then(
                     function (res) {
+                        _status = res.status
                         if (res.status === 401) {
-                            sessionStorage.removeItem('token')
-                            window.history.go(0)
+                            window.history.replaceState("", "/auth")
+                            localStorage.removeItem('token')
+                            return false
                         } else {
                             return res.json()
                         }
@@ -152,6 +156,7 @@ class RikaMsg extends React.Component {
                         if (pageData === 0) {
                             this.setState({
                                 status: status,
+                                values: [],
                                 loadBtn: true,
                                 loadDis: true,
                                 loadText: "NO DATA",
@@ -165,7 +170,7 @@ class RikaMsg extends React.Component {
                     } else {
                         this.setState({
                             status: status,
-                            values: "No Data",
+                            info: "No Data",
                             btndisp: {
                                 display: "block",
                             },
@@ -173,15 +178,23 @@ class RikaMsg extends React.Component {
                     }
                 })
                 .catch(
-                    () => this.setState({
-                        status: 1,
-                        values: "Server Error",
-                        btndisp: {
-                            display: "block",
-                        },
-                    })
+                    function () {
+                        if (_status === 401 || _status === undefined) {
+                            localStorage.removeItem('token')
+                            _this.props.history.replace('/auth')
+                        } else {
+                            _this.setState({
+                                status: 1,
+                                info: "Server Error",
+                                btndisp: {
+                                    display: "block",
+                                },
+                            })
+                        }
+                    }
                 )
         } else {
+            localStorage.removeItem('token')
             this.props.history.replace('/auth')
         }
         fetch(firstPageUrl, {
@@ -192,9 +205,11 @@ class RikaMsg extends React.Component {
                 },
             }).then(
                 function (res) {
+                    _status = res.status
                     if (res.status === 401) {
-                        sessionStorage.removeItem('token')
-                        window.history.go(0)
+                        localStorage.removeItem('token')
+                        window.history.replaceState("", "/auth")
+                        return false
                     } else {
                         return res.json()
                     }
@@ -204,22 +219,13 @@ class RikaMsg extends React.Component {
                 if (status === 0) {
                     let msgData = data.data.entities
                     if (msgData !== undefined) {
-                        if (msgData.length < 10) {
-                            this.setState({
-                                values: msgData,
-                                loadBtn: true,
-                                loadText: "NO MORE",
-                                loadDis: true,
-                            })
-                        } else {
-                            this.setState({
-                                values: msgData,
-                                loadBtn: true,
-                                loadText: "LOAD",
-                                loadDis: false,
-                            })
-                        }
-                    }
+                        this.setState({
+                            values: msgData,
+                            loadBtn: true,
+                            loadText: "LOAD",
+                            loadDis: false,
+                        })
+                    } 
                 }
             })
     }
@@ -228,7 +234,7 @@ class RikaMsg extends React.Component {
         let currentType = this.state.type
         let totalPage = this.state.pages
         let nextPage = this.state.nextPage
-        let token = sessionStorage.getItem("token")
+        let token = localStorage.getItem("token")
         if (token) {
             if (nextPage < totalPage) {
                 nextPage = nextPage + 1
@@ -254,6 +260,7 @@ class RikaMsg extends React.Component {
                 })
             }
         } else {
+            localStorage.removeItem('token')
             this.props.history.replace('/auth')
         }
     }
@@ -283,6 +290,7 @@ class RikaMsg extends React.Component {
         const { classes } = this.props
         const status = this.state.status
         const btnGroup = this.state.btnGroup
+        const info = this.state.info
         let msgTmp = []
         let loadTmp = []
         if (status === 0) {
@@ -388,7 +396,7 @@ class RikaMsg extends React.Component {
                 <div key="error" style={this.state.btndisp}>
                     <Chip
                         className={classes.errorInfo}
-                        label={this.state.values}
+                        label={info}
                         color="secondary"
                     />
                 </div>
@@ -414,4 +422,4 @@ RikaMsg.propTypes = {
     classes: PropTypes.object.isRequired,
 }
   
-export default withStyles(styles)(RikaMsg)
+export default withRouter(withStyles(styles)(RikaMsg))
