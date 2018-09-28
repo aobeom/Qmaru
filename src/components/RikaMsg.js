@@ -128,11 +128,10 @@ class RikaMsg extends React.Component {
             },
         })
         let firstPage = this.state.firstPage
-        let pageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}`
         let firstPageUrl = `${global.constants.api}/api/v1/rikamsg?type=${type}&page=${firstPage}`
         let token = localStorage.getItem("token")
         if (token) {
-            fetch(pageUrl, {
+            fetch(firstPageUrl, {
                     method: 'GET',
                     dataType: 'json',
                     headers: {
@@ -142,16 +141,17 @@ class RikaMsg extends React.Component {
                     function (res) {
                         _status = res.status
                         if (res.status === 401) {
-                            window.history.replaceState("", "/auth")
                             localStorage.removeItem('token')
+                            window.history.replaceState("", "/auth")
                             return false
                         } else {
                             return res.json()
                         }
                     })
                 .then(data => {
-                    let pageData = data.data.pages
                     let status = data.status
+                    let pageData = data.data.pages
+                    let msgData = data.data.entities
                     if (status === 0) {
                         if (pageData === 0) {
                             this.setState({
@@ -166,6 +166,14 @@ class RikaMsg extends React.Component {
                                 status: status,
                                 pages: pageData,
                             })
+                            if (msgData !== undefined) {
+                                this.setState({
+                                    values: msgData,
+                                    loadBtn: true,
+                                    loadText: "LOAD",
+                                    loadDis: false,
+                                })
+                            }
                         }
                     } else {
                         this.setState({
@@ -197,37 +205,6 @@ class RikaMsg extends React.Component {
             localStorage.removeItem('token')
             this.props.history.replace('/auth')
         }
-        fetch(firstPageUrl, {
-                method: 'GET',
-                dataType: 'json',
-                headers: {
-                    Authorization: 'Bearer ' + token,
-                },
-            }).then(
-                function (res) {
-                    _status = res.status
-                    if (res.status === 401) {
-                        localStorage.removeItem('token')
-                        window.history.replaceState("", "/auth")
-                        return false
-                    } else {
-                        return res.json()
-                    }
-                })
-            .then(data => {
-                let status = data.status
-                if (status === 0) {
-                    let msgData = data.data.entities
-                    if (msgData !== undefined) {
-                        this.setState({
-                            values: msgData,
-                            loadBtn: true,
-                            loadText: "LOAD",
-                            loadDis: false,
-                        })
-                    } 
-                }
-            })
     }
     loadMoreData() {
         let values = this.state.values
