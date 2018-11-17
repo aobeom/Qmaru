@@ -288,7 +288,6 @@ class App extends Component {
         const paths = this.state.paths
         const { classes } = this.props
         const routers = this.state.routers
-        const routeKey = window.location.pathname.split('/')[1] || '/'
         let tabs = titles.map(function (t, index) {
             let linkUp = this.state.linkUp
             let linkDown = this.state.linkDown
@@ -304,42 +303,47 @@ class App extends Component {
         }.bind(this))
         return (
             <BrowserRouter>
-            <div className={classes.wrapper}>
-                <div>
-                    <AppBar position="static" color="default" className={classes.header}>
-                        <Toolbar>
-                            <Typography variant="title" color="inherit" key="title">
-                                <Typography style={this.state.site} color="inherit">
-                                    Qmaru
+                <Route render={({ location }) => (
+                    <div className={classes.wrapper}>
+                        <div>
+                            <AppBar position="static" color="default" className={classes.header}>
+                                <Toolbar>
+                                    <Typography variant="title" color="inherit" key="title">
+                                        <Typography style={this.state.site} color="inherit">
+                                            Qmaru
                                 </Typography>
-                            </Typography>
-                            {tabs}
-                        </Toolbar>
-                    </AppBar>
-                </div>
+                                    </Typography>
+                                    {tabs}
+                                </Toolbar>
+                            </AppBar>
+                        </div>
 
-                <div className={classes.main}>
-                    <TransitionGroup>
-                        <CSSTransition
-                            timeout={300}
-                            classNames="spec"
-                            unmountOnExit
-                            appear
-                            key={routeKey}
-                        >
-                            <Switch location={window.location}> 
-                                {routers.map((route, index) => (
-                                    <Route key={"r" + index} path={route.path} exact component={route.component} />
-                                ))}              
-                            </Switch>
-                        </CSSTransition>
-                    </TransitionGroup>
-                </div>
+                        <div className={classes.main}>
+                            <TransitionGroup>
+                                <CSSTransition
+                                    key={location.key}
+                                    timeout={300}
+                                    classNames="spec"
+                                    unmountOnExit
+                                    appear
+                                >
+                                    <div key={location.pathname} >
+                                        <Switch key={location.key} location={location}>
+                                            {routers.map((route, index) => (
+                                                <Route key={"r" + index} path={route.path} exact component={route.component} />
+                                            ))}
+                                        </Switch>
+                                    </div>
+                                </CSSTransition>
+                            </TransitionGroup>
+                        </div>
 
-                <div className={classes.footer}>
-                    <span className={classes.footerSpan}>© 2017-2018 AoBeom v3.0</span>
-                </div>
-            </div>
+                        <div className={classes.footer}>
+                            <span className={classes.footerSpan}>© 2017-2018 AoBeom v3.0</span>
+                        </div>
+
+                    </div>
+                )} />
             </BrowserRouter>
         )
     }
