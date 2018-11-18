@@ -101,7 +101,7 @@ class Picture extends React.Component {
             })
             return false
         } else {
-            if (url.indexOf("showroom") !== -1 || url.indexOf("line") !== -1) {
+            if (url.indexOf("showroom") !== -1 || url.indexOf("linelive") !== -1) {
                 uri = "/hls"
             } else {
                 uri = "/news"
