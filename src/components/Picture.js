@@ -103,6 +103,8 @@ class Picture extends React.Component {
         } else {
             if (url.indexOf("showroom") !== -1 || url.indexOf("linelive") !== -1) {
                 uri = "/hls"
+            } else if (url.indexOf("twitter") !== -1) {
+                uri = "/twitter"
             } else {
                 uri = "/news"
             }
@@ -197,6 +199,15 @@ class Picture extends React.Component {
                                     {this.state.btnInfo}
                                 </Button>
                             </CopyToClipboard>
+                        </div>
+                    )
+                }
+                if (values.type === "twitter") {
+                    let urls = values.entities
+                    mediaTmp.push(
+                        <div key={"video" + urls}>
+                            <video className={classes.resultVideo} src={urls} controls="controls" />
+                            <hr />
                         </div>
                     )
                 }
