@@ -40,6 +40,9 @@ const styles = ({
         margin: "10px",
         backgroundColor: theme.tipColor,
     },
+    customForm: {
+        verticalAlign: "baseline"
+    },
     customInput: {
         width: "140px",
         '&:hover': {
@@ -595,7 +598,7 @@ class Program extends React.Component {
                         <img src={yahooLogo} style={{width: "200px"}} alt="" />
                     </a>
                 </p>
-                <FormControl >
+                <FormControl className={classes.customForm}>
                     <Select
                         value={this.state.district}
                         onChange={this.handleChange}

@@ -2,6 +2,7 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
+import classNames from 'classnames'
 
 import Input from '@material-ui/core/Input'
 import IconButton from '@material-ui/core/IconButton'
@@ -59,7 +60,16 @@ const styles = ({
             backgroundColor: theme.otherColor,
         },
         color: theme.secondaryColor,
-    }
+    },
+    customBtn: {
+        color: "#fff",
+        backgroundColor: theme.thirdlyColor,
+        fontSize: "0.85rem",
+        margin: "5px",
+        '&:hover': {
+            backgroundColor: theme.primaryColor,
+        },
+    },
 })
 
 
@@ -196,7 +206,7 @@ class Picture extends React.Component {
                     mediaTmp.push(
                         <div key="hls">
                             <CopyToClipboard text={urls} onCopy={() => this.setState({copied: true, btnSta: "contained"})}>
-                                <Button variant={this.state.btnSta} color="primary">
+                                <Button variant="contained" className={classNames(classes.customBtn)}>
                                     {this.state.btnInfo}
                                 </Button>
                             </CopyToClipboard>

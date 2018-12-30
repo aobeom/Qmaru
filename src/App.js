@@ -339,7 +339,7 @@ class App extends Component {
                         </div>
 
                         <div className={classes.footer}>
-                            <span className={classes.footerSpan}>© 2017-2018 AoBeom v3.0</span>
+                            <span className={classes.footerSpan}>© 2017-2019 AoBeom v3.0</span>
                         </div>
 
                     </div>
