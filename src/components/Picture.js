@@ -5,12 +5,14 @@ import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 
 import Input from '@material-ui/core/Input'
-import IconButton from '@material-ui/core/IconButton'
 import ImageSearch from '@material-ui/icons/ImageSearch'
 import Chip from '@material-ui/core/Chip'
 import Button from '@material-ui/core/Button'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import Fade from '@material-ui/core/Fade'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+import CheckIcon from '@material-ui/icons/Check';
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -43,6 +45,8 @@ const styles = ({
     customInput: {
         color: theme.secondaryColor,
         minWidth: "220px",
+        position: "relative",
+        left: "4px",
     },
     customUnderline: {
         '&:hover:not(disabled):before': {
@@ -55,21 +59,46 @@ const styles = ({
             borderBottomColor: theme.tipColor,
         },
     },
-    customIcon: {
-        '&:hover': {
-            backgroundColor: theme.otherColor,
-        },
-        color: theme.secondaryColor,
-    },
     customBtn: {
         color: "#fff",
         backgroundColor: theme.thirdlyColor,
         fontSize: "0.85rem",
-        margin: "5px",
+        margin: "6px",
         '&:hover': {
             backgroundColor: theme.primaryColor,
         },
     },
+    customLine: {
+        border: 0,
+        backgroundColor: theme.secondaryColor,
+        height: "1px",
+    },
+    progressRoot: {
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    progressWrapper: {
+        margin: "10px",
+        position: 'relative',
+    },
+    progressFab: {
+        color: theme.secondaryColor,
+        position: 'absolute',
+        left: "0px",
+        zIndex: 1,
+    },
+    progressBtn: {
+        width: "48px",
+        height: "48px",
+        backgroundColor: "transparent",
+        boxShadow: "0 0",
+        color: theme.secondaryColor,
+        '&:hover': {
+            backgroundColor: theme.otherColor,
+        },
+        
+    }
 })
 
 
@@ -84,6 +113,8 @@ class Picture extends React.Component {
             btndisp: {
                 display: "none",
             },
+            loading: false,
+            success: false,
         }
     }
     changeText(event) {
@@ -120,6 +151,12 @@ class Picture extends React.Component {
                 uri = "/news"
             }
         }
+        this.setState({
+            success: false,
+            loading: true,
+            values: "",
+            error: false,
+        })
         url = `${global.constants.api}/api/v1/media${uri}?url=${encodeURIComponent(url)}`
         fetch(url, {
                 method: 'GET',
@@ -132,6 +169,8 @@ class Picture extends React.Component {
                         error: false,
                         values: data.data,
                         status: status,
+                        success: true,
+                        loading: false,
                     })
                 } else {
                     this.setState({
@@ -141,6 +180,8 @@ class Picture extends React.Component {
                         btndisp: {
                             display: "block",
                         },
+                        success: false,
+                        loading: false,
                     })
                 }
             })
@@ -152,6 +193,8 @@ class Picture extends React.Component {
                     btndisp: {
                         display: "block",
                     },
+                    success: false,
+                    loading: false,
                 })
             )
     }
@@ -188,14 +231,14 @@ class Picture extends React.Component {
                             mediaTmp.push(
                                 <div key={"video" + u}>
                                     <video className={classes.resultVideo} src={urls[u]} controls="controls" />
-                                    <hr />
+                                    <hr className={classes.customLine} />
                                 </div>
                             )
                         } else {
                             mediaTmp.push(
                                 <div key={"img" + u}>
                                     <img className={classes.resultImg} src={urls[u]} alt="" />
-                                    <hr />
+                                    <hr className={classes.customLine} />
                                 </div>
                             )
                         }
@@ -218,7 +261,7 @@ class Picture extends React.Component {
                     mediaTmp.push(
                         <div key={"video" + urls}>
                             <video className={classes.resultVideo} src={urls} controls="controls" />
-                            <hr />
+                            <hr className={classes.customLine} />
                         </div>
                     )
                 }
@@ -244,22 +287,23 @@ class Picture extends React.Component {
                     <img className={classes.topLogo} src={TPL} alt="tpl" />
                     <img className={classes.topLogo} src={ORICON} alt="oricon" />
                 </p>
-                <Input
-                    classes={{root: classes.customInput, underline: classes.customUnderline}}
-                    onChange={event=>this.changeText(event)}
-                    placeholder="URL"
-                    inputProps={{'aria-label': 'Description'}}
-                    autoFocus={false}
-                    onKeyUp={this.onKeyUp}
-                    disableUnderline={false}
-                />
-                <IconButton 
-                    aria-label="image_search" 
-                    onClick={this.picClick.bind(this)}
-                    classes={{root: classes.customIcon}}
-                >
-                    <ImageSearch />
-                </IconButton>
+                <div className={classes.progressRoot}>
+                    <Input
+                        classes={{root: classes.customInput, underline: classes.customUnderline}}
+                        onChange={event=>this.changeText(event)}
+                        placeholder="URL"
+                        inputProps={{'aria-label': 'Description'}}
+                        autoFocus={false}
+                        onKeyUp={this.onKeyUp}
+                        disableUnderline={false}
+                    />
+                    <div className={classes.progressWrapper}>
+                        <Fab classes={{ root: classes.progressBtn }} onClick={this.picClick.bind(this)}>
+                            {this.state.success ? <CheckIcon /> : <ImageSearch />}
+                        </Fab>
+                        {this.state.loading && <CircularProgress size={48} className={classes.progressFab} />}
+                    </div>
+                </div>
                 {mediaTmp}
             </div>
         )

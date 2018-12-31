@@ -5,7 +5,6 @@ import { withStyles } from '@material-ui/core/styles'
 import classNames from 'classnames'
 
 import Input from '@material-ui/core/Input'
-import IconButton from '@material-ui/core/IconButton'
 import YoutubeSearchedFor from '@material-ui/icons/YoutubeSearchedFor'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormHelperText from '@material-ui/core/FormHelperText'
@@ -16,6 +15,9 @@ import Chip from '@material-ui/core/Chip'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fab from '@material-ui/core/Fab';
+import CheckIcon from '@material-ui/icons/Check';
 
 import yahooLogo from '../static/img/yahoo.png'
 
@@ -41,7 +43,8 @@ const styles = ({
         backgroundColor: theme.tipColor,
     },
     customForm: {
-        verticalAlign: "baseline"
+        position: "relative",
+        top: "10px",
     },
     customInput: {
         width: "140px",
@@ -64,12 +67,6 @@ const styles = ({
     customSel: {
         minHeight: "0",
     },
-    customIcon: {
-        '&:hover': {
-            backgroundColor: theme.otherColor,
-        },
-        color: theme.secondaryColor,
-    },
     customBtn: {
         color: theme.otherColor,
         backgroundColor: theme.secondaryColor,
@@ -79,6 +76,32 @@ const styles = ({
             backgroundColor: theme.primaryColor,
         },
     },
+    progressRoot: {
+        display: 'flex',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    progressWrapper: {
+        margin: "10px",
+        position: 'relative',
+    },
+    progressFab: {
+        color: theme.secondaryColor,
+        position: 'absolute',
+        left: "0px",
+        zIndex: 1,
+    },
+    progressBtn: {
+        width: "48px",
+        height: "48px",
+        backgroundColor: "transparent",
+        boxShadow: "0 0",
+        color: theme.secondaryColor,
+        '&:hover': {
+            backgroundColor: theme.otherColor,
+        },
+        
+    }
 })
 
 class Program extends React.Component {
@@ -92,6 +115,8 @@ class Program extends React.Component {
             },
             district: '',
             error: "",
+            loading: false,
+            success: false,
             districtName: [{
                     code: '',
                     name: "地区",
@@ -479,6 +504,10 @@ class Program extends React.Component {
             district = '23'
         }
         let url = `${global.constants.api}/api/v1/program?kw=${encodeURIComponent(kw)}&ac=${district}`
+        this.setState({
+            success: false,
+            loading: true,
+        })
         fetch(url, {
                 method: 'GET',
                 dataType: 'json',
@@ -490,6 +519,8 @@ class Program extends React.Component {
                     this.setState({
                         values: 0,
                         error: true,
+                        success: false,
+                        loading: false,
                         info: "No Data",
                     })
                 } else {
@@ -501,6 +532,8 @@ class Program extends React.Component {
                             padding: "20px",
                         },
                         error: false,
+                        success: true,
+                        loading: false,
                     })
                 }
 
@@ -510,6 +543,8 @@ class Program extends React.Component {
                     values: 0,
                     info: "Server Error",
                     error: true,
+                    success: false,
+                    loading: false,
                 })
             )
     }
@@ -598,33 +633,34 @@ class Program extends React.Component {
                         <img src={yahooLogo} style={{width: "200px"}} alt="" />
                     </a>
                 </p>
-                <FormControl className={classes.customForm}>
-                    <Select
-                        value={this.state.district}
-                        onChange={this.handleChange}
-                        name="district"
-                        displayEmpty
-                        className={classes.customUnderline}
-                        classes={{select: classes.customSel}}
-                    >
-                        {districtTmp}
-                    </Select>
-                    <FormHelperText className={classes.progLabel}>District</FormHelperText>
-                </FormControl>
-                <Input
-                    classes={{root: classes.customInput, underline: classes.customUnderline,}}
-                    onChange={event=>this.changeText(event)}
-                    placeholder="keyword"
-                    inputProps={{'aria-label': 'Description'}}
-                    onKeyUp={this.onKeyUp}
-                />
-                <IconButton 
-                    aria-label="youtube_searched_for" 
-                    onClick={this.progClick.bind(this)}
-                    classes={{root: classes.customIcon}}
-                >
-                <YoutubeSearchedFor />
-                </IconButton>
+                <div className={classes.progressRoot}>
+                    <FormControl className={classes.customForm}>
+                        <Select
+                            value={this.state.district}
+                            onChange={this.handleChange}
+                            name="district"
+                            displayEmpty
+                            className={classes.customUnderline}
+                            classes={{select: classes.customSel}}
+                        >
+                            {districtTmp}
+                        </Select>
+                        <FormHelperText className={classes.progLabel}>District</FormHelperText>
+                    </FormControl>
+                    <Input
+                        classes={{root: classes.customInput, underline: classes.customUnderline,}}
+                        onChange={event=>this.changeText(event)}
+                        placeholder="keyword"
+                        inputProps={{'aria-label': 'Description'}}
+                        onKeyUp={this.onKeyUp}
+                    />
+                    <div className={classes.progressWrapper}>
+                        <Fab classes={{ root: classes.progressBtn }}  onClick={this.progClick.bind(this)}>
+                            {this.state.success ? <CheckIcon /> : <YoutubeSearchedFor />}
+                        </Fab>
+                        {this.state.loading && <CircularProgress size={48} className={classes.progressFab} />}
+                    </div>
+                </div>
                 {progTitle}
                 {progTmp}
             </div>
