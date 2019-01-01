@@ -382,7 +382,7 @@ class RikaMsg extends React.Component {
         return(
             <div className={classes.wrapper}>
                 {btnGroup.map((btn, index) => (
-                    <Button key={"r" + index} variant="flat" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, btn.type)}>
+                    <Button key={"r" + index} variant="text" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, btn.type)}>
                         {btn.name}
                     </Button>
                 ))}

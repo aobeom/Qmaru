@@ -232,7 +232,10 @@ class Drama extends React.Component {
                                     {tvbt_info.date}
                                 </Typography>
                                 <Typography className={classes.urlInfo} color="textSecondary">
-                                    <a className={classes.aTag} href={tvbt_info.url} target="_blank">{tvbt_info.title}</a>
+                                    <a className={classes.aTag} href={tvbt_info.url} target="_blank">
+                                    {/* {tvbt_info.title} */}
+                                    <Typography className={classes.aTag} dangerouslySetInnerHTML = {{__html:tvbt_info.title}} ></Typography>
+                                    </a>
                                 </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
@@ -265,7 +268,10 @@ class Drama extends React.Component {
                                         {subpig_info.date}
                                     </Typography>
                                     <Typography className={classes.urlInfo} color="textSecondary">
-                                        <a className={classes.aTag} href={subpig_info.url} target="_blank">{subpig_info.title}</a>
+                                        <a className={classes.aTag} href={subpig_info.url} target="_blank">
+                                        {/* {subpig_info.title} */}
+                                        <Typography className={classes.aTag} dangerouslySetInnerHTML = {{__html:subpig_info.title}} ></Typography>
+                                        </a>
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
@@ -293,7 +299,10 @@ class Drama extends React.Component {
                             <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography className={classes.urlFixsub} color="textSecondary">
-                                        <a className={classes.aTag} href={fixsub_info.url} target="_blank">{fixsub_info.title}</a>
+                                        <a className={classes.aTag} href={fixsub_info.url} target="_blank">
+                                        {/* {fixsub_info.title} */}
+                                        <Typography className={classes.aTag} dangerouslySetInnerHTML = {{__html:fixsub_info.title}} ></Typography>
+                                        </a>
                                     </Typography>
                                 </ExpansionPanelSummary>
                                 <ExpansionPanelDetails>
