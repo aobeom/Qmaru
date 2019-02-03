@@ -10,8 +10,7 @@ import Picture from './components/Picture'
 import Drama from './components/Drama'
 import Program from './components/Program'
 import Stchannel from './components/Stchannel'
-import RikaMsg from './components/RikaMsg'
-import Auth from './components/Auth'
+// import Auth from './components/Auth'
 
 import NotFoundPage from './components/NotFoundPage'
 
@@ -59,8 +58,8 @@ class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            titles: ["PICTURE", "DRAMA", "PROGRAM", "STCHANNEL", "RIKAMSG"],
-            paths: ["picture", "drama", "program", "stchannel", "rikamsg"],
+            titles: ["PICTURE", "DRAMA", "PROGRAM", "STCHANNEL"],
+            paths: ["picture", "drama", "program", "stchannel"],
             site: {
                 color: theme.textColor,
                 fontWeight: "1000",
@@ -74,8 +73,7 @@ class App extends Component {
                 { "path": "/drama", "component": Drama },
                 { "path": "/program", "component": Program },
                 { "path": "/stchannel", "component": Stchannel },
-                { "path": "/rikamsg", "component": RikaMsg },
-                { "path": "/auth", "component": Auth },
+                // { "path": "/auth", "component": Auth },
                 { "path": "*", "component": NotFoundPage },
             ],
         }
@@ -138,7 +136,6 @@ class App extends Component {
                         { name: "DRAMA", id: "1" },
                         { name: "PROGRAM", id: "2" },
                         { name: "STCHANNEL", id: "3" },
-                        { name: "RIKAMSG", id: "4" },
                     ],
                 })
             } else if (width > 400 & width < 450) {
@@ -180,7 +177,6 @@ class App extends Component {
                         { name: "DRAMA", id: "1" },
                         { name: "PROG", id: "2" },
                         { name: "ST", id: "3" },
-                        { name: "RIKA", id: "4" },
                     ],
                 })
             } else if (width < 400) {
@@ -222,7 +218,6 @@ class App extends Component {
                         { name: "DRA", id: "1" },
                         { name: "PROG", id: "2" },
                         { name: "ST", id: "3" },
-                        { name: "RIKA", id: "4" },
                     ],
                 })
             }
@@ -266,7 +261,6 @@ class App extends Component {
                         { name: "DRAMA", id: "1" },
                         { name: "PROGRAM", id: "2" },
                         { name: "STCHANNEL", id: "3" },
-                        { name: "RIKAMSG", id: "4" },
                     ],
                 })
             }

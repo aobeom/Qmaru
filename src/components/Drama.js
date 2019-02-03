@@ -29,6 +29,9 @@ const styles = ({
         flexShrink: 0,
         color: theme.tipColor,
     },
+    panelSty: {
+        padding: "4px",
+    },
     urlInfo: {
         flexBasis: '60%',
         flexShrink: 0,
@@ -225,7 +228,7 @@ class Drama extends React.Component {
                     let tvbt_ep = tvbt_info["dlurls"]
                     let panel = 'panel' + i
                     dramaTmp.push(
-                        <div key={"tvbt" + i}>
+                        <div key={"tvbt" + i} className={classes.panelSty}>
                         <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                 <Typography className={classes.dateInfo} component="p" color="textPrimary">
@@ -261,7 +264,7 @@ class Drama extends React.Component {
                     let panel = 'panel' + j
                     if (typeof (subpig_ep) !== "undefined") {
                         dramaTmp.push(
-                            <div key={"subpig" + j} >
+                            <div key={"subpig" + j} className={classes.panelSty}>
                             <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography className={classes.dateInfo} component="p" color="textPrimary">
@@ -295,7 +298,7 @@ class Drama extends React.Component {
                     let fixsub_ep = fixsub_info["dlurls"]
                     let panel = 'panel' + k
                     dramaTmp.push(
-                        <div key={"fixsub" + k}>
+                        <div key={"fixsub" + k} className={classes.panelSty}>
                             <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
                                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                                     <Typography className={classes.urlFixsub} color="textSecondary">
