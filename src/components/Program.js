@@ -119,7 +119,7 @@ class Program extends React.Component {
             success: false,
             districtName: [{
                     code: '',
-                    name: "地区",
+                    name: "東京",
                     division: "title",
                     status: true
                 },

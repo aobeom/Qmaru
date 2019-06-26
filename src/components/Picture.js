@@ -16,7 +16,7 @@ import CheckIcon from '@material-ui/icons/Check';
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
-import ORICON from '../static/img/oricon.png'
+import DESSART from '../static/img/dessart.png'
 import TPL from '../static/img/tpl.png'
 
 const theme = global.constants.theme
@@ -285,13 +285,13 @@ class Picture extends React.Component {
                     <img className={classes.topLogo} src={IG} alt="ig"/>
                     <img className={classes.topLogo} src={MDPR} alt="mdpr" />
                     <img className={classes.topLogo} src={TPL} alt="tpl" />
-                    <img className={classes.topLogo} src={ORICON} alt="oricon" />
+                    <img className={classes.topLogo} src={DESSART} alt="dessart" />
                 </p>
                 <div className={classes.progressRoot}>
                     <Input
                         classes={{root: classes.customInput, underline: classes.customUnderline}}
                         onChange={event=>this.changeText(event)}
-                        placeholder="URL"
+                        placeholder="URL[?update]"
                         inputProps={{'aria-label': 'Description'}}
                         autoFocus={false}
                         onKeyUp={this.onKeyUp}
