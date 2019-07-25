@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles } from '@material-ui/styles'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -42,7 +42,7 @@ class IndexPage extends React.Component {
         this.state = {
             intro: [{
                     name: "Picture",
-                    info: "You can get some picture urls from <b style='color:" + theme.textColor + "'>instagram, tpl, mdpr, oricon</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get a live url from linelive or showroom.",
+                    info: "You can get some picture urls from <b style='color:" + theme.textColor + "'>instagram, tpl, mdpr, dessart</b>, ameblo, nogi46 & keya46, thetv, mantanweb, natalie, or get a live url from linelive or showroom.",
                     path: "/picture",
                 },
                 {

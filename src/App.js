@@ -10,8 +10,6 @@ import Picture from './components/Picture'
 import Drama from './components/Drama'
 import Program from './components/Program'
 import Stchannel from './components/Stchannel'
-// import Auth from './components/Auth'
-
 import NotFoundPage from './components/NotFoundPage'
 
 import Button from '@material-ui/core/Button'
@@ -73,7 +71,6 @@ class App extends Component {
                 { "path": "/drama", "component": Drama },
                 { "path": "/program", "component": Program },
                 { "path": "/stchannel", "component": Stchannel },
-                // { "path": "/auth", "component": Auth },
                 { "path": "*", "component": NotFoundPage },
             ],
         }
@@ -302,7 +299,7 @@ class App extends Component {
                         <div>
                             <AppBar position="static" color="default" className={classes.header}>
                                 <Toolbar>
-                                    <Typography variant="title" color="inherit" key="title">
+                                    <Typography variant="subtitle1" color="inherit" key="title">
                                         <Typography style={this.state.site} color="inherit">
                                             Qmaru
                                 </Typography>
@@ -333,7 +330,7 @@ class App extends Component {
                         </div>
 
                         <div className={classes.footer}>
-                            <span className={classes.footerSpan}>© 2017-2019 AoBeom v3.0</span>
+                            <span className={classes.footerSpan}>© 2017-2019 AoBeom v4.0</span>
                         </div>
 
                     </div>

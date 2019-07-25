@@ -2,8 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
@@ -215,7 +214,7 @@ class Auth extends React.Component {
                             }
                         }
                     />
-                    <Button variant="contained" className={classNames(classes.customBtn)} onClick={this.loginBtn.bind(this)}>
+                    <Button variant="contained" className={classes.customBtn} onClick={this.loginBtn.bind(this)}>
                         Submit
                     </Button>
                 </FormControl>

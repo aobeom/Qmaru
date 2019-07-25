@@ -1,8 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
 import AccessTime from '@material-ui/icons/AccessTime'
@@ -99,10 +98,10 @@ class Drama extends React.Component {
                 display: "none",
             },
             btnGroup: [
-                {name: "TVBT", value: "tvbt"},
-                {name: "SUBPIG", value: "subpig"},
-                {name: "FIXSUB", value: "fixsub"},
-            ],
+                { name: "TVBT", value: "tvbt" },
+                { name: "SUBPIG", value: "subpig" },
+                { name: "FIXSUB", value: "fixsub" },
+            ]
         }
     }
     PressButton(site) {
@@ -111,9 +110,9 @@ class Drama extends React.Component {
         })
         let url = `${global.constants.api}/api/v1/drama/${site}`
         fetch(url, {
-                method: 'GET',
-                dataType: 'json'
-            }).then(res => res.json())
+            method: 'GET',
+            dataType: 'json'
+        }).then(res => res.json())
             .then(data => {
                 let status = data.status
                 if (status === 0) {
@@ -149,9 +148,9 @@ class Drama extends React.Component {
     componentDidMount() {
         let url = `${global.constants.api}/api/v1/drama/time`
         fetch(url, {
-                method: 'GET',
-                dataType: 'json',
-            }).then(res => res.json())
+            method: 'GET',
+            dataType: 'json',
+        }).then(res => res.json())
             .then(data => {
                 let status = data.status
                 let tdata = data.data
@@ -219,120 +218,82 @@ class Drama extends React.Component {
         const status = this.state.status
         const { classes } = this.props
         let dramaTmp = []
+        function Eps(props) {
+            if (props.site === "tvbt") {
+                return (
+                    <Typography className={classes.tvbtText}>
+                        {props.eps.map((ep) => (
+                            <a className={classes.tvbtAtag} key={ep[1]} href={ep[1] + '#' + ep[2]} target="_blank" rel="noopener noreferrer">
+                                <Button variant="contained" className={classes.customBtn}>
+                                    {'EP' + ep[0]}
+                                </Button>
+                            </a>
+                        ))}
+                    </Typography>
+                )
+            } else if (props.site === "subpig") {
+                return (
+                    <Typography className={classes.epInfo}>
+                        <a key={props.eps[1]} href={props.eps[0] + '#' + props.eps[1]} target="_blank" rel="noopener noreferrer">
+                            <Button variant="contained" className={classes.customBtn}>
+                                BAIDU
+                            </Button>
+                        </a>
+                    </Typography>
+                )
+            } else if (props.site === "fixsub") {
+                return (
+                    <Typography component="div" className={classes.epInfo}>
+                        {props.eps.map((ep) => (
+                            <span key={ep[0]}>
+                                <p className={classes.fixBtn}>
+                                    <Button disabled classes={{ label: classes.fixBtn }}>{'EP' + ep[0]}</Button>
+                                </p>
+                                <a href={ep[1]} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="contained" className={classes.customBtn}>BD</Button>
+                                </a>
+                                <a href={ep[2]} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="contained" className={classes.customBtn}>MG</Button>
+                                </a>
+                                <a href={ep[3]} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="contained" className={classes.customBtn}>E2K</Button>
+                                </a>
+                            </span>))}
+                    </Typography>
+                )
+            }
+        }
+
+        function Dramadata(props) {
+            return (
+                <ExpansionPanel expanded={expanded === props.panel} onChange={props.this.handleChange(props.panel)}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography className={classes.dateInfo} component="p" color="textPrimary">
+                            {props.drama.date}
+                        </Typography>
+                        <Typography className={classes.urlInfo} color="textSecondary" component="div">
+                            <a className={classes.aTag} href={props.drama.url} target="_blank" rel="noopener noreferrer">
+                                <Typography className={classes.aTag} dangerouslySetInnerHTML={{ __html: props.drama.title }} ></Typography>
+                            </a>
+                        </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Eps site={props.site} eps={props.eps} />
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            )
+        }
         if (status === 0) {
             let dramaSite = values.name
             let dramaData = values.entities
-            if (dramaSite === "tvbt") {
-                for (let i in dramaData) {
-                    let tvbt_info = dramaData[i]
-                    let tvbt_ep = tvbt_info["dlurls"]
-                    let panel = 'panel' + i
-                    dramaTmp.push(
-                        <div key={"tvbt" + i} className={classes.panelSty}>
-                        <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
-                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography className={classes.dateInfo} component="p" color="textPrimary">
-                                    {tvbt_info.date}
-                                </Typography>
-                                <Typography className={classes.urlInfo} color="textSecondary">
-                                    <a className={classes.aTag} href={tvbt_info.url} target="_blank">
-                                    {/* {tvbt_info.title} */}
-                                    <Typography className={classes.aTag} dangerouslySetInnerHTML = {{__html:tvbt_info.title}} ></Typography>
-                                    </a>
-                                </Typography>
-                            </ExpansionPanelSummary>
-                            <ExpansionPanelDetails>
-                                <Typography className={classes.tvbtText}>
-                                    {tvbt_ep.map((ep, index) => (
-                                        <a className={classes.tvbtAtag} key={'t' + index} href={ep[1] + '#' + ep[2]} target="_blank">
-                                            <Button variant="contained" className={classNames(classes.customBtn)}>
-                                                {'EP' + ep[0]}
-                                            </Button>
-                                        </a>
-                                    ))}
-                                </Typography>
-                            </ExpansionPanelDetails>
-                        </ExpansionPanel>
-                        </div>
-                    )
-                }
+            for (let i in dramaData) {
+                let panel = 'panel' + i
+                dramaTmp.push(
+                    <div key={i} className={classes.panelSty} >
+                        <Dramadata this={this} panel={panel} drama={dramaData[i]} eps={dramaData[i]["dlurls"]} site={dramaSite} />
+                    </div>
+                )
             }
-            if (dramaSite === "subpig") {
-                for (let j in dramaData) {
-                    let subpig_info = dramaData[j]
-                    let subpig_ep = subpig_info["dlurls"]
-                    let panel = 'panel' + j
-                    if (typeof (subpig_ep) !== "undefined") {
-                        dramaTmp.push(
-                            <div key={"subpig" + j} className={classes.panelSty}>
-                            <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography className={classes.dateInfo} component="p" color="textPrimary">
-                                        {subpig_info.date}
-                                    </Typography>
-                                    <Typography className={classes.urlInfo} color="textSecondary">
-                                        <a className={classes.aTag} href={subpig_info.url} target="_blank">
-                                        {/* {subpig_info.title} */}
-                                        <Typography className={classes.aTag} dangerouslySetInnerHTML = {{__html:subpig_info.title}} ></Typography>
-                                        </a>
-                                    </Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <Typography className={classes.epInfo}>
-                                        <a key={'t' + j} href={subpig_ep[0] + '#' + subpig_ep[1]} target="_blank">
-                                            <Button variant="contained" className={classNames(classes.customBtn)}>
-                                                BAIDU
-                                            </Button>
-                                        </a>
-                                    </Typography>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                            </div>
-                        )
-                    }
-                }
-            }
-            if (dramaSite === "fixsub") {
-                for (let k in dramaData) {
-                    let fixsub_info = dramaData[k]
-                    let fixsub_ep = fixsub_info["dlurls"]
-                    let panel = 'panel' + k
-                    dramaTmp.push(
-                        <div key={"fixsub" + k} className={classes.panelSty}>
-                            <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
-                                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                                    <Typography className={classes.urlFixsub} color="textSecondary">
-                                        <a className={classes.aTag} href={fixsub_info.url} target="_blank">
-                                        {/* {fixsub_info.title} */}
-                                        <Typography className={classes.aTag} dangerouslySetInnerHTML = {{__html:fixsub_info.title}} ></Typography>
-                                        </a>
-                                    </Typography>
-                                </ExpansionPanelSummary>
-                                <ExpansionPanelDetails>
-                                    <Typography component="div" className={classes.epInfo}>
-                                        {fixsub_ep.map((ep, index) => (
-                                            <span key={"f" + index}>
-                                                <p className={classes.fixBtn}>
-                                                    <Button disabled classes={{label:classes.fixBtn}}>{'EP' + ep[0]}</Button>
-                                                </p>
-                                                <a href={ep[1]} target="_blank">
-                                                    <Button variant="contained" className={classNames(classes.customBtn)}>BD</Button>
-                                                </a>
-                                                <a href={ep[2]} target="_blank">
-                                                    <Button variant="contained" className={classNames(classes.customBtn)}>MG</Button>
-                                                </a>
-                                                <a href={ep[3]} target="_blank">
-                                                    <Button variant="contained" className={classNames(classes.customBtn)}>E2K</Button>
-                                                </a>
-                                            </span>
-                                        ))}
-                                    </Typography>
-                                </ExpansionPanelDetails>
-                            </ExpansionPanel>
-                        </div>
-                    )
-                }
-            } 
         } else {
             dramaTmp.push(
                 <div key="error" style={this.state.btndisp}>
@@ -349,19 +310,21 @@ class Drama extends React.Component {
                 <p className={classes.topTime}>
                     {time}
                 </p>
-                <Button disabled size="medium" classes={{label:classes.btnLabel,disabled: classes.btnTime}}>
-                    <AccessTime  />
+                <Button disabled size="medium" classes={{ label: classes.btnLabel, disabled: classes.btnTime }}>
+                    <AccessTime />
                     &nbsp; {hour + ":" + minute + ":" + second}
                 </Button>
                 <br />
                 <br />
                 <div className={classes.btnGroup}>
+
                     {btnGroup.map((bg, index) => (
-                        <Button key={"btn" + index} variant="contained" className={classNames(classes.customBtn)} onClick={this.PressButton.bind(this, bg.value)}>
+                        <Button key={"btn" + index} variant="contained" className={classes.customBtn} onClick={this.PressButton.bind(this, bg.value)}>
                             {bg.name}
                         </Button>
                     ))}
-                </div>  
+
+                </div>
                 {dramaTmp}
             </div>
         )
@@ -371,5 +334,5 @@ class Drama extends React.Component {
 Drama.propTypes = {
     classes: PropTypes.object.isRequired,
 }
-  
+
 export default withStyles(styles)(Drama)

@@ -1,8 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
 
@@ -41,7 +40,7 @@ class NotFoundPage extends React.Component {
                     <p className={classes.errorText}>Found</p>
                 </div>
                 <a href="/">
-                    <Button variant="contained" className={classNames(classes.customBtn)}>
+                    <Button variant="contained" className={classes.customBtn}>
                         BACK
                     </Button>
                 </a>

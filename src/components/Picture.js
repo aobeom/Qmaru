@@ -1,8 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Input from '@material-ui/core/Input'
 import ImageSearch from '@material-ui/icons/ImageSearch'
@@ -249,7 +248,7 @@ class Picture extends React.Component {
                     mediaTmp.push(
                         <div key="hls">
                             <CopyToClipboard text={urls} onCopy={() => this.setState({copied: true, btnSta: "contained"})}>
-                                <Button variant="contained" className={classNames(classes.customBtn)}>
+                                <Button variant="contained" className={classes.customBtn}>
                                     {this.state.btnInfo}
                                 </Button>
                             </CopyToClipboard>

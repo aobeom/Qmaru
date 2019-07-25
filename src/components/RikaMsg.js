@@ -2,8 +2,7 @@ import React from 'react'
 import { withRouter } from 'react-router-dom'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -274,7 +273,7 @@ class RikaMsg extends React.Component {
             if (loadBtn === true) {
                 loadTmp.push(
                     <div key="load" className={classes.loadBtn}>
-                        <Button disabled={this.state.loadDis} variant="contained" className={classNames(classes.customBtn)} onClick={this.loadMoreData.bind(this)}>
+                        <Button disabled={this.state.loadDis} variant="contained" className={classes.customBtn} onClick={this.loadMoreData.bind(this)}>
                         {loadText} 
                         </Button>
                     </div>

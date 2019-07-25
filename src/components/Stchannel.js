@@ -1,8 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
 import Info from '@material-ui/icons/Info'
@@ -142,8 +141,8 @@ class Stchannel extends React.Component {
                                     <img className={classes.resultImg} src={sdata.purl} alt={"i" + s}></img>
                                 </Typography>
                                 <Typography>
-                                    <a href={sdata.path} target="_blank" download>
-                                        <Button variant="contained" className={classNames(classes.customBtn)}>Download</Button>
+                                    <a href={sdata.path} target="_blank" download rel="noopener noreferrer">
+                                        <Button variant="contained" className={classes.customBtn}>Download</Button>
                                     </a>
                                 </Typography>
                             </CardContent>

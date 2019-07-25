@@ -1,8 +1,7 @@
 import React from 'react'
 
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import classNames from 'classnames'
+import { withStyles } from '@material-ui/styles'
 
 import Input from '@material-ui/core/Input'
 import YoutubeSearchedFor from '@material-ui/icons/YoutubeSearchedFor'
@@ -589,9 +588,9 @@ class Program extends React.Component {
         } else {
             progTitle.push(
                 <div key="title" style={this.state.btndisp}>
-                    <a href={url} target="_blank">
+                    <a href={url} target="_blank" rel="noopener noreferrer">
                     <Button 
-                        variant="contained" className={classNames(classes.customBtn)}
+                        variant="contained" className={classes.customBtn}
                     >
                         {origin}
                     </Button>
@@ -617,7 +616,7 @@ class Program extends React.Component {
                                     </Typography>
                                     <Typography dangerouslySetInnerHTML = {{__html:pinfo.title}} ></Typography>
                                     <Typography >
-                                        <a href={pinfo.url} target="_blank"><Button size="small">Learn More</Button></a>
+                                        <a href={pinfo.url} target="_blank" rel="noopener noreferrer"><Button size="small">Learn More</Button></a>
                                     </Typography>
                                 </CardContent>
                             </Card>
