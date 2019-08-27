@@ -9,9 +9,13 @@ import Chip from '@material-ui/core/Chip'
 import Button from '@material-ui/core/Button'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import Fade from '@material-ui/core/Fade'
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
-import CheckIcon from '@material-ui/icons/Check';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Fab from '@material-ui/core/Fab'
+import CheckIcon from '@material-ui/icons/Check'
+import Typography from '@material-ui/core/Typography'
+import LazyLoad from 'react-lazyload'
+import Divider from '@material-ui/core/Divider'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -22,18 +26,18 @@ const theme = global.constants.theme
 
 const styles = ({
     wrapper: {
-        paddingTop: "40px",
+        paddingTop: 40,
     },
     topLogo: {
-        padding: "10px",
+        padding: 10,
     },
     errorInfo: {
-        margin: "10px",
+        margin: 10,
         backgroundColor: theme.tipColor,
     },
     resultImg: {
         width: "90%",
-        padding: "5px"
+        padding: 5
     },
     resultVideo: {
         height: "100%",
@@ -43,9 +47,9 @@ const styles = ({
     },
     customInput: {
         color: theme.secondaryColor,
-        minWidth: "220px",
+        minWidth: 220,
         position: "relative",
-        left: "4px",
+        left: 4,
     },
     customUnderline: {
         '&:hover:not(disabled):before': {
@@ -61,16 +65,15 @@ const styles = ({
     customBtn: {
         color: "#fff",
         backgroundColor: theme.thirdlyColor,
-        fontSize: "0.85rem",
-        margin: "6px",
+        margin: 6,
         '&:hover': {
             backgroundColor: theme.primaryColor,
         },
     },
     customLine: {
         border: 0,
-        backgroundColor: theme.secondaryColor,
-        height: "1px",
+        backgroundColor: theme.otherColor,
+        height: 1,
     },
     progressRoot: {
         display: 'flex',
@@ -78,18 +81,18 @@ const styles = ({
         alignItems: "center"
     },
     progressWrapper: {
-        margin: "10px",
+        margin: 10,
         position: 'relative',
     },
     progressFab: {
         color: theme.secondaryColor,
         position: 'absolute',
-        left: "0px",
+        left: 0,
         zIndex: 1,
     },
     progressBtn: {
-        width: "48px",
-        height: "48px",
+        width: 48,
+        height: 48,
         backgroundColor: "transparent",
         boxShadow: "0 0",
         color: theme.secondaryColor,
@@ -97,6 +100,10 @@ const styles = ({
             backgroundColor: theme.otherColor,
         },
         
+    },
+    placeholderImg: {
+        margin: '5px auto',
+        width: "90%",
     }
 })
 
@@ -211,7 +218,7 @@ class Picture extends React.Component {
         let mediaTmp = []
         if (error === true) {
             mediaTmp.push(
-                <div key="error">
+                <Typography component='div' key="error">
                     <Fade in={error}>
                         <Chip
                             className={classes.errorInfo}
@@ -219,7 +226,7 @@ class Picture extends React.Component {
                             color="secondary"
                         />
                     </Fade>
-                </div>
+                </Typography>
             )
         } else {
             if (status === 0) {
@@ -228,17 +235,25 @@ class Picture extends React.Component {
                     for (let u in urls) {
                         if (urls[u].indexOf(".mp4") > 0) {
                             mediaTmp.push(
-                                <div key={"video" + u}>
+                                <Typography component='div' key={"video" + u}>
                                     <video className={classes.resultVideo} src={urls[u]} controls="controls" />
-                                    <hr className={classes.customLine} />
-                                </div>
+                                    <Divider className={classes.customLine} />
+                                </Typography>
                             )
                         } else {
                             mediaTmp.push(
-                                <div key={"img" + u}>
-                                    <img className={classes.resultImg} src={urls[u]} alt="" />
-                                    <hr className={classes.customLine} />
-                                </div>
+                                <Typography component='div' key={"img" + u}>
+                                     <LazyLoad 
+                                        height={200} 
+                                        offset={[-200, 0]} 
+                                        once 
+                                        placeholder={
+                                            <Skeleton variant="rect" height={200} className={classes.placeholderImg}/>
+                                        }>
+                                     <img className={classes.resultImg} src={urls[u]} alt="" />
+                                     </LazyLoad>
+                                    <Divider className={classes.customLine} />
+                                </Typography>
                             )
                         }
                     }
@@ -246,27 +261,27 @@ class Picture extends React.Component {
                 if (values.type === "hls") {
                     let urls = values.entities
                     mediaTmp.push(
-                        <div key="hls">
+                        <Typography component='div' key="hls">
                             <CopyToClipboard text={urls} onCopy={() => this.setState({copied: true, btnSta: "contained"})}>
                                 <Button variant="contained" className={classes.customBtn}>
                                     {this.state.btnInfo}
                                 </Button>
                             </CopyToClipboard>
-                        </div>
+                        </Typography>
                     )
                 }
                 if (values.type === "twitter") {
                     let urls = values.entities
                     mediaTmp.push(
-                        <div key={"video" + urls}>
+                        <Typography component='div' key={"video" + urls}>
                             <video className={classes.resultVideo} src={urls} controls="controls" />
-                            <hr className={classes.customLine} />
-                        </div>
+                            <Divider className={classes.customLine} />
+                        </Typography>
                     )
                 }
             } else {
                     mediaTmp.push(
-                    <div key="nodata" style={this.state.btndisp}>
+                    <Typography component='div' key="nodata" style={this.state.btndisp}>
                     <Fade in={status}>
                         <Chip
                             className={classes.errorInfo}
@@ -274,19 +289,19 @@ class Picture extends React.Component {
                             color="secondary"
                         />
                     </Fade>  
-                    </div>
+                    </Typography>
                 )
             }
         }
         return (
-            <div className={classes.wrapper}>
-                <p>
+            <Typography component='div' className={classes.wrapper}>
+                <Typography component="p">
                     <img className={classes.topLogo} src={IG} alt="ig"/>
                     <img className={classes.topLogo} src={MDPR} alt="mdpr" />
                     <img className={classes.topLogo} src={TPL} alt="tpl" />
                     <img className={classes.topLogo} src={DESSART} alt="dessart" />
-                </p>
-                <div className={classes.progressRoot}>
+                </Typography>
+                <Typography component='div' className={classes.progressRoot}>
                     <Input
                         classes={{root: classes.customInput, underline: classes.customUnderline}}
                         onChange={event=>this.changeText(event)}
@@ -296,15 +311,15 @@ class Picture extends React.Component {
                         onKeyUp={this.onKeyUp}
                         disableUnderline={false}
                     />
-                    <div className={classes.progressWrapper}>
+                    <Typography component='div' className={classes.progressWrapper}>
                         <Fab classes={{ root: classes.progressBtn }} onClick={this.picClick.bind(this)}>
                             {this.state.success ? <CheckIcon /> : <ImageSearch />}
                         </Fab>
                         {this.state.loading && <CircularProgress size={48} className={classes.progressFab} />}
-                    </div>
-                </div>
+                    </Typography>
+                </Typography>
                 {mediaTmp}
-            </div>
+            </Typography>
         )
     }
 }

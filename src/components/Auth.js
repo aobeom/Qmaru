@@ -12,20 +12,21 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Lock from '@material-ui/icons/Lock'
 import Chip from '@material-ui/core/Chip'
 import Fade from '@material-ui/core/Fade'
+import Typography from '@material-ui/core/Typography'
 
 const theme = global.constants.theme
 
 const styles = ({
     wrapper: {
-        paddingTop: "60px",
+        paddingTop: 60,
     },
     errorInfo: {
-        margin: "10px",
+        margin: 10,
         backgroundColor: theme.tipColor,
     },
     authInput: {
         margin: "10px auto",
-        maxWidth: "250px",
+        maxWidth: 250,
         display: "flex",
     },
     authLabel: {
@@ -51,9 +52,8 @@ const styles = ({
     },
     customBtn: {
         color: "#fff",
-        maxWidth: "100px",
+        maxWidth: 100,
         backgroundColor: theme.secondaryColor,
-        fontSize: "0.85rem",
         margin: "10px auto",
         '&:hover': {
             backgroundColor: theme.primaryColor,
@@ -170,7 +170,7 @@ class Auth extends React.Component {
         const passCheck = this.state.passCheck
         const info = this.state.info
         return (
-            <div className={classes.wrapper}>
+            <Typography component='div' className={classes.wrapper}>
                 <FormControl >
                     <Fade in={this.state.error}>
                         <Chip
@@ -218,7 +218,7 @@ class Auth extends React.Component {
                         Submit
                     </Button>
                 </FormControl>
-            </div>
+            </Typography>
         )
     }
 }

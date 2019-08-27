@@ -11,16 +11,18 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Chip from '@material-ui/core/Chip'
+import Link from '@material-ui/core/Link'
+import Divider from '@material-ui/core/Divider'
+import Skeleton from '@material-ui/lab/Skeleton'
 
 const theme = global.constants.theme
 
 const styles = ({
     wrapper: {
-        paddingTop: "40px",
-        width: "100%",
+        paddingTop: 40,
     },
     errorInfo: {
-        margin: "10px",
+        margin: 10,
         backgroundColor: theme.tipColor,
     },
     dateInfo: {
@@ -29,12 +31,12 @@ const styles = ({
         color: theme.tipColor,
     },
     panelSty: {
-        padding: "4px",
+        padding: 4,
     },
     urlInfo: {
         flexBasis: '60%',
         flexShrink: 0,
-        fontWeight: "500",
+        fontWeight: 500,
     },
     aTag: {
         color: theme.thirdlyColor,
@@ -51,6 +53,7 @@ const styles = ({
         flexShrink: 0,
     },
     topTime: {
+        marginBottom: 10,
         color: theme.tipColor,
         cursor: "default",
     },
@@ -58,13 +61,13 @@ const styles = ({
         textAlign: "left",
     },
     tvbtAtag: {
-        padding: "5px",
+        padding: 6,
     },
     fixBtn: {
         color: theme.tipColor,
     },
     btnGroup: {
-        paddingBottom: "10px",
+        paddingBottom: 10,
     },
     btnTime: {
         backgroundColor: theme.tipColor,
@@ -75,8 +78,7 @@ const styles = ({
     customBtn: {
         color: theme.otherColor,
         backgroundColor: theme.secondaryColor,
-        fontSize: "0.85rem",
-        margin: "5px",
+        margin: 6,
         '&:hover': {
             backgroundColor: theme.primaryColor,
         },
@@ -101,11 +103,13 @@ class Drama extends React.Component {
                 { name: "TVBT", value: "tvbt" },
                 { name: "SUBPIG", value: "subpig" },
                 { name: "FIXSUB", value: "fixsub" },
-            ]
+            ],
+            loading: false,
         }
     }
     PressButton(site) {
         this.setState({
+            loading: true,
             expanded: null,
         })
         let url = `${global.constants.api}/api/v1/drama/${site}`
@@ -119,6 +123,7 @@ class Drama extends React.Component {
                     this.setState({
                         status: status,
                         values: data.data,
+                        loading: false,
                     })
                 } else {
                     this.setState({
@@ -127,6 +132,7 @@ class Drama extends React.Component {
                         btndisp: {
                             display: "block",
                         },
+                        loading: false,
                     })
                 }
             })
@@ -137,6 +143,7 @@ class Drama extends React.Component {
                     btndisp: {
                         display: "block"
                     },
+                    loading: false,
                 }),
             )
     }
@@ -218,115 +225,119 @@ class Drama extends React.Component {
         const status = this.state.status
         const { classes } = this.props
         let dramaTmp = []
+        function Loading() {
+            return (
+                <Typography component='div'>
+                    <Skeleton width="100%" />
+                    <Skeleton width="100%" />
+                    <Skeleton width="100%" />
+                    <Skeleton width="100%" />
+                </Typography>
+            )
+        }
         function Eps(props) {
             if (props.site === "tvbt") {
                 return (
                     <Typography className={classes.tvbtText}>
                         {props.eps.map((ep) => (
-                            <a className={classes.tvbtAtag} key={ep[1]} href={ep[1] + '#' + ep[2]} target="_blank" rel="noopener noreferrer">
+                            <Link underline='none' className={classes.tvbtAtag} key={ep[1]} href={ep[1] + '#' + ep[2]} target="_blank" rel="noopener noreferrer">
                                 <Button variant="contained" className={classes.customBtn}>
                                     {'EP' + ep[0]}
                                 </Button>
-                            </a>
+                            </Link>
                         ))}
                     </Typography>
                 )
             } else if (props.site === "subpig") {
                 return (
                     <Typography className={classes.epInfo}>
-                        <a key={props.eps[1]} href={props.eps[0] + '#' + props.eps[1]} target="_blank" rel="noopener noreferrer">
+                        <Link underline='none' key={props.eps[1]} href={props.eps[0] + '#' + props.eps[1]} target="_blank" rel="noopener noreferrer">
                             <Button variant="contained" className={classes.customBtn}>
                                 BAIDU
                             </Button>
-                        </a>
+                        </Link>
                     </Typography>
                 )
             } else if (props.site === "fixsub") {
                 return (
                     <Typography component="div" className={classes.epInfo}>
                         {props.eps.map((ep) => (
-                            <span key={ep[0]}>
-                                <p className={classes.fixBtn}>
+                            <Typography component="span" key={ep[0]}>
+                                <Typography component="p" className={classes.fixBtn}>
                                     <Button disabled classes={{ label: classes.fixBtn }}>{'EP' + ep[0]}</Button>
-                                </p>
-                                <a href={ep[1]} target="_blank" rel="noopener noreferrer">
+                                </Typography>
+                                <Link underline='none' href={ep[1]} target="_blank" rel="noopener noreferrer">
                                     <Button variant="contained" className={classes.customBtn}>BD</Button>
-                                </a>
-                                <a href={ep[2]} target="_blank" rel="noopener noreferrer">
+                                </Link>
+                                <Link underline='none' href={ep[2]} target="_blank" rel="noopener noreferrer">
                                     <Button variant="contained" className={classes.customBtn}>MG</Button>
-                                </a>
-                                <a href={ep[3]} target="_blank" rel="noopener noreferrer">
+                                </Link>
+                                <Link underline='none' href={ep[3]} target="_blank" rel="noopener noreferrer">
                                     <Button variant="contained" className={classes.customBtn}>E2K</Button>
-                                </a>
-                            </span>))}
+                                </Link>
+                            </Typography>))}
                     </Typography>
                 )
             }
-        }
-
-        function Dramadata(props) {
-            return (
-                <ExpansionPanel expanded={expanded === props.panel} onChange={props.this.handleChange(props.panel)}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.dateInfo} component="p" color="textPrimary">
-                            {props.drama.date}
-                        </Typography>
-                        <Typography className={classes.urlInfo} color="textSecondary" component="div">
-                            <a className={classes.aTag} href={props.drama.url} target="_blank" rel="noopener noreferrer">
-                                <Typography className={classes.aTag} dangerouslySetInnerHTML={{ __html: props.drama.title }} ></Typography>
-                            </a>
-                        </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Eps site={props.site} eps={props.eps} />
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            )
         }
         if (status === 0) {
             let dramaSite = values.name
             let dramaData = values.entities
             for (let i in dramaData) {
                 let panel = 'panel' + i
+                let dramaDetails = dramaData[i]
+                let dramaEps = dramaDetails["dlurls"]
                 dramaTmp.push(
-                    <div key={i} className={classes.panelSty} >
-                        <Dramadata this={this} panel={panel} drama={dramaData[i]} eps={dramaData[i]["dlurls"]} site={dramaSite} />
-                    </div>
+                    <Typography component='div' key={i} className={classes.panelSty}>
+                        <ExpansionPanel expanded={expanded === panel} onChange={this.handleChange(panel)}>
+                            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                                <Typography className={classes.dateInfo} component="p" color="textPrimary">
+                                    {dramaDetails.date}
+                                </Typography>
+                                <Typography className={classes.urlInfo} color="textSecondary" component="div">
+                                    <Link underline='none' className={classes.aTag} href={dramaDetails.url} target="_blank" rel="noopener noreferrer">
+                                        <Typography className={classes.aTag} dangerouslySetInnerHTML={{ __html: dramaDetails.title }} ></Typography>
+                                    </Link>
+                                </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Eps site={dramaSite} eps={dramaEps} />
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                    </Typography>
                 )
             }
         } else {
             dramaTmp.push(
-                <div key="error" style={this.state.btndisp}>
+                <Typography component='div' key="error" style={this.state.btndisp}>
                     <Chip
                         className={classes.errorInfo}
                         label={values}
                         color="secondary"
                     />
-                </div>
+                </Typography>
             )
         }
         return (
-            <div className={classes.wrapper}>
-                <p className={classes.topTime}>
+            <Typography component='div' className={classes.wrapper}>
+                <Typography className={classes.topTime} component="p">
                     {time}
-                </p>
+                </Typography>
                 <Button disabled size="medium" classes={{ label: classes.btnLabel, disabled: classes.btnTime }}>
                     <AccessTime />
                     &nbsp; {hour + ":" + minute + ":" + second}
                 </Button>
-                <br />
-                <br />
-                <div className={classes.btnGroup}>
-
+                <Divider component='br' />
+                <Divider component='br' />
+                <Typography component='div' className={classes.btnGroup}>
                     {btnGroup.map((bg, index) => (
                         <Button key={"btn" + index} variant="contained" className={classes.customBtn} onClick={this.PressButton.bind(this, bg.value)}>
                             {bg.name}
                         </Button>
                     ))}
-
-                </div>
-                {dramaTmp}
-            </div>
+                </Typography>
+                {this.state.loading ? <Loading /> : dramaTmp}
+            </Typography>
         )
     }
 }

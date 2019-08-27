@@ -15,20 +15,20 @@ const theme = global.constants.theme
 
 const styles = ({
     wrapper: {
-        padding: "30px",
+        padding: 30,
     },
     indexCard: {
-        margin: "10px",
+        margin: 10,
         cursor: "default",
     },
     indexSpacing: {
         color: theme.textColor,
-        padding: "6px",
+        padding: 6,
     },
     indexCardMainText: {
         color: theme.textColor,
         textAlign: "left",
-        padding: "8px",
+        padding: 8,
     },
     indexBtn: {
         color: theme.textColor,
@@ -73,7 +73,7 @@ class IndexPage extends React.Component {
         const { classes } = this.props
         const cardTmp = []
         cardTmp.push(
-            <div key="index" className={classes.wrapper}>
+            <Typography component='div' key="index" className={classes.wrapper}>
                 {intro.map((i, index) => (
                     <Card key={"c" + index} className={classes.indexCard}>
                         <CardContent>
@@ -87,12 +87,12 @@ class IndexPage extends React.Component {
                         </CardContent>
                     </Card>
                 ))}
-            </div>
+            </Typography>
         )
         return (
-            <div>
+            <Typography component='div'>
                 {cardTmp}
-            </div>
+            </Typography>
         )
     }
 }

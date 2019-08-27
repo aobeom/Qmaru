@@ -272,11 +272,11 @@ class RikaMsg extends React.Component {
         if (status === 0) {
             if (loadBtn === true) {
                 loadTmp.push(
-                    <div key="load" className={classes.loadBtn}>
+                    <Typography component='div' key="load" className={classes.loadBtn}>
                         <Button disabled={this.state.loadDis} variant="contained" className={classes.customBtn} onClick={this.loadMoreData.bind(this)}>
                         {loadText} 
                         </Button>
-                    </div>
+                    </Typography>
                 )
             }
             for (let e in entities) {
@@ -332,11 +332,11 @@ class RikaMsg extends React.Component {
                     )
                 } else {
                     mediaIcon.push(
-                        <span key={"null" + e}></span>
+                        <Typography component='span' key={"null" + e}></Typography>
                     )
                 }
                 msgTmp.push(
-                    <div key={"msg" + e} className={classes.cardSpacing}>
+                    <Typography component='div' key={"msg" + e} className={classes.cardSpacing}>
                         <Card>
                             <CardHeader
                                 avatar={
@@ -364,32 +364,32 @@ class RikaMsg extends React.Component {
                                 </CardContent>
                             </Collapse>
                         </Card>
-                    </div>
+                    </Typography>
                 )
             }
         } else {
             msgTmp.push(
-                <div key="error" style={this.state.btndisp}>
+                <Typography component='div' key="error" style={this.state.btndisp}>
                     <Chip
                         className={classes.errorInfo}
                         label={info}
                         color="secondary"
                     />
-                </div>
+                </Typography>
             )
         }
         return(
-            <div className={classes.wrapper}>
+            <Typography component='div' className={classes.wrapper}>
                 {btnGroup.map((btn, index) => (
                     <Button key={"r" + index} variant="text" color="primary" classes={{root: classes.msgBtn}} onClick={this.msgTypeChooice.bind(this, btn.type)}>
                         {btn.name}
                     </Button>
                 ))}
-                <div>
+                <Typography component='div'>
                     {msgTmp}
-                </div>
+                </Typography>
                 {loadTmp}
-            </div>  
+            </Typography>  
         )
     }
 }

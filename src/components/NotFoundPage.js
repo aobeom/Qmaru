@@ -4,25 +4,25 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import Link from '@material-ui/core/Link'
 
 const theme = global.constants.theme
 
 const styles = ({
     wrapper: {
-        paddingTop: "60px",
+        paddingTop: 20,
     },
     errorCode: {
         color: theme.primaryColor,
-        fontSize: "4rem",
     },
     errorText: {
-        margin: "5px",
+        margin: 6,
     },
     customBtn: {
         color: "#fff",
         backgroundColor: theme.secondaryColor,
-        fontSize: "0.85rem",
-        margin: "5px",
+        margin: 6,
         '&:hover': {
             backgroundColor: theme.primaryColor,
         },
@@ -33,18 +33,24 @@ class NotFoundPage extends React.Component {
     render() {
         const { classes } = this.props
         return (
-            <div className={classes.wrapper}>
-                <div className={classes.errorCode}>
-                    <p className={classes.errorText}>404</p> 
-                    <p className={classes.errorText}>Not</p> 
-                    <p className={classes.errorText}>Found</p>
-                </div>
-                <a href="/">
+            <Typography component='div' className={classes.wrapper}>
+                <Typography component='div' className={classes.errorCode}>
+                <Typography component="p" variant="h3" className={classes.errorText}>
+                        404
+                </Typography>
+                    <Typography component="p" variant="h3" className={classes.errorText}>
+                        Not
+                </Typography>
+                    <Typography component="p" variant="h3" className={classes.errorText}>
+                        Found
+                </Typography>
+                </Typography>
+                <Link underline='none' href="/">
                     <Button variant="contained" className={classes.customBtn}>
                         BACK
                     </Button>
-                </a>
-            </div>
+                </Link>
+            </Typography>
         )
     }
 }
@@ -52,5 +58,5 @@ class NotFoundPage extends React.Component {
 NotFoundPage.propTypes = {
     classes: PropTypes.object.isRequired,
 }
-  
+
 export default withStyles(styles)(NotFoundPage)

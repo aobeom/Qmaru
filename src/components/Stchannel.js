@@ -4,11 +4,15 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
+import Box from '@material-ui/core/Box'
 import Info from '@material-ui/icons/Info'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
+import Link from '@material-ui/core/Link'
+import Skeleton from '@material-ui/lab/Skeleton'
+import LazyLoad from 'react-lazyload'
 
 const theme = global.constants.theme
 
@@ -51,6 +55,13 @@ const styles = ({
             backgroundColor: theme.primaryColor,
         },
     },
+    SkeletonCls: {
+        margin: '10px auto'
+    },
+    placeholderImg: {
+        margin: '5px auto',
+        width: "90%",
+    }
 })
 
 class Stchannel extends React.Component {
@@ -62,6 +73,7 @@ class Stchannel extends React.Component {
             btndisp: {
                 display: "none",
             },
+            loading: true,
         }
     }
     componentDidMount() {
@@ -78,6 +90,7 @@ class Stchannel extends React.Component {
                         status: status,
                         values: sdata.entities,
                         time: sdata.time,
+                        loading: false,
                     })
                 } else {
                     this.setState({
@@ -88,6 +101,7 @@ class Stchannel extends React.Component {
                             display: "block",
                             padding: "20px",
                         },
+                        loading: false,
                     })
                 }
             })
@@ -100,6 +114,7 @@ class Stchannel extends React.Component {
                         display: "block",
                         padding: "20px",
                     },
+                    loading: false,
                 })
             )
     }
@@ -116,20 +131,37 @@ class Stchannel extends React.Component {
         let stTmp = []
         let stTime = []
         stTime.push(
-            <div key="time">
+            <Typography component='div' key="time">
                 <Button disabled size="medium" classes={{label:classes.btnLabel,disabled: classes.btnTime}}>
                     <Info  />
                     &nbsp; {time}
                 </Button>
                 <br />
                 <br />
-            </div>
+            </Typography>
         )
+        function Loading() {
+            return (<Typography component='div'>
+                <Box width="100%" >
+                <Skeleton width="16%" height={30} className={classes.SkeletonCls} />
+                <Skeleton width="100%" height={10}/>
+                <Skeleton width="100%" height={10}/>
+                <Skeleton width="80%" height={10}/>
+                <Skeleton variant="rect" width="100%" height={400} />
+                <Skeleton width="16%" height={30} className={classes.SkeletonCls} />
+                </Box>
+            </Typography>)
+        }
         if (status === 0) {
             for (let s in st_info) {
                 let sdata = st_info[s]
                 stTmp.push(
-                    <div className={classes.stCard} key={"s" + s}>
+                    <Typography component='div' className={classes.stCard} key={"s" + s}>
+                        <LazyLoad 
+                            height={200} 
+                            offset={[-200, 0]} 
+                            once 
+                            placeholder={<Loading />}>
                         <Card>
                             <CardContent style={{paddingBottom: "16px"}}>
                                 <Typography component="p" className={classes.stText}>
@@ -141,32 +173,33 @@ class Stchannel extends React.Component {
                                     <img className={classes.resultImg} src={sdata.purl} alt={"i" + s}></img>
                                 </Typography>
                                 <Typography>
-                                    <a href={sdata.path} target="_blank" download rel="noopener noreferrer">
+                                    <Link underline='none' href={sdata.path} target="_blank" download rel="noopener noreferrer">
                                         <Button variant="contained" className={classes.customBtn}>Download</Button>
-                                    </a>
+                                    </Link>
                                 </Typography>
                             </CardContent>
                         </Card>
-                    </div>
+                        </LazyLoad>
+                    </Typography>
                     
                 )
             }
         } else {
             stTmp.push(
-                <div key="error" style={this.state.btndisp}>
+                <Typography component='div' key="error" style={this.state.btndisp}>
                     <Chip
                         className={classes.errorInfo}
                         label={st_info}
                         color="secondary"
                     />
-                </div>
+                </Typography>
             )
         }
         return (
-            <div className={classes.wrapper}>
+            <Typography component='div' className={classes.wrapper}>
                 {stTime}
-                {stTmp}
-            </div> 
+                {this.state.loading ? <Loading /> : stTmp}
+            </Typography> 
         )
     }
 }

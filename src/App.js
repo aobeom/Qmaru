@@ -295,8 +295,8 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <Route render={({ location }) => (
-                    <div className={classes.wrapper}>
-                        <div>
+                    <Typography component='div' className={classes.wrapper}>
+                        <Typography component='div'>
                             <AppBar position="static" color="default" className={classes.header}>
                                 <Toolbar>
                                     <Typography variant="subtitle1" color="inherit" key="title">
@@ -307,9 +307,9 @@ class App extends Component {
                                     {tabs}
                                 </Toolbar>
                             </AppBar>
-                        </div>
+                        </Typography>
 
-                        <div className={classes.main}>
+                        <Typography component='div' className={classes.main}>
                             <TransitionGroup>
                                 <CSSTransition
                                     key={location.key}
@@ -318,22 +318,23 @@ class App extends Component {
                                     unmountOnExit
                                     appear
                                 >
-                                    <div key={location.pathname} >
+                                    <Typography component='div' key={location.pathname} >
                                         <Switch key={location.key} location={location}>
                                             {routers.map((route, index) => (
                                                 <Route key={"r" + index} path={route.path} exact component={route.component} />
                                             ))}
                                         </Switch>
-                                    </div>
+                                    </Typography>
                                 </CSSTransition>
                             </TransitionGroup>
-                        </div>
+                        </Typography>
 
-                        <div className={classes.footer}>
-                            <span className={classes.footerSpan}>© 2017-2019 AoBeom v4.0</span>
-                        </div>
-
-                    </div>
+                        <Typography component='div' className={classes.footer}>
+                            <Typography component='span' className={classes.footerSpan}>
+                                © 2017-2019 AoBeom v4.0
+                            </Typography>
+                        </Typography>
+                    </Typography>
                 )} />
             </BrowserRouter>
         )

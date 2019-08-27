@@ -14,9 +14,10 @@ import Chip from '@material-ui/core/Chip'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Fab from '@material-ui/core/Fab';
-import CheckIcon from '@material-ui/icons/Check';
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Fab from '@material-ui/core/Fab'
+import CheckIcon from '@material-ui/icons/Check'
+import Link from '@material-ui/core/Link'
 
 import yahooLogo from '../static/img/yahoo.png'
 
@@ -577,32 +578,32 @@ class Program extends React.Component {
         }
         if (error === true) {
             progTitle.push(
-                <div key="error">
+                <Typography component='div' key="error">
                     <Chip
                         className={classes.errorInfo}
                         label={info}
                         color="secondary"
                     />
-                </div>
+                </Typography>
             )
         } else {
             progTitle.push(
-                <div key="title" style={this.state.btndisp}>
-                    <a href={url} target="_blank" rel="noopener noreferrer">
+                <Typography component='div' key="title" style={this.state.btndisp}>
+                    <Link underline='none' href={url} target="_blank" rel="noopener noreferrer">
                     <Button 
                         variant="contained" className={classes.customBtn}
                     >
                         {origin}
                     </Button>
-                    </a>
-                </div>
+                    </Link>
+                </Typography>
             )
             if (values !== 0) {
                 let prog_info = values.entities
                 for (let p in prog_info) {
                     let pinfo = prog_info[p]
                     progTmp.push(
-                        <div className={classes.progCard} key={"prog" + p}>
+                        <Typography component='div' className={classes.progCard} key={"prog" + p}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="headline" component="h2">
@@ -620,19 +621,19 @@ class Program extends React.Component {
                                     </Typography>
                                 </CardContent>
                             </Card>
-                        </div>
+                        </Typography>
                     )
                 }
             }
         }
         return (
-            <div>
-                <p className={classes.topLogo}>
-                    <a href="https://tv.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">
+            <Typography component='div'>
+                <Typography component='p' className={classes.topLogo}>
+                    <Link underline='none' href="https://tv.yahoo.co.jp/" target="_blank" rel="noopener noreferrer">
                         <img src={yahooLogo} style={{width: "200px"}} alt="" />
-                    </a>
-                </p>
-                <div className={classes.progressRoot}>
+                    </Link>
+                </Typography>
+                <Typography component='div' className={classes.progressRoot}>
                     <FormControl className={classes.customForm}>
                         <Select
                             value={this.state.district}
@@ -653,16 +654,16 @@ class Program extends React.Component {
                         inputProps={{'aria-label': 'Description'}}
                         onKeyUp={this.onKeyUp}
                     />
-                    <div className={classes.progressWrapper}>
+                    <Typography component='div' className={classes.progressWrapper}>
                         <Fab classes={{ root: classes.progressBtn }}  onClick={this.progClick.bind(this)}>
                             {this.state.success ? <CheckIcon /> : <YoutubeSearchedFor />}
                         </Fab>
                         {this.state.loading && <CircularProgress size={48} className={classes.progressFab} />}
-                    </div>
-                </div>
+                    </Typography>
+                </Typography>
                 {progTitle}
                 {progTmp}
-            </div>
+            </Typography>
         )
     }
 }
