@@ -240,9 +240,9 @@ class Drama extends React.Component {
                 return (
                     <Typography className={classes.tvbtText}>
                         {props.eps.map((ep) => (
-                            <Link underline='none' className={classes.tvbtAtag} key={ep[1]} href={ep[1] + '#' + ep[2]} target="_blank" rel="noopener noreferrer">
+                            <Link underline='none' className={classes.tvbtAtag} key={"tvbt" + ep.ep} href={ep.url} target="_blank" rel="noopener noreferrer">
                                 <Button variant="contained" className={classes.customBtn}>
-                                    {'EP' + ep[0]}
+                                    {'EP' + ep.ep}
                                 </Button>
                             </Link>
                         ))}
@@ -251,28 +251,30 @@ class Drama extends React.Component {
             } else if (props.site === "subpig") {
                 return (
                     <Typography className={classes.epInfo}>
-                        <Link underline='none' key={props.eps[1]} href={props.eps[0] + '#' + props.eps[1]} target="_blank" rel="noopener noreferrer">
-                            <Button variant="contained" className={classes.customBtn}>
-                                BAIDU
-                            </Button>
-                        </Link>
+                        {props.eps.map((ep) => (
+                            <Link underline='none' className={classes.tvbtAtag} key={"subpig" + ep.ep} href={ep.url} target="_blank" rel="noopener noreferrer">
+                                <Button variant="contained" className={classes.customBtn}>
+                                    BAIDU
+                                </Button>
+                            </Link>
+                        ))}
                     </Typography>
                 )
             } else if (props.site === "fixsub") {
                 return (
                     <Typography component="div" className={classes.epInfo}>
                         {props.eps.map((ep) => (
-                            <Typography component="span" key={ep[0]}>
+                            <Typography component="span" key={"fixsub" + ep.ep}>
                                 <Typography component="p" className={classes.fixBtn}>
-                                    <Button disabled classes={{ label: classes.fixBtn }}>{'EP' + ep[0]}</Button>
+                                    <Button disabled classes={{ label: classes.fixBtn }}>{'EP' + ep.ep}</Button>
                                 </Typography>
-                                <Link underline='none' href={ep[1]} target="_blank" rel="noopener noreferrer">
+                                <Link underline='none' href={ep.url.split(",")[0]} target="_blank" rel="noopener noreferrer">
                                     <Button variant="contained" className={classes.customBtn}>BD</Button>
                                 </Link>
-                                <Link underline='none' href={ep[2]} target="_blank" rel="noopener noreferrer">
+                                <Link underline='none' href={ep.url.split(",")[1]} target="_blank" rel="noopener noreferrer">
                                     <Button variant="contained" className={classes.customBtn}>MG</Button>
                                 </Link>
-                                <Link underline='none' href={ep[3]} target="_blank" rel="noopener noreferrer">
+                                <Link underline='none' href={ep.url.split(",")[2]} target="_blank" rel="noopener noreferrer">
                                     <Button variant="contained" className={classes.customBtn}>E2K</Button>
                                 </Link>
                             </Typography>))}
