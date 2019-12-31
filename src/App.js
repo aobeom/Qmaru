@@ -339,7 +339,7 @@ class App extends Component {
 
                             <Typography component='div' className={classes.footer}>
                                 <Typography component='span' className={classes.footerSpan}>
-                                    © 2017-2019 AoBeom v4.0
+                                    © 2017-2020
                             </Typography>
                             </Typography>
                         </Typography>

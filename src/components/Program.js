@@ -606,7 +606,7 @@ class Program extends React.Component {
                         <Typography component='div' className={classes.progCard} key={"prog" + p}>
                             <Card>
                                 <CardContent>
-                                    <Typography variant="headline" component="h2">
+                                    <Typography variant="h5" component="h2">
                                         {pinfo.date}
                                     </Typography>
                                     <Typography color="textSecondary" >

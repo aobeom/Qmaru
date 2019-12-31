@@ -77,7 +77,7 @@ class IndexPage extends React.Component {
                 {intro.map((i, index) => (
                     <Card key={"c" + index} className={classes.indexCard}>
                         <CardContent>
-                            <Typography variant="headline" component="h2" className={classes.indexSpacing}>
+                            <Typography variant="h5" component="h2" className={classes.indexSpacing}>
                                 {i.name}
                             </Typography>
                             <Typography className={classes.indexCardMainText} dangerouslySetInnerHTML = {{__html:i.info}} ></Typography>
