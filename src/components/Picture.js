@@ -16,6 +16,8 @@ import Typography from '@material-ui/core/Typography'
 import LazyLoad from 'react-lazyload'
 import Divider from '@material-ui/core/Divider'
 import Skeleton from '@material-ui/lab/Skeleton'
+import Tooltip from '@material-ui/core/Tooltip'
+import Zoom from '@material-ui/core/Zoom'
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -44,6 +46,21 @@ const styles = ({
         width: "90%",
         margin: "0 auto",
         display: "block",
+    },
+    tipCls: {
+        position: "relative",
+        right: 120,
+        padding: 0,
+        margin: 0,
+        color: theme.tipColor,
+        '&:hover': {
+            backgroundColor: theme.otherColor,
+        },
+    },
+    tipWidth: {
+        maxWidth: 250,
+        color: theme.otherColor,
+        backgroundColor: theme.primaryColor
     },
     customInput: {
         color: theme.secondaryColor,
@@ -99,7 +116,6 @@ const styles = ({
         '&:hover': {
             backgroundColor: theme.otherColor,
         },
-        
     },
     placeholderImg: {
         margin: '5px auto',
@@ -305,7 +321,7 @@ class Picture extends React.Component {
                     <Input
                         classes={{root: classes.customInput, underline: classes.customUnderline}}
                         onChange={event=>this.changeText(event)}
-                        placeholder="URL[?update]"
+                        placeholder="URL"
                         inputProps={{'aria-label': 'Description'}}
                         autoFocus={false}
                         onKeyUp={this.onKeyUp}
@@ -318,6 +334,20 @@ class Picture extends React.Component {
                         {this.state.loading && <CircularProgress size={48} className={classes.progressFab} />}
                     </Typography>
                 </Typography>
+                <Tooltip
+                    className={classes.tipCls}
+                    classes={{
+                        tooltip: classes.tipWidth
+                    }}
+                    title="For unfinished news(mdpr) you can append ?update at the end of the URL to get the latest content."
+                    placement="right"
+                    TransitionComponent={Zoom}
+                    enterTouchDelay={50}
+                    leaveTouchDelay={3000}
+                    interactive
+                >
+                    <Button>TIPS</Button>
+                </Tooltip>
                 {mediaTmp}
             </Typography>
         )
