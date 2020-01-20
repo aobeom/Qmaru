@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 import AccessTime from '@material-ui/icons/AccessTime'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -67,7 +68,19 @@ const styles = ({
         color: theme.tipColor,
     },
     btnGroup: {
-        paddingBottom: 10,
+        marginBottom: 10,
+    },
+    btnGroupBtn: {
+        color: theme.otherColor,
+        backgroundColor: theme.secondaryColor,
+        '&:hover': {
+            backgroundColor: theme.primaryColor,
+        },
+    },
+    customBtnHorizontal: {
+        '&:not(:last-child)': {
+            borderRight: `1px solid ${theme.primaryColor}`,
+        }
     },
     btnTime: {
         backgroundColor: theme.tipColor,
@@ -331,13 +344,21 @@ class Drama extends React.Component {
                 </Button>
                 <Divider component='br' />
                 <Divider component='br' />
-                <Typography component='div' className={classes.btnGroup}>
+                <ButtonGroup 
+                    variant="contained"
+                    className={classes.btnGroup}
+                    classes={{
+                        groupedContained: classes.btnGroupBtn,
+                        groupedContainedHorizontal: classes.customBtnHorizontal
+                    }}
+                    aria-label="Drama List"
+                >
                     {btnGroup.map((bg, index) => (
-                        <Button key={"btn" + index} variant="contained" className={classes.customBtn} onClick={this.PressButton.bind(this, bg.value)}>
+                        <Button key={"btn" + index} onClick={this.PressButton.bind(this, bg.value)}>
                             {bg.name}
                         </Button>
                     ))}
-                </Typography>
+                </ButtonGroup>
                 {this.state.loading ? <Loading /> : dramaTmp}
             </Typography>
         )

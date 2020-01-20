@@ -14,12 +14,40 @@ import Stchannel from './components/Stchannel'
 import Radiko from './components/Radiko'
 import NotFoundPage from './components/NotFoundPage'
 
-import Button from '@material-ui/core/Button'
+import PicIcon from '@material-ui/icons/Instagram';
+import DramaIcon from '@material-ui/icons/Tv'
+import ProgramIcon from '@material-ui/icons/PlaylistAddCheck';
+import STIcon from '@material-ui/icons/YouTube';
+import RadikoIcon from '@material-ui/icons/Radio'
+
+
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
+
 import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 
+
 const theme = global.constants.theme
+
+
+const MyTab = withStyles({
+    root: {
+        color: theme.fourthColor,
+        "&:hover": {
+            color: theme.otherColor
+        },
+        '&$selected': {
+            color: theme.otherColor,
+        }
+    },
+    selected: {
+        "&:hover": {
+            color: theme.otherColor,
+        }
+    }
+})(Tab)
+
 
 const styles = ({
     wrapper: {
@@ -29,7 +57,15 @@ const styles = ({
         minHeight: "100vh",
     },
     header: {
-        backgroundColor: theme.tipColor,
+        backgroundColor: theme.textColor,
+        top: "auto",
+        bottom: 0,
+    },
+    tabsWrapper: {
+        justifyContent: "center"
+    },
+    tabsIndicator: {
+        backgroundColor: theme.otherColor,
     },
     main: {
         flex: "1",
@@ -39,281 +75,93 @@ const styles = ({
         textAlign: "center",
         justifyContent: "center",
         paddingBottom: "30px",
-    },
-    footer: {
-        width: "auto",
-        bottom: "0",
-        textAlign: "center",
-        fontSize: "16px",
-        height: "30px",
-    },
-    footerSpan: {
-        height: "50px",
-        color: theme.primaryColor,
-        cursor: "default",
-    },
+    }
 })
 
 class App extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            titles: ["PICTURE", "DRAMA", "PROGRAM", "STCHANNEL", "RADIKO"],
-            paths: ["picture", "drama", "program", "stchannel", "radiko"],
-            site: {
-                color: theme.textColor,
-                fontWeight: "1000",
-                fontSize: "1.5rem",
-                margin: "0",
-            },
+            tabValue: undefined,
+            titles: [
+                { "title": "PICTURE", "icon": <PicIcon />, "id": 0},
+                { "title": "DRAMA", "icon": <DramaIcon />, "id": 1},
+                { "title": "PROGRAM", "icon": <ProgramIcon />, "id": 2},
+                { "title": "STCHANNEL", "icon": <STIcon />, "id": 3},
+                { "title": "RADIKO", "icon": <RadikoIcon />, "id": 4}
+            ],
             width: props.width || -1,
             routers: [
-                { "path": "/", "component": IndexPage },
                 { "path": "/picture", "component": Picture },
                 { "path": "/drama", "component": Drama },
                 { "path": "/program", "component": Program },
                 { "path": "/stchannel", "component": Stchannel },
                 { "path": "/radiko", "component": Radiko },
-                { "path": "*", "component": NotFoundPage },
             ],
         }
     }
     componentDidMount() {
-        this.updateSize()
-        window.addEventListener('resize', () => this.updateSize())
         this.updateBar()
     }
     updateBar() {
+        let titles = this.state.titles
         let uri = window.location.pathname.split('/')[1]
-        let index = ""
-        if (this.state.paths.indexOf(uri) !== "-1") {
-            index = this.state.paths.indexOf(uri)
-        }
-        this.setState({
-            currentindex: String(index)
-        })
-    }
-    updateSize() {
-        let { width } = this.props
-        if (!width) {
-            width = document.body.clientWidth
-            if (width > 450 & width < 640) {
+        for (let i in titles) {
+            let data = titles[i]
+            let title = data["title"].toLowerCase()
+            if (title === uri) {
                 this.setState({
-                    btnUp: {
-                        padding: "10px",
-                        fontWeight: "600",
-                        color: theme.thirdlyColor,
-                        minWidth: "32px",
-                    },
-                    btnDown: {
-                        padding: "10px",
-                        fontWeight: "600",
-                        color: theme.otherColor,
-                        minWidth: "32px",
-                    },
-                    linkUp: {
-                        position: "relative",
-                        left: "20px",
-                        color: theme.thirdlyColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    linkDown: {
-                        position: "relative",
-                        left: "20px",
-                        color: theme.otherColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    site: {
-                        color: theme.otherColor,
-                        fontWeight: "1000",
-                        fontSize: "1.35rem",
-                        margin: "0"
-                    },
-                    titles: [
-                        { name: "PICTURE", id: "0" },
-                        { name: "DRAMA", id: "1" },
-                        { name: "PROGRAM", id: "2" },
-                        { name: "STCHANNEL", id: "3" },
-                        { name: "RADIKO", id: "4" },
-                    ],
-                })
-            } else if (width > 400 & width < 450) {
-                this.setState({
-                    btnUp: {
-                        padding: "8px",
-                        fontWeight: "600",
-                        color: theme.thirdlyColor,
-                        minWidth: "32px",
-                    },
-                    btnDown: {
-                        padding: "8px",
-                        fontWeight: "600",
-                        color: theme.otherColor,
-                        minWidth: "32px",
-                    },
-                    linkUp: {
-                        position: "relative",
-                        left: "8px",
-                        color: theme.thirdlyColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    linkDown: {
-                        position: "relative",
-                        left: "8px",
-                        color: theme.otherColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    site: {
-                        color: theme.otherColor,
-                        fontWeight: "1000",
-                        fontSize: "1.2rem",
-                        margin: "0"
-                    },
-                    titles: [
-                        { name: "PIC", id: "0" },
-                        { name: "DRAMA", id: "1" },
-                        { name: "PROG", id: "2" },
-                        { name: "ST", id: "3" },
-                        { name: "RA", id: "4" },
-                    ],
-                })
-            } else if (width < 400) {
-                this.setState({
-                    btnUp: {
-                        fontWeight: "600",
-                        color: theme.thirdlyColor,
-                        minWidth: "32px",
-                        padding: "8px",
-                    },
-                    btnDown: {
-                        fontWeight: "600",
-                        color: theme.otherColor,
-                        minWidth: "32px",
-                        padding: "8px",
-                    },
-                    linkUp: {
-                        position: "relative",
-                        left: "4px",
-                        color: theme.thirdlyColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    linkDown: {
-                        position: "relative",
-                        left: "4px",
-                        color: theme.otherColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    site: {
-                        color: theme.otherColor,
-                        fontWeight: "1000",
-                        fontSize: "1.2rem",
-                        margin: "0"
-                    },
-                    titles: [
-                        { name: "PIC", id: "0" },
-                        { name: "DRA", id: "1" },
-                        { name: "PROG", id: "2" },
-                        { name: "ST", id: "3" },
-                        { name: "RA", id: "4" },
-                    ],
-                })
-            }
-            else {
-                this.setState({
-                    btnUp: {
-                        padding: "10px",
-                        fontWeight: "600",
-                        color: theme.thirdlyColor,
-                        minWidth: "32px",
-                    },
-                    btnDown: {
-                        padding: "10px",
-                        fontWeight: "600",
-                        color: theme.otherColor,
-                        minWidth: "32px",
-                    },
-                    linkUp: {
-                        position: "relative",
-                        left: "50px",
-                        color: theme.thirdlyColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    linkDown: {
-                        position: "relative",
-                        left: "50px",
-                        color: theme.otherColor,
-                        textDecoration: "none",
-                        display: "block",
-                    },
-                    site: {
-                        color: theme.otherColor,
-                        fontWeight: "1000",
-                        fontSize: "1.5rem",
-                        textDecoration: "none",
-                        margin: "0"
-                    },
-                    titles: [
-                        { name: "PICTURE", id: "0" },
-                        { name: "DRAMA", id: "1" },
-                        { name: "PROGRAM", id: "2" },
-                        { name: "STCHANNEL", id: "3" },
-                        { name: "RADIKO", id: "4" },
-                    ],
+                    tabValue: parseInt(i)
                 })
             }
         }
-        this.setState({ width })
-    }
-    tabChoiced(id) {
-        this.setState({
-            currentindex: id
-        })
+        if (uri === "") {
+            this.setState({
+                tabValue: undefined
+            })
+        }
     }
     componentWillUnmount() {
         this.setState = () => {
             return
         }
     }
+    tabSwitch(e, newValue) {
+        this.setState({
+            tabValue: newValue
+        })
+    }
     render() {
         const titles = this.state.titles
-        const paths = this.state.paths
+        const tabValue = this.state.tabValue
         const { classes } = this.props
         const routers = this.state.routers
-        let tabs = titles.map(function (t, index) {
-            let linkUp = this.state.linkUp
-            let linkDown = this.state.linkDown
-            let btnUp = this.state.btnUp
-            let btnDown = this.state.btnDown
-            let linkStyle = t.id === this.state.currentindex ? linkDown : linkUp
-            let btnStyle = t.id === this.state.currentindex ? btnDown : btnUp
-            return <Link to={paths[index]} style={linkStyle} key={"t" + index} replace>
-                <Button style={btnStyle} color="primary" onClick={this.tabChoiced.bind(this, t.id)}>
-                    &nbsp;{t.name}
-                </Button>
-            </Link>
-        }.bind(this))
         return (
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <BrowserRouter>
                     <Route render={({ location }) => (
                         <Typography component='div' className={classes.wrapper}>
+
                             <Typography component='div'>
-                                <AppBar position="static" color="default" className={classes.header}>
-                                    <Toolbar>
-                                        <Typography variant="subtitle1" color="inherit" key="title">
-                                            <Typography style={this.state.site} color="inherit">
-                                                Qmaru
-                                </Typography>
-                                        </Typography>
-                                        {tabs}
-                                    </Toolbar>
+                                <AppBar position="fixed" className={classes.header}>
+                                    <Tabs
+                                        classes={{
+                                            flexContainer: classes.tabsWrapper,
+                                            indicator: classes.tabsIndicator
+                                        }}
+                                        value={tabValue}
+                                        onChange={this.tabSwitch.bind(this)}
+                                    >
+                                        {titles.map((title, index) => (
+                                            <MyTab
+                                                key={"r" + index}
+                                                // label={title.title}
+                                                icon={title.icon}
+                                                component={Link}
+                                                to={title.title.toLowerCase()}
+                                            />
+                                        ))}
+                                    </Tabs>
                                 </AppBar>
                             </Typography>
 
@@ -327,20 +175,23 @@ class App extends Component {
                                         appear
                                     >
                                         <Typography component='div' key={location.pathname} >
-                                            <Switch key={location.key} location={location}>
+                                            <Switch>
+                                                <Route path="/" exact component={IndexPage} />
                                                 {routers.map((route, index) => (
-                                                    <Route key={"r" + index} path={route.path} exact component={route.component} />
+                                                    <Route
+                                                        key={"r" + index}
+                                                        path={route.path}
+                                                        exact
+                                                        component={route.component}
+                                                        id={`scrollable-prevent-tabpanel-${index}`}
+                                                        aria-labelledby={`scrollable-prevent-tab-${index}`}
+                                                    />
                                                 ))}
+                                                <Route path="*" exact component={NotFoundPage} />
                                             </Switch>
                                         </Typography>
                                     </CSSTransition>
                                 </TransitionGroup>
-                            </Typography>
-
-                            <Typography component='div' className={classes.footer}>
-                                <Typography component='span' className={classes.footerSpan}>
-                                    © 2017-2020
-                            </Typography>
                             </Typography>
                         </Typography>
                     )} />
