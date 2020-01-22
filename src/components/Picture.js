@@ -1,13 +1,11 @@
-import React from 'react'
-
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/styles'
+import React, { useState } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 
 import Input from '@material-ui/core/Input'
 import ImageSearch from '@material-ui/icons/ImageSearch'
 import Chip from '@material-ui/core/Chip'
 import Button from '@material-ui/core/Button'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Fade from '@material-ui/core/Fade'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fab from '@material-ui/core/Fab'
@@ -24,9 +22,11 @@ import MDPR from '../static/img/mdpr.png'
 import DESSART from '../static/img/dessart.png'
 import TPL from '../static/img/tpl.png'
 
-const theme = global.constants.theme
+import '../config'
 
-const styles = ({
+const mainColor = global.constants.theme
+
+const useStyles = makeStyles(theme => ({
     wrapper: {
         paddingTop: 40,
     },
@@ -35,7 +35,7 @@ const styles = ({
     },
     errorInfo: {
         margin: 10,
-        backgroundColor: theme.tipColor,
+        backgroundColor: mainColor.tipColor,
     },
     resultImg: {
         width: "90%",
@@ -52,44 +52,44 @@ const styles = ({
         right: 120,
         padding: 0,
         margin: 0,
-        color: theme.tipColor,
+        color: mainColor.tipColor,
         '&:hover': {
-            backgroundColor: theme.otherColor,
+            backgroundColor: mainColor.otherColor,
         },
     },
     tipWidth: {
         maxWidth: 250,
-        color: theme.otherColor,
-        backgroundColor: theme.primaryColor
+        color: mainColor.otherColor,
+        backgroundColor: mainColor.primaryColor
     },
     customInput: {
-        color: theme.secondaryColor,
+        color: mainColor.secondaryColor,
         minWidth: 220,
         position: "relative",
         left: 4,
     },
     customUnderline: {
         '&:hover:not(disabled):before': {
-            borderBottom: `1px solid ${theme.secondaryColor} !important`,
+            borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
         },
         '&:before': {
-            borderBottomColor: theme.thirdlyColor,
+            borderBottomColor: mainColor.thirdlyColor,
         },
         '&:after': {
-            borderBottomColor: theme.tipColor,
+            borderBottomColor: mainColor.tipColor,
         },
     },
     customBtn: {
         color: "#fff",
-        backgroundColor: theme.thirdlyColor,
+        backgroundColor: mainColor.thirdlyColor,
         margin: 6,
         '&:hover': {
-            backgroundColor: theme.primaryColor,
+            backgroundColor: mainColor.primaryColor,
         },
     },
     customLine: {
         border: 0,
-        backgroundColor: theme.otherColor,
+        backgroundColor: mainColor.otherColor,
         height: 1,
     },
     progressRoot: {
@@ -102,7 +102,7 @@ const styles = ({
         position: 'relative',
     },
     progressFab: {
-        color: theme.secondaryColor,
+        color: mainColor.secondaryColor,
         position: 'absolute',
         left: 0,
         zIndex: 1,
@@ -112,250 +112,220 @@ const styles = ({
         height: 48,
         backgroundColor: "transparent",
         boxShadow: "0 0",
-        color: theme.secondaryColor,
+        color: mainColor.secondaryColor,
         '&:hover': {
-            backgroundColor: theme.otherColor,
+            backgroundColor: mainColor.otherColor,
         },
     },
     placeholderImg: {
         margin: '5px auto',
         width: "90%",
     }
-})
+}))
 
 
-class Picture extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            values: [],
-            error: "",
-            btnSta: "outlined",
-            btnInfo: "Copy to potplayer",
-            btndisp: {
-                display: "none",
-            },
-            loading: false,
-            success: false,
-        }
+export default function Picture() {
+    let [url, setURL] = useState("")
+    const [reqError, setReqError] = useState(false)
+    const [reqInfo, setReqInfo] = useState("")
+    const [reqData, setReqData] = useState([])
+    const [loading, setLoding] = useState(false)
+    const [success, setSuccess] = useState(false)
+    const [reqStatus, setReqStatus] = useState(0)
+    const [btnSta, setBtnSta] = useState({copied: false, btnSta: "contained"})
+    const [btnInfo, setBtnInfo] = useState("")
+    const [btndisp, setBtnDisp] = useState({ display: "none" })
+
+    const classes = useStyles()
+
+    const changeText = (event, newValue) => {
+        setURL(event.target.value)
     }
-    changeText(event) {
-        this.setState({
-            url: event.target.value,
-        })
+
+    const onKeyUp = (e) => {
+        e.keyCode === 13 && picClick()
     }
-    onKeyUp = (e) => {
-        e.keyCode === 13 && this.picClick()
-    }
-    picClick() {
-        let url = this.state.url
+
+    const picClick = () => {
         let uri = ""
         if (url === "undefined") {
-            this.setState({
-                error: true,
-                info: "URL ERROR / NO RESULT FOUND",
-            })
+            setReqError(true)
+            setReqInfo("URL ERROR / NO RESULT FOUND")
             return false
         }
         var regex = /http(s)?:\/\/([\w-]+.)+[\w-]+(\/[\w- ./?%&=]*)?/
         if (regex.test(url) !== true) {
-            this.setState({
-                error: true,
-                info: "URL ERROR / NO RESULT FOUND",
-            })
+            setReqError(true)
+            setReqInfo("URL ERROR / NO RESULT FOUND")
             return false
         } else {
-            if (url.indexOf("showroom") !== -1 || url.indexOf("linelive") !== -1) {
+            if (url.indexOf("www.showroom-live.com") !== -1 || url.indexOf("live.line.me") !== -1) {
                 uri = "/hls"
+                setBtnInfo("Copy to potplayer")
+                setBtnSta({copied: true, btnSta: "outlined"})
             } else if (url.indexOf("twitter") !== -1) {
                 uri = "/twitter"
             } else {
                 uri = "/news"
             }
         }
-        this.setState({
-            success: false,
-            loading: true,
-            values: "",
-            error: false,
-        })
+        setSuccess(false)
+        setLoding(true)
+        setReqData("")
+        setReqError(false)
         url = `${global.constants.api}/api/v1/media${uri}?url=${encodeURIComponent(url)}`
         fetch(url, {
-                method: 'GET',
-                dataType: 'json',
-            }).then(res => res.json())
+            method: 'GET',
+            dataType: 'json',
+        }).then(res => res.json())
             .then(data => {
                 let status = data.status
                 if (status === 0) {
-                    this.setState({
-                        error: false,
-                        values: data.data,
-                        status: status,
-                        success: true,
-                        loading: false,
-                    })
+                    setReqError(false)
+                    setReqData(data.data)
+                    setReqStatus(status)
+                    setSuccess(true)
+                    setLoding(false)
                 } else {
-                    this.setState({
-                        error: false,
-                        status: status,
-                        info: "No Data",
-                        btndisp: {
-                            display: "block",
-                        },
-                        success: false,
-                        loading: false,
-                    })
+                    setReqError(false)
+                    setReqStatus(status)
+                    setReqInfo(data.message)
+                    setBtnDisp({ display: "block" })
+                    setSuccess(false)
+                    setLoding(false)
                 }
             })
             .catch(
-                () => this.setState({
-                    error: false,
-                    status: 1,
-                    info: "Server Error",
-                    btndisp: {
-                        display: "block",
-                    },
-                    success: false,
-                    loading: false,
-                })
+                () => {
+                    setReqError(false)
+                    setReqStatus(1)
+                    setReqInfo("Server Error")
+                    setBtnDisp({ display: "block" })
+                    setSuccess(false)
+                    setLoding(false)
+                }
             )
     }
-    componentWillUnmount() {
-        this.setState = () => {
-            return
-        }
-    }
-    render() {
-        const values = this.state.values
-        const error = this.state.error
-        const info = this.state.info
-        const status = this.state.status
-        const { classes } = this.props
-        let mediaTmp = []
-        if (error === true) {
+    let mediaTmp = []
+    if (reqError === true) {
+        mediaTmp.push(
+            <Typography component='div' key="error">
+                <Fade in={reqError}>
+                    <Chip
+                        className={classes.errorInfo}
+                        label={reqInfo}
+                        color="secondary"
+                    />
+                </Fade>
+            </Typography>
+        )
+    } else {
+        if (reqStatus === 0) {
+            if (reqData.type === "news") {
+                let urls = reqData.entities
+                for (let u in urls) {
+                    if (urls[u].indexOf(".mp4") > 0) {
+                        mediaTmp.push(
+                            <Typography component='div' key={"video" + u}>
+                                <video className={classes.resultVideo} src={urls[u]} controls="controls" />
+                                <Divider className={classes.customLine} />
+                            </Typography>
+                        )
+                    } else {
+                        mediaTmp.push(
+                            <Typography component='div' key={"img" + u}>
+                                <LazyLoad
+                                    height={200}
+                                    offset={[-200, 0]}
+                                    once
+                                    placeholder={
+                                        <Skeleton variant="rect" height={200} className={classes.placeholderImg} />
+                                    }>
+                                    <img className={classes.resultImg} src={urls[u]} alt="" />
+                                </LazyLoad>
+                                <Divider className={classes.customLine} />
+                            </Typography>
+                        )
+                    }
+                }
+            }
+            if (reqData.type === "hls") {
+                let urls = reqData.entities
+                mediaTmp.push(
+                    <Typography component='div' key="hls">
+                        <CopyToClipboard
+                            text={urls}
+                            onCopy={() => btnSta}
+                        >
+                            <Button variant="contained" className={classes.customBtn}>
+                                {btnInfo}
+                            </Button>
+                        </CopyToClipboard>
+                    </Typography>
+                )
+            }
+            if (reqData.type === "twitter") {
+                let urls = reqData.entities
+                mediaTmp.push(
+                    <Typography component='div' key={"video" + urls}>
+                        <video className={classes.resultVideo} src={urls} controls="controls" />
+                        <Divider className={classes.customLine} />
+                    </Typography>
+                )
+            }
+        } else {
             mediaTmp.push(
-                <Typography component='div' key="error">
-                    <Fade in={error}>
+                <Typography component='div' key="nodata" style={btndisp}>
+                    <Fade in={reqStatus}>
                         <Chip
                             className={classes.errorInfo}
-                            label={info}
+                            label={reqInfo}
                             color="secondary"
                         />
                     </Fade>
                 </Typography>
             )
-        } else {
-            if (status === 0) {
-                if (values.type === "news") {
-                    let urls = values.entities
-                    for (let u in urls) {
-                        if (urls[u].indexOf(".mp4") > 0) {
-                            mediaTmp.push(
-                                <Typography component='div' key={"video" + u}>
-                                    <video className={classes.resultVideo} src={urls[u]} controls="controls" />
-                                    <Divider className={classes.customLine} />
-                                </Typography>
-                            )
-                        } else {
-                            mediaTmp.push(
-                                <Typography component='div' key={"img" + u}>
-                                     <LazyLoad 
-                                        height={200} 
-                                        offset={[-200, 0]} 
-                                        once 
-                                        placeholder={
-                                            <Skeleton variant="rect" height={200} className={classes.placeholderImg}/>
-                                        }>
-                                     <img className={classes.resultImg} src={urls[u]} alt="" />
-                                     </LazyLoad>
-                                    <Divider className={classes.customLine} />
-                                </Typography>
-                            )
-                        }
-                    }
-                }
-                if (values.type === "hls") {
-                    let urls = values.entities
-                    mediaTmp.push(
-                        <Typography component='div' key="hls">
-                            <CopyToClipboard text={urls} onCopy={() => this.setState({copied: true, btnSta: "contained"})}>
-                                <Button variant="contained" className={classes.customBtn}>
-                                    {this.state.btnInfo}
-                                </Button>
-                            </CopyToClipboard>
-                        </Typography>
-                    )
-                }
-                if (values.type === "twitter") {
-                    let urls = values.entities
-                    mediaTmp.push(
-                        <Typography component='div' key={"video" + urls}>
-                            <video className={classes.resultVideo} src={urls} controls="controls" />
-                            <Divider className={classes.customLine} />
-                        </Typography>
-                    )
-                }
-            } else {
-                    mediaTmp.push(
-                    <Typography component='div' key="nodata" style={this.state.btndisp}>
-                    <Fade in={status}>
-                        <Chip
-                            className={classes.errorInfo}
-                            label={info}
-                            color="secondary"
-                        />
-                    </Fade>  
-                    </Typography>
-                )
-            }
         }
-        return (
-            <Typography component='div' className={classes.wrapper}>
-                <Typography component="p">
-                    <img className={classes.topLogo} src={IG} alt="ig"/>
-                    <img className={classes.topLogo} src={MDPR} alt="mdpr" />
-                    <img className={classes.topLogo} src={TPL} alt="tpl" />
-                    <img className={classes.topLogo} src={DESSART} alt="dessart" />
-                </Typography>
-                <Typography component='div' className={classes.progressRoot}>
-                    <Input
-                        classes={{root: classes.customInput, underline: classes.customUnderline}}
-                        onChange={event=>this.changeText(event)}
-                        placeholder="URL"
-                        inputProps={{'aria-label': 'Description'}}
-                        autoFocus={false}
-                        onKeyUp={this.onKeyUp}
-                        disableUnderline={false}
-                    />
-                    <Typography component='div' className={classes.progressWrapper}>
-                        <Fab classes={{ root: classes.progressBtn }} onClick={this.picClick.bind(this)}>
-                            {this.state.success ? <CheckIcon /> : <ImageSearch />}
-                        </Fab>
-                        {this.state.loading && <CircularProgress size={48} className={classes.progressFab} />}
-                    </Typography>
-                </Typography>
-                <Tooltip
-                    className={classes.tipCls}
-                    classes={{
-                        tooltip: classes.tipWidth
-                    }}
-                    title="For unfinished news(mdpr) you can append ?update at the end of the URL to get the latest content."
-                    placement="right"
-                    TransitionComponent={Zoom}
-                    enterTouchDelay={50}
-                    leaveTouchDelay={3000}
-                    interactive
-                >
-                    <Button>TIPS</Button>
-                </Tooltip>
-                {mediaTmp}
-            </Typography>
-        )
     }
+    return (
+        <Typography component='div' className={classes.wrapper}>
+            <Typography component="p">
+                <img className={classes.topLogo} src={IG} alt="ig" />
+                <img className={classes.topLogo} src={MDPR} alt="mdpr" />
+                <img className={classes.topLogo} src={TPL} alt="tpl" />
+                <img className={classes.topLogo} src={DESSART} alt="dessart" />
+            </Typography>
+            <Typography component='div' className={classes.progressRoot}>
+                <Input
+                    classes={{ root: classes.customInput, underline: classes.customUnderline }}
+                    onChange={event => changeText(event)}
+                    placeholder="URL"
+                    autoFocus={false}
+                    onKeyUp={onKeyUp}
+                    disableUnderline={false}
+                />
+                <Typography component='div' className={classes.progressWrapper}>
+                    <Fab classes={{ root: classes.progressBtn }} onClick={() => picClick()}>
+                        {success ? <CheckIcon /> : <ImageSearch />}
+                    </Fab>
+                    {loading && <CircularProgress size={48} className={classes.progressFab} />}
+                </Typography>
+            </Typography>
+            <Tooltip
+                className={classes.tipCls}
+                classes={{
+                    tooltip: classes.tipWidth
+                }}
+                title="For unfinished news(mdpr) you can append ?update at the end of the URL to get the latest content."
+                placement="right"
+                TransitionComponent={Zoom}
+                enterTouchDelay={50}
+                leaveTouchDelay={3000}
+                interactive
+            >
+                <Button>TIPS</Button>
+            </Tooltip>
+            {mediaTmp}
+        </Typography>
+    )
 }
-
-Picture.propTypes = {
-    classes: PropTypes.object.isRequired,
-}
-  
-export default withStyles(styles)(Picture)

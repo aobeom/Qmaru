@@ -1,23 +1,23 @@
 html {
-  overflow-y: scroll;
+  overflow-y: overlay;
 }
 
-:root {
+/* :root {
   overflow-y: auto;
   overflow-x: hidden;
 }
 
 :root body {
   position: absolute;
-}
+} */
 
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
   background-color: #FCFCFC;
-  width: 100vw;
-  overflow: hidden;
+  /* width: 100vw;
+  overflow: hidden; */
 }
 
 a {

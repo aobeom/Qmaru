@@ -1,55 +1,47 @@
-import React, { Component } from 'react'
-import { BrowserRouter, Route, Link, Switch } from 'react-router-dom'
+import React, { useState } from 'react'
+import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
+import { withStyles, makeStyles } from '@material-ui/core/styles'
 
-import IndexPage from './components/Index'
 import Picture from './components/Picture'
 import Drama from './components/Drama'
 import Program from './components/Program'
 import Stchannel from './components/Stchannel'
 import Radiko from './components/Radiko'
-import NotFoundPage from './components/NotFoundPage'
 
-import PicIcon from '@material-ui/icons/Instagram';
+import PicIcon from '@material-ui/icons/Instagram'
 import DramaIcon from '@material-ui/icons/Tv'
-import ProgramIcon from '@material-ui/icons/PlaylistAddCheck';
-import STIcon from '@material-ui/icons/YouTube';
+import ProgramIcon from '@material-ui/icons/PlaylistAddCheck'
+import STIcon from '@material-ui/icons/YouTube'
 import RadikoIcon from '@material-ui/icons/Radio'
-
 
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
-
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
+import DateFnsUtils from '@date-io/date-fns'
 
-
-const theme = global.constants.theme
-
+const mainColor = global.constants.theme
 
 const MyTab = withStyles({
     root: {
-        color: theme.fourthColor,
+        color: mainColor.fourthColor,
         "&:hover": {
-            color: theme.otherColor
+            color: mainColor.otherColor
         },
         '&$selected': {
-            color: theme.otherColor,
+            color: mainColor.otherColor,
         }
     },
     selected: {
         "&:hover": {
-            color: theme.otherColor,
+            color: mainColor.otherColor,
         }
     }
 })(Tab)
 
-
-const styles = ({
+const useStyles = makeStyles(theme => ({
     wrapper: {
         margin: "0 auto",
         display: "flex",
@@ -57,7 +49,7 @@ const styles = ({
         minHeight: "100vh",
     },
     header: {
-        backgroundColor: theme.textColor,
+        backgroundColor: mainColor.textColor,
         top: "auto",
         bottom: 0,
     },
@@ -65,144 +57,114 @@ const styles = ({
         justifyContent: "center"
     },
     tabsIndicator: {
-        backgroundColor: theme.otherColor,
+        backgroundColor: mainColor.otherColor,
     },
     main: {
         flex: "1",
         margin: "0 auto",
-        maxWidth: "640px",
+        maxWidth: 640,
         width: "100%",
         textAlign: "center",
         justifyContent: "center",
-        paddingBottom: "30px",
-    }
-})
+        paddingBottom: 30,
+    },
+    footer: {
+        width: "auto",
+        bottom: 0,
+        textAlign: "center",
+        fontSize: 16,
+        height: 80,
+    },
+    footerSpan: {
+        height: 50,
+        color: mainColor.primaryColor,
+        cursor: "default",
+    },
+}))
 
-class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            tabValue: undefined,
-            titles: [
-                { "title": "PICTURE", "icon": <PicIcon />, "id": 0},
-                { "title": "DRAMA", "icon": <DramaIcon />, "id": 1},
-                { "title": "PROGRAM", "icon": <ProgramIcon />, "id": 2},
-                { "title": "STCHANNEL", "icon": <STIcon />, "id": 3},
-                { "title": "RADIKO", "icon": <RadikoIcon />, "id": 4}
-            ],
-            width: props.width || -1,
-            routers: [
-                { "path": "/picture", "component": Picture },
-                { "path": "/drama", "component": Drama },
-                { "path": "/program", "component": Program },
-                { "path": "/stchannel", "component": Stchannel },
-                { "path": "/radiko", "component": Radiko },
-            ],
-        }
-    }
-    componentDidMount() {
-        this.updateBar()
-    }
-    updateBar() {
-        let titles = this.state.titles
-        let uri = window.location.pathname.split('/')[1]
-        for (let i in titles) {
-            let data = titles[i]
-            let title = data["title"].toLowerCase()
-            if (title === uri) {
-                this.setState({
-                    tabValue: parseInt(i)
-                })
-            }
-        }
-        if (uri === "") {
-            this.setState({
-                tabValue: undefined
-            })
-        }
-    }
-    componentWillUnmount() {
-        this.setState = () => {
-            return
-        }
-    }
-    tabSwitch(e, newValue) {
-        this.setState({
-            tabValue: newValue
-        })
-    }
-    render() {
-        const titles = this.state.titles
-        const tabValue = this.state.tabValue
-        const { classes } = this.props
-        const routers = this.state.routers
-        return (
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <BrowserRouter>
-                    <Route render={({ location }) => (
-                        <Typography component='div' className={classes.wrapper}>
+export default function App() {
+    const classes = useStyles()
+    const titles = [
+        { "title": "PICTURE", "icon": <PicIcon /> },
+        { "title": "DRAMA", "icon": <DramaIcon /> },
+        { "title": "PROGRAM", "icon": <ProgramIcon /> },
+        { "title": "STCHANNEL", "icon": <STIcon /> },
+        { "title": "RADIKO", "icon": <RadikoIcon /> }
+    ]
+    const routers = [
+        { "path": "/picture", "component": Picture },
+        { "path": "/drama", "component": Drama },
+        { "path": "/program", "component": Program },
+        { "path": "/stchannel", "component": Stchannel },
+        { "path": "/radiko", "component": Radiko },
+    ]
+    const [tabValue, setTabValue] = useState(0)
 
-                            <Typography component='div'>
-                                <AppBar position="fixed" className={classes.header}>
-                                    <Tabs
-                                        classes={{
-                                            flexContainer: classes.tabsWrapper,
-                                            indicator: classes.tabsIndicator
-                                        }}
-                                        value={tabValue}
-                                        onChange={this.tabSwitch.bind(this)}
-                                    >
-                                        {titles.map((title, index) => (
-                                            <MyTab
-                                                key={"r" + index}
-                                                // label={title.title}
-                                                icon={title.icon}
-                                                component={Link}
-                                                to={title.title.toLowerCase()}
-                                            />
-                                        ))}
-                                    </Tabs>
-                                </AppBar>
-                            </Typography>
+    const tabSwitch = (e, newValue) => {
+        setTabValue(newValue)
+    }
 
-                            <Typography component='div' className={classes.main}>
-                                <TransitionGroup>
-                                    <CSSTransition
-                                        key={location.key}
-                                        timeout={300}
-                                        classNames="spec"
-                                        unmountOnExit
-                                        appear
-                                    >
-                                        <Typography component='div' key={location.pathname} >
-                                            <Switch>
-                                                <Route path="/" exact component={IndexPage} />
-                                                {routers.map((route, index) => (
-                                                    <Route
-                                                        key={"r" + index}
-                                                        path={route.path}
-                                                        exact
-                                                        component={route.component}
-                                                        id={`scrollable-prevent-tabpanel-${index}`}
-                                                        aria-labelledby={`scrollable-prevent-tab-${index}`}
-                                                    />
-                                                ))}
-                                                <Route path="*" exact component={NotFoundPage} />
-                                            </Switch>
-                                        </Typography>
-                                    </CSSTransition>
-                                </TransitionGroup>
+    return (
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <BrowserRouter>
+                <Route render={({ location }) => (
+                    <Typography component='div' className={classes.wrapper}>
+                        <Typography component='div'>
+                            <AppBar position="fixed" className={classes.header}>
+                                <Tabs
+                                    classes={{
+                                        flexContainer: classes.tabsWrapper,
+                                        indicator: classes.tabsIndicator
+                                    }}
+                                    value={tabValue}
+                                    onChange={tabSwitch}
+                                >
+                                    {titles.map((title, index) => (
+                                        <MyTab
+                                            key={"r" + index}
+                                            icon={title.icon}
+                                            component={Link}
+                                            to={title.title.toLowerCase()}
+                                            replace
+                                        />
+                                    ))}
+                                </Tabs>
+                            </AppBar>
+                        </Typography>
+
+                        <Typography component='div' className={classes.main}>
+                            {/* <TransitionGroup>
+                                <CSSTransition
+                                    key={location.key}
+                                    timeout={300}
+                                    classNames="spec"
+                                    unmountOnExit
+                                    appear
+                                > */}
+                                    <Typography component='div' key={location.pathname} >
+                                        <Switch>
+                                            {routers.map((route, index) => (
+                                                <Route
+                                                    key={"r" + index}
+                                                    path={route.path}
+                                                    exact
+                                                    component={route.component}
+                                                />
+                                            ))}
+                                            <Redirect to="/picture" />
+                                        </Switch>
+                                    </Typography>
+                                {/* </CSSTransition>
+                            </TransitionGroup> */}
+                        </Typography>
+                        <Typography component='div' className={classes.footer}>
+                            <Typography component='span' className={classes.footerSpan}>
+                                © 2017-2020
                             </Typography>
                         </Typography>
-                    )} />
-                </BrowserRouter>
-            </MuiPickersUtilsProvider>
-        )
-    }
+                    </Typography>
+                )} />
+            </BrowserRouter>
+        </MuiPickersUtilsProvider>
+    )
 }
-
-App.propTypes = {
-    classes: PropTypes.object.isRequired,
-}
-
-export default withStyles(styles)(App)

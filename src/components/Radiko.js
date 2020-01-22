@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react'
 
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
@@ -17,188 +16,187 @@ import Fade from '@material-ui/core/Fade'
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-
 import radikoLogo from '../static/img/radiko.png'
 
-const theme = global.constants.theme
+const mainColor = global.constants.theme
 
 const RadioTheme = createMuiTheme({
     overrides: {
         MuiPickersToolbar: {
             toolbar: {
-                backgroundColor: theme.primaryColor,
+                backgroundColor: mainColor.primaryColor,
             },
         },
         MuiPickersCalendarHeader: {
             dayLabel: {
-                color: theme.thirdlyColor,
+                color: mainColor.thirdlyColor,
             }
         },
         MuiPickersDay: {
             day: {
-                color: theme.secondaryColor,
+                color: mainColor.secondaryColor,
             },
             daySelected: {
-                backgroundColor: theme.thirdlyColor,
+                backgroundColor: mainColor.thirdlyColor,
                 '&:hover': {
-                    backgroundColor: theme.primaryColor,
+                    backgroundColor: mainColor.primaryColor,
                 }
             },
             dayDisabled: {
-                color: theme.otherColor,
+                color: mainColor.otherColor,
             },
             current: {
-                color: theme.thirdlyColor,
+                color: mainColor.thirdlyColor,
             },
         },
         MuiPickersModal: {
             dialogAction: {
-                color: theme.thirdlyColor,
+                color: mainColor.thirdlyColor,
             },
         },
         MuiPickersSlideTransition: {
             transitionContainer: {
-                color: theme.thirdlyColor
+                color: mainColor.thirdlyColor
             }
         },
         MuiPickersClock: {
             clock: {
-                backgroundColor: theme.otherColor,
+                backgroundColor: mainColor.otherColor,
             },
             pin: {
-                backgroundColor: theme.thirdlyColor
+                backgroundColor: mainColor.thirdlyColor
             },
         },
         MuiPickersClockPointer: {
             noPoint: {
-                backgroundColor: theme.thirdlyColor
+                backgroundColor: mainColor.thirdlyColor
             },
             thumb: {
-                border: `14px solid ${theme.secondaryColor}`
+                border: `14px solid ${mainColor.secondaryColor}`
             },
             pointer: {
-                backgroundColor: theme.thirdlyColor
+                backgroundColor: mainColor.thirdlyColor
             }
         },
         MuiPickerDTTabs: {
             tabs: {
-                backgroundColor: theme.primaryColor
+                backgroundColor: mainColor.primaryColor
             }
         },
         MuiPickersClockNumber: {
             clockNumber: {
-                color: theme.secondaryColor
+                color: mainColor.secondaryColor
             }
         },
         MuiPickersYear: {
             root: {
-                color: theme.thirdlyColor
+                color: mainColor.thirdlyColor
             },
             yearSelected: {
-                color: theme.secondaryColor
+                color: mainColor.secondaryColor
             },
             yearDisabled: {
-                color: theme.otherColor,
+                color: mainColor.otherColor,
             },
         },
         MuiIconButton: {
             root: {
                 '&:hover': {
-                    backgroundColor: theme.otherColor
+                    backgroundColor: mainColor.otherColor
                 }
             }
         },
         MuiInputLabel: {
             root: {
-                color: theme.thirdlyColor,
+                color: mainColor.thirdlyColor,
             }
         },
         MuiInputBase: {
             root: {
-                color: theme.otherColor,
+                color: mainColor.otherColor,
             },
             input: {
-                color: theme.tipColor,
+                color: mainColor.tipColor,
                 textAlign: 'center'
             }
         },
         MuiInput: {
             underline: {
                 '&:hover:not(disabled):before': {
-                    borderBottom: `1px solid ${theme.secondaryColor} !important`,
+                    borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
                 },
                 '&:before': {
-                    borderBottomColor: theme.thirdlyColor,
+                    borderBottomColor: mainColor.thirdlyColor,
                 },
                 '&:after': {
-                    borderBottomColor: theme.tipColor,
+                    borderBottomColor: mainColor.tipColor,
                 }
             }
         },
         MuiFormHelperText: {
             root: {
-                color: theme.thirdlyColor,
+                color: mainColor.thirdlyColor,
             }
         },
         MuiSelect: {
             icon: {
-                color: theme.thirdlyColor,
+                color: mainColor.thirdlyColor,
             },
             selectMenu: {
-                color: theme.tipColor
+                color: mainColor.tipColor
             }
         },
     },
     palette: {
         secondary: {
-            main: theme.otherColor,
+            main: mainColor.otherColor,
         },
     },
 })
 
-const styles = ({
+const useStyles = makeStyles(theme => ({
     topLogo: {
-        paddingTop: "40px",
+        paddingTop: 40,
     },
     progCard: {
-        padding: "5px",
+        padding: 5,
     },
     progLabel: {
-        color: theme.tipColor,
+        color: mainColor.tipColor,
         cursor: "default",
     },
     progItem: {
-        color: theme.tipColor,
+        color: mainColor.tipColor,
         cursor: "default",
     },
     errorInfo: {
-        margin: "10px",
-        backgroundColor: theme.tipColor,
+        margin: 10,
+        backgroundColor: mainColor.tipColor,
     },
     customInput: {
-        width: "140px",
+        width: 140,
         '&:hover': {
-            borderBottomColor: theme.secondaryColor,
+            borderBottomColor: mainColor.secondaryColor,
         },
     },
     customUnderline: {
-        color: theme.secondaryColor,
+        color: mainColor.secondaryColor,
         '&:hover:not(disabled):before': {
-            borderBottom: `1px solid ${theme.secondaryColor} !important`,
+            borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
         },
         '&:before': {
-            borderBottomColor: theme.thirdlyColor,
+            borderBottomColor: mainColor.thirdlyColor,
         },
         '&:after': {
-            borderBottomColor: theme.tipColor,
+            borderBottomColor: mainColor.tipColor,
         },
     },
     customBtn: {
-        color: theme.otherColor,
-        backgroundColor: theme.secondaryColor,
-        margin: "5px",
+        color: mainColor.otherColor,
+        backgroundColor: mainColor.secondaryColor,
+        margin: 6,
         '&:hover': {
-            backgroundColor: theme.primaryColor,
+            backgroundColor: mainColor.primaryColor,
         },
     },
     selectBody: {
@@ -210,10 +208,10 @@ const styles = ({
         padding: 10,
     },
     selectMenu: {
-        color: theme.tipColor
+        color: mainColor.tipColor
     },
     selectHelp: {
-        color: theme.thirdlyColor
+        color: mainColor.thirdlyColor
     },
     badgeCls: {
         color: '#00a7e9'
@@ -222,18 +220,18 @@ const styles = ({
         paddingTop: 20,
     },
     chip: {
-        color: theme.textColor,
-        backgroundColor: theme.otherColor
+        color: mainColor.textColor,
+        backgroundColor: mainColor.otherColor
     },
     customBtnLink: {
-        color: theme.otherColor,
-        backgroundColor: theme.thirdlyColor,
+        color: mainColor.otherColor,
+        backgroundColor: mainColor.thirdlyColor,
         '&:hover': {
-            backgroundColor: theme.primaryColor,
+            backgroundColor: mainColor.primaryColor,
         },
     },
     customLink: {
-        color: theme.otherColor,
+        color: mainColor.otherColor,
     },
     customLinkIcon: {
         marginRight: 6
@@ -242,14 +240,17 @@ const styles = ({
         position: 'relative'
     },
     buttonProgress: {
-        color: theme.primaryColor,
+        color: mainColor.primaryColor,
         position: 'absolute',
         top: '50%',
         left: '50%',
         marginTop: -12,
         marginLeft: -12,
+    },
+    logoCls: {
+        width: 148
     }
-})
+}))
 
 function date2string(date) {
     let Y = date.getFullYear()
@@ -261,79 +262,59 @@ function date2string(date) {
     return (Y + M + D + h + m + s)
 }
 
-class Radiko extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            tipStatus: false,
-            loading: false,
-            tipData: '',
-            radioData: [],
-            station: '',
-            start_at: new Date(),
-            end_at: new Date(),
-            stationName: [
-                { 'id': 'TBS', 'name': 'TBSラジオ', 'area_id': 'JP13' },
-                { 'id': 'QRR', 'name': '文化放送', 'area_id': 'JP13' },
-                { 'id': 'LFR', 'name': 'ニッポン放送', 'area_id': 'JP13' },
-                { 'id': 'INT', 'name': 'InterFM897', 'area_id': 'JP13' },
-                { 'id': 'FMT', 'name': 'TOKYO FM', 'area_id': 'JP13' },
-                { 'id': 'FMJ', 'name': 'J-WAVE', 'area_id': 'JP13' },
-                { 'id': 'JORF', 'name': 'ラジオ日本', 'area_id': 'JP13' },
-                { 'id': 'JOAK', 'name': 'NHKラジオ第1（東京）', 'area_id': 'JP13' },
-                { 'id': 'RN1', 'name': 'ラジオNIKKEI第1 ', 'area_id': 'JP13' },
-                { 'id': 'RN2', 'name': 'ラジオNIKKEI第2', 'area_id': 'JP13' },
-                { 'id': 'JOAB', 'name': 'NHKラジオ第2', 'area_id': 'JP13' },
-                { 'id': 'JOAK-FM', 'name': 'NHK-FM（東京）', 'area_id': 'JP13' }
-            ]
-        }
+export default function Radiko() {
+    const stationName = [
+        { 'id': 'TBS', 'name': 'TBSラジオ', 'area_id': 'JP13' },
+        { 'id': 'QRR', 'name': '文化放送', 'area_id': 'JP13' },
+        { 'id': 'LFR', 'name': 'ニッポン放送', 'area_id': 'JP13' },
+        { 'id': 'INT', 'name': 'InterFM897', 'area_id': 'JP13' },
+        { 'id': 'FMT', 'name': 'TOKYO FM', 'area_id': 'JP13' },
+        { 'id': 'FMJ', 'name': 'J-WAVE', 'area_id': 'JP13' },
+        { 'id': 'JORF', 'name': 'ラジオ日本', 'area_id': 'JP13' },
+        { 'id': 'JOAK', 'name': 'NHKラジオ第1（東京）', 'area_id': 'JP13' },
+        { 'id': 'RN1', 'name': 'ラジオNIKKEI第1 ', 'area_id': 'JP13' },
+        { 'id': 'RN2', 'name': 'ラジオNIKKEI第2', 'area_id': 'JP13' },
+        { 'id': 'JOAB', 'name': 'NHKラジオ第2', 'area_id': 'JP13' },
+        { 'id': 'JOAK-FM', 'name': 'NHK-FM（東京）', 'area_id': 'JP13' }
+    ]
+    const [startAt, setStartAt] = useState(new Date())
+    const [endAt, setEndAt] = useState(new Date())
+    const [radioData, setRadioData] = useState([])
+    const [tipStatus, setTipStatus] = useState(false)
+    const [loading, setLoading] = useState(false)
+    const [station, setStation] = useState("")
+    const [tipData, setTipData] = useState("")
+
+
+    const stationChange = (e) => {
+        setStation(e.target.value)
     }
 
-    stationChange(e) {
-        this.setState({
-            station: e.target.value
-        })
+    const startAtChange = (e) => {
+        setStartAt(e)
     }
 
-    startAtChange(e) {
-        this.setState({
-            start_at: e
-        })
+    const endAtChange = (e) => {
+        setEndAt(e)
     }
 
-    endAtChange(e) {
-        this.setState({
-            end_at: e
-        })
-    }
-
-    onKeyUp = (e) => {
-        e.keyCode === 13 && this.radioClick()
-    }
-
-    radioClick() {
-        this.setState({
-            radioData: [],
-            loading: true,
-            tipStatus: false,
-        })
-        let station = this.state.station
+    const radioClick = () => {
+        console.log("Start")
+        setRadioData([])
+        setLoading(true)
+        setTipData(false)
         if (station === undefined || station === "") {
-            this.setState({
-                tipData: 'No Station',
-                tipStatus: true,
-                loading: false,
-            })
+            setTipData('No Station')
+            setTipStatus(true)
+            setLoading(false)
             return false
         }
-        let start_at = this.state.start_at
-        let end_at = this.state.end_at
+        let start_at = startAt
+        let end_at = endAt
         if (start_at >= end_at) {
-            this.setState({
-                tipData: 'Date Time Error',
-                tipStatus: true,
-                loading: false,
-            })
+            setTipData("Date Time Error")
+            setTipStatus(true)
+            setLoading(false)
             return false
         }
         let start_at_str = date2string(start_at)
@@ -355,151 +336,133 @@ class Radiko extends React.Component {
         }).then(res => res.json())
             .then(data => {
                 if (data.status === 0) {
-                    this.setState({
-                        tipStatus: false,
-                        radioData: data.data.entities,
-                        loading: false,
-                    })
+                    setTipStatus(false)
+                    setRadioData(data.data.entities)
+                    setLoading(false)
                 } else {
-                    this.setState({
-                        radioData: [],
-                        tipStatus: true,
-                        tipData: data.message,
-                        loading: false,
-                    })
+                    setRadioData([])
+                    setTipStatus(true)
+                    setTipData(data.message)
+                    setLoading(false)
                 }
             })
             .catch(
-                () => this.setState({
-                    radioData: [],
-                    tipData: 'No Data',
-                    tipStatus: true,
-                    loading: false,
-                })
+                () => {
+                    setRadioData([])
+                    setTipData("No Data")
+                    setTipStatus(true)
+                    setLoading(false)
+                }
             )
-    }
-    componentWillUnmount() {
-        this.setState = () => {
-            return
-        }
     }
 
-    render() {
-        const { classes } = this.props
-        const radioData = this.state.radioData
-        let radioTmp = []
-        let tipTmp = []
-        if (radioData.length !== 0) {
-            radioTmp.push(
-                <Link
-                    key='data'
-                    className={classes.customLink}
-                    underline='none'
-                    href={radioData.url}
-                    target="_blank"
+    const classes = useStyles()
+    let radioTmp = []
+    let tipTmp = []
+    if (radioData.length !== 0) {
+        radioTmp.push(
+            <Link
+                key='data'
+                className={classes.customLink}
+                underline='none'
+                href={radioData.url}
+                target="_blank"
+                download
+                rel="noopener noreferrer"
+            >
+                <Button variant="contained" className={classes.customBtnLink}>
+                    <CloudDownloadIcon className={classes.customLinkIcon} />
                     download
-                    rel="noopener noreferrer"
-                >
-                    <Button variant="contained" className={classes.customBtnLink}>
-                        <CloudDownloadIcon className={classes.customLinkIcon} />
-                        download
                         </Button>
-                </Link>
-            )
-        } else {
-            tipTmp.push(
-                <Fade in={this.state.tipStatus} key='chip'>
-                    <Chip
-                        className={classes.chip}
-                        label={this.state.tipData}
-                    />
-                </Fade>
-            )
-        }
-        return (
-            <ThemeProvider theme={RadioTheme}>
-                <Typography component='div'>
-                    <Typography component='p' className={classes.topLogo}>
-                        <Link underline='none' href="https://radiko.jp" target="_blank" rel="noopener noreferrer">
-                            <Badge badgeContent={'Tokyo'} className={classes.badgeCls}>
-                                <img src={radikoLogo} style={{ width: "148px" }} alt="" />
-                            </Badge>
-                        </Link>
-                    </Typography>
-                    <Typography component='div'>
-                        <TextField
-                            id="station"
-                            select
-                            value={this.state.station}
-                            onChange={this.stationChange.bind(this)}
-                            className={classes.selectBody}
-                            FormHelperTextProps={{
-                                classes: {
-                                    root: classes.selectHelp
-                                }
-                            }}
-                            SelectProps={{
-                                MenuProps: {
-                                    classes: {
-                                        list: classes.selectMenu
-                                    }
-                                }
-                            }}
-                            helperText="Station"
-                            margin="normal"
-                        >
-                            {this.state.stationName.map((station) => (
-                                <MenuItem key={station.id} value={station.id}>
-                                    {station.name}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </Typography>
-                    <Typography component='div'>
-                        <DateTimePicker
-                            className={classes.dateBody}
-                            disableFuture
-                            ampm={false}
-                            autoOk
-                            minDate={'2010-12-01'}
-                            variant="inline"
-                            helperText="Start DateTime"
-                            format="Y-MM-dd HH:mm"
-                            value={this.state.start_at}
-                            onChange={this.startAtChange.bind(this)}
-                        />
-                    </Typography>
-                    <Typography component='div'>
-                        <DateTimePicker
-                            className={classes.dateBody}
-                            disableFuture
-                            ampm={false}
-                            autoOk
-                            variant="inline"
-                            helperText="End DateTime"
-                            format="Y-MM-dd HH:mm"
-                            value={this.state.end_at}
-                            onChange={this.endAtChange.bind(this)}
-                        />
-                    </Typography>
-                    <Typography component='div' className={classes.wrapperBtn}>
-                        <Button variant="contained" className={classes.customBtn} onClick={this.radioClick.bind(this)} disabled={this.state.loading}>
-                            {this.state.loading ? 'loading' : 'start'}
-                        </Button>
-                        {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-                    </Typography>
-                    <Typography component='div' className={classes.chipCls}>
-                        {radioTmp}
-                        {tipTmp}
-                    </Typography>
-                </Typography>
-            </ThemeProvider>
+            </Link>
+        )
+    } else {
+        tipTmp.push(
+            <Fade in={tipStatus} key='chip'>
+                <Chip
+                    className={classes.chip}
+                    label={tipData}
+                />
+            </Fade>
         )
     }
+    return (
+        <ThemeProvider theme={RadioTheme}>
+            <Typography component='div'>
+                <Typography component='p' className={classes.topLogo}>
+                    <Link underline='none' href="https://radiko.jp" target="_blank" rel="noopener noreferrer">
+                        <Badge badgeContent={'Tokyo'} className={classes.badgeCls}>
+                            <img src={radikoLogo} className={classes.logoCls} alt="" />
+                        </Badge>
+                    </Link>
+                </Typography>
+                <Typography component='div'>
+                    <TextField
+                        id="station"
+                        select
+                        value={station}
+                        onChange={event => stationChange(event)}
+                        className={classes.selectBody}
+                        FormHelperTextProps={{
+                            classes: {
+                                root: classes.selectHelp
+                            }
+                        }}
+                        SelectProps={{
+                            MenuProps: {
+                                classes: {
+                                    list: classes.selectMenu
+                                }
+                            }
+                        }}
+                        helperText="Station"
+                        margin="normal"
+                    >
+                        {stationName.map((station) => (
+                            <MenuItem key={station.id} value={station.id}>
+                                {station.name}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Typography>
+                <Typography component='div'>
+                    <DateTimePicker
+                        className={classes.dateBody}
+                        disableFuture
+                        ampm={false}
+                        autoOk
+                        minDate={'2010-12-01'}
+                        variant="inline"
+                        helperText="Start DateTime"
+                        format="Y-MM-dd HH:mm"
+                        value={startAt}
+                        onChange={event => startAtChange(event)}
+                    />
+                </Typography>
+                <Typography component='div'>
+                    <DateTimePicker
+                        className={classes.dateBody}
+                        disableFuture
+                        ampm={false}
+                        autoOk
+                        variant="inline"
+                        helperText="End DateTime"
+                        format="Y-MM-dd HH:mm"
+                        value={endAt}
+                        onChange={event => endAtChange(event)}
+                    />
+                </Typography>
+                <Typography component='div' className={classes.wrapperBtn}>
+                    <Button variant="contained" className={classes.customBtn} onClick={() => radioClick()} disabled={loading}>
+                        {loading ? 'loading' : 'start'}
+                    </Button>
+                    {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+                </Typography>
+                <Typography component='div' className={classes.chipCls}>
+                    {radioTmp}
+                    {tipTmp}
+                </Typography>
+            </Typography>
+        </ThemeProvider>
+    )
 }
-
-Radiko.propTypes = {
-    classes: PropTypes.object.isRequired,
-}
-
-export default withStyles(styles)(Radiko)
