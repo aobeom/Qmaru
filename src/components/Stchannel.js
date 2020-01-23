@@ -18,6 +18,8 @@ const mainColor = global.constants.theme
 const useStyles = makeStyles(theme => ({
     wrapper: {
         paddingTop: 40,
+        maxWidth: 640,
+        margin: "0 auto"
     },
     stCard: {
         padding: 10,

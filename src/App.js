@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { BrowserRouter, Route, Link, Switch, Redirect } from 'react-router-dom'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom'
+import { CSSTransition } from 'react-transition-group'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { withStyles, makeStyles } from '@material-ui/core/styles'
 
@@ -85,18 +85,18 @@ const useStyles = makeStyles(theme => ({
 export default function App() {
     const classes = useStyles()
     const titles = [
-        { "title": "PICTURE", "icon": <PicIcon /> },
-        { "title": "DRAMA", "icon": <DramaIcon /> },
-        { "title": "PROGRAM", "icon": <ProgramIcon /> },
-        { "title": "STCHANNEL", "icon": <STIcon /> },
-        { "title": "RADIKO", "icon": <RadikoIcon /> }
+        { title: "PICTURE", icon: <PicIcon /> },
+        { title: "DRAMA", icon: <DramaIcon /> },
+        { title: "PROGRAM", icon: <ProgramIcon /> },
+        { title: "STCHANNEL", icon: <STIcon /> },
+        { title: "RADIKO", icon: <RadikoIcon /> }
     ]
     const routers = [
-        { "path": "/picture", "component": Picture },
-        { "path": "/drama", "component": Drama },
-        { "path": "/program", "component": Program },
-        { "path": "/stchannel", "component": Stchannel },
-        { "path": "/radiko", "component": Radiko },
+        { path: "/picture", Component: Picture },
+        { path: "/drama", Component: Drama },
+        { path: "/program", Component: Program },
+        { path: "/stchannel", Component: Stchannel },
+        { path: "/radiko", Component: Radiko },
     ]
     const [tabValue, setTabValue] = useState(0)
 
@@ -107,63 +107,60 @@ export default function App() {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <BrowserRouter>
-                <Route render={({ location }) => (
-                    <Typography component='div' className={classes.wrapper}>
-                        <Typography component='div'>
-                            <AppBar position="fixed" className={classes.header}>
-                                <Tabs
-                                    classes={{
-                                        flexContainer: classes.tabsWrapper,
-                                        indicator: classes.tabsIndicator
-                                    }}
-                                    value={tabValue}
-                                    onChange={tabSwitch}
-                                >
-                                    {titles.map((title, index) => (
-                                        <MyTab
-                                            key={"r" + index}
-                                            icon={title.icon}
-                                            component={Link}
-                                            to={title.title.toLowerCase()}
-                                            replace
-                                        />
-                                    ))}
-                                </Tabs>
-                            </AppBar>
-                        </Typography>
-
-                        <Typography component='div' className={classes.main}>
-                            {/* <TransitionGroup>
-                                <CSSTransition
-                                    key={location.key}
-                                    timeout={300}
-                                    classNames="spec"
-                                    unmountOnExit
-                                    appear
-                                > */}
-                                    <Typography component='div' key={location.pathname} >
-                                        <Switch>
-                                            {routers.map((route, index) => (
-                                                <Route
-                                                    key={"r" + index}
-                                                    path={route.path}
-                                                    exact
-                                                    component={route.component}
-                                                />
-                                            ))}
-                                            <Redirect to="/picture" />
-                                        </Switch>
-                                    </Typography>
-                                {/* </CSSTransition>
-                            </TransitionGroup> */}
-                        </Typography>
-                        <Typography component='div' className={classes.footer}>
-                            <Typography component='span' className={classes.footerSpan}>
-                                © 2017-2020
-                            </Typography>
-                        </Typography>
+                <Typography component='div' className={classes.wrapper}>
+                    <Typography component='div'>
+                        <AppBar position="fixed" className={classes.header}>
+                            <Tabs
+                                classes={{
+                                    flexContainer: classes.tabsWrapper,
+                                    indicator: classes.tabsIndicator
+                                }}
+                                value={tabValue}
+                                onChange={tabSwitch}
+                            >
+                                {titles.map((title, index) => (
+                                    <MyTab
+                                        key={"r" + index}
+                                        icon={title.icon}
+                                        component={Link}
+                                        to={title.title.toLowerCase()}
+                                        replace
+                                    />
+                                ))}
+                            </Tabs>
+                        </AppBar>
                     </Typography>
-                )} />
+
+                    <Typography component='div' className={classes.main}>
+                        {routers.map(({ path, Component }) => (
+                            <Route
+                                key={path}
+                                path={path}
+                                exact
+                            >
+                                {({ match }) => (
+                                    <CSSTransition
+                                        in={match !== null}
+                                        timeout={300}
+                                        classNames="spec"
+                                        unmountOnExit
+                                        appear
+                                    >
+                                        <Typography component='div' className="spec">
+                                            <Component />
+                                        </Typography>
+                                    </CSSTransition>
+                                )}
+                            </Route>
+                        ))}
+                    <Redirect exact from="/" to="/picture" />
+                    </Typography>
+                    <Typography component='div' className={classes.footer}>
+                        <Typography component='span' className={classes.footerSpan}>
+                            © 2017-2020
+                            </Typography>
+                    </Typography>
+                </Typography>
             </BrowserRouter>
         </MuiPickersUtilsProvider>
     )
