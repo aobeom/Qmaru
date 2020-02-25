@@ -192,7 +192,7 @@ export default function Drama() {
     useEffect(() => {
         let timeid = setInterval(() => {
             if (sectotal > 0) {
-                setSectotal(sectotal-1)
+                setSectotal(sectotal - 1)
                 let day = Math.floor(sectotal / (60 * 60 * 24))
                 let hour = Math.floor(sectotal / (60 * 60)) - (day * 24)
                 let minute = Math.floor(sectotal / 60) - (day * 24 * 60) - (hour * 60)
@@ -226,49 +226,61 @@ export default function Drama() {
     }
     function Eps(props) {
         if (props.site === "tvbt") {
-            return (
-                <Typography className={classes.tvbtText}>
-                    {props.eps.map((ep) => (
-                        <Link underline='none' className={classes.tvbtAtag} key={"tvbt" + ep.ep} href={ep.url} target="_blank" rel="noopener noreferrer">
-                            <Button variant="contained" className={classes.customBtn}>
-                                {'EP' + ep.ep}
-                            </Button>
-                        </Link>
-                    ))}
-                </Typography>
-            )
-        } else if (props.site === "subpig") {
-            return (
-                <Typography className={classes.epInfo}>
-                    {props.eps.map((ep) => (
-                        <Link underline='none' className={classes.tvbtAtag} key={"subpig" + ep.ep} href={ep.url} target="_blank" rel="noopener noreferrer">
-                            <Button variant="contained" className={classes.customBtn}>
-                                BAIDU
+            if (props.eps !== null) {
+                return (
+                    <Typography className={classes.tvbtText}>
+                        {props.eps.map((ep) => (
+                            <Link underline='none' className={classes.tvbtAtag} key={"tvbt" + ep.ep} href={ep.url} target="_blank" rel="noopener noreferrer">
+                                <Button variant="contained" className={classes.customBtn}>
+                                    {'EP' + ep.ep}
                                 </Button>
-                        </Link>
-                    ))}
-                </Typography>
-            )
+                            </Link>
+                        ))}
+                    </Typography>
+                )
+            } else {
+                return <div></div>
+            }
+        } else if (props.site === "subpig") {
+            if (props.eps !== null) {
+                return (
+                    <Typography className={classes.epInfo}>
+                        {props.eps.map((ep) => (
+                            <Link underline='none' className={classes.tvbtAtag} key={"subpig" + ep.ep} href={ep.url} target="_blank" rel="noopener noreferrer">
+                                <Button variant="contained" className={classes.customBtn}>
+                                    BAIDU
+                                    </Button>
+                            </Link>
+                        ))}
+                    </Typography>
+                )
+            } else {
+                return <div></div>
+            }
         } else if (props.site === "fixsub") {
-            return (
-                <Typography component="div" className={classes.epInfo}>
-                    {props.eps.map((ep) => (
-                        <Typography component="span" key={"fixsub" + ep.ep}>
-                            <Typography component="p" className={classes.fixBtn}>
-                                <Button disabled classes={{ label: classes.fixBtn }}>{'EP' + ep.ep}</Button>
-                            </Typography>
-                            <Link underline='none' href={ep.url.split(",")[0]} target="_blank" rel="noopener noreferrer">
-                                <Button variant="contained" className={classes.customBtn}>BD</Button>
-                            </Link>
-                            <Link underline='none' href={ep.url.split(",")[1]} target="_blank" rel="noopener noreferrer">
-                                <Button variant="contained" className={classes.customBtn}>MG</Button>
-                            </Link>
-                            <Link underline='none' href={ep.url.split(",")[2]} target="_blank" rel="noopener noreferrer">
-                                <Button variant="contained" className={classes.customBtn}>E2K</Button>
-                            </Link>
-                        </Typography>))}
-                </Typography>
-            )
+            if (props.eps !== null) {
+                return (
+                    <Typography component="div" className={classes.epInfo}>
+                        {props.eps.map((ep) => (
+                            <Typography component="span" key={"fixsub" + ep.ep}>
+                                <Typography component="p" className={classes.fixBtn}>
+                                    <Button disabled classes={{ label: classes.fixBtn }}>{'EP' + ep.ep}</Button>
+                                </Typography>
+                                <Link underline='none' href={ep.url.split(",")[0]} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="contained" className={classes.customBtn}>BD</Button>
+                                </Link>
+                                <Link underline='none' href={ep.url.split(",")[1]} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="contained" className={classes.customBtn}>MG</Button>
+                                </Link>
+                                <Link underline='none' href={ep.url.split(",")[2]} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="contained" className={classes.customBtn}>E2K</Button>
+                                </Link>
+                            </Typography>))}
+                    </Typography>
+                )
+            } else {
+                return <div></div>
+            }
         }
     }
     if (reqStatus === 0) {
