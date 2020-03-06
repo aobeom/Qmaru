@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { BrowserRouter, Route, Link, Redirect } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
 import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 import { withStyles, makeStyles } from '@material-ui/core/styles'
@@ -92,6 +92,7 @@ export default function App() {
         { title: "RADIKO", icon: <RadikoIcon /> }
     ]
     const routers = [
+        { path: "/", Component: Picture },
         { path: "/picture", Component: Picture },
         { path: "/drama", Component: Drama },
         { path: "/program", Component: Program },
@@ -103,6 +104,27 @@ export default function App() {
     const tabSwitch = (e, newValue) => {
         setTabValue(newValue)
     }
+
+    useEffect(() => {
+        function switchTab() {
+            const routers = [
+                { path: "/", index: 0 },
+                { path: "/picture", index: 0  },
+                { path: "/drama", index: 1  },
+                { path: "/program", index: 2  },
+                { path: "/stchannel", index: 3  },
+                { path: "/radiko", index: 4  },
+            ]
+            const pathname = window.location.pathname
+            for (let i in routers) {
+                let r = routers[i]
+                if (r["path"] === pathname) {
+                    setTabValue(r["index"])
+                }
+            }
+        }
+        switchTab()
+    }, [])
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -153,7 +175,6 @@ export default function App() {
                                 )}
                             </Route>
                         ))}
-                    <Redirect exact from="/" to="/picture" />
                     </Typography>
                     <Typography component='div' className={classes.footer}>
                         <Typography component='span' className={classes.footerSpan}>
