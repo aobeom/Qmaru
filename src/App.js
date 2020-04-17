@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { LocalizationProvider } from '@material-ui/pickers'
 import { withStyles, makeStyles } from '@material-ui/core/styles'
 
 import Picture from './components/Picture'
@@ -20,7 +20,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
-import DateFnsUtils from '@date-io/date-fns'
+import DateFnsUtils from '@material-ui/pickers/adapter/date-fns';
 
 const mainColor = global.constants.theme
 
@@ -127,7 +127,7 @@ export default function App() {
     }, [])
 
     return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <LocalizationProvider dateAdapter={DateFnsUtils}>
             <BrowserRouter>
                 <Typography component='div' className={classes.wrapper}>
                     <Typography component='div'>
@@ -183,6 +183,6 @@ export default function App() {
                     </Typography>
                 </Typography>
             </BrowserRouter>
-        </MuiPickersUtilsProvider>
+        </LocalizationProvider>
     )
 }

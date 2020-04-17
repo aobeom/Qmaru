@@ -18,7 +18,7 @@ const mainColor = global.constants.theme
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        paddingTop: 40,
+        paddingTop: 80,
     },
     errorInfo: {
         margin: 10,

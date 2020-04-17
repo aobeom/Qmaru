@@ -1,29 +1,50 @@
-import React, { useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
+import React, { useState, forwardRef } from 'react'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 
-import Input from '@material-ui/core/Input'
-import YoutubeSearchedFor from '@material-ui/icons/YoutubeSearchedFor'
+import TextField from '@material-ui/core/TextField'
 import MenuItem from '@material-ui/core/MenuItem'
-import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
+import FormHelperText from '@material-ui/core/FormHelperText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+
 import Button from '@material-ui/core/Button'
 import Chip from '@material-ui/core/Chip'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Fab from '@material-ui/core/Fab'
-import CheckIcon from '@material-ui/icons/Check'
 import Link from '@material-ui/core/Link'
 
 import yahooLogo from '../static/img/yahoo.png'
 
 const mainColor = global.constants.theme
 
+
+const MyTextField = withStyles({
+    root: {
+        '& .MuiInput-root': {
+            color: mainColor.primaryColor,
+        },
+        '& .MuiFormHelperText-root': {
+            color: mainColor.thirdlyColor,
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: mainColor.thirdlyColor,
+        },
+        '& .MuiInput-underline:hover:not(disabled):before': {
+            borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: mainColor.tipColor
+        }
+    }
+})(TextField)
+
 const useStyles = makeStyles(theme => ({
     topLogo: {
-        paddingTop: 40,
+        paddingTop: 80,
+        paddingBottom: 40,
     },
     progCard: {
         padding: 5,
@@ -41,14 +62,20 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: mainColor.tipColor,
     },
     customForm: {
+        width: 80,
         position: "relative",
-        top: 10,
     },
     customInput: {
         width: 140,
         '&:hover': {
             borderBottomColor: mainColor.secondaryColor,
         },
+    },
+    customList: {
+        color: mainColor.thirdlyColor
+    },
+    customListItem: {
+        color: mainColor.primaryColor
     },
     customUnderline: {
         color: mainColor.secondaryColor,
@@ -63,7 +90,15 @@ const useStyles = makeStyles(theme => ({
         },
     },
     customSel: {
+        color: mainColor.primaryColor,
         minHeight: "0",
+        textAlign: "center"
+    },
+    customSelIcon: {
+        color: mainColor.thirdlyColor
+    },
+    customHelper: {
+        color: mainColor.thirdlyColor
     },
     customBtn: {
         color: mainColor.otherColor,
@@ -75,28 +110,27 @@ const useStyles = makeStyles(theme => ({
         },
     },
     progressRoot: {
-        display: 'flex',
         justifyContent: "center",
         alignItems: "center"
     },
     progressWrapper: {
         margin: 10,
         position: 'relative',
+        top: 10
     },
     progressFab: {
         color: mainColor.secondaryColor,
         position: 'absolute',
-        left: 0,
-        zIndex: 1,
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
     },
     progressBtn: {
-        width: 48,
-        height: 48,
-        backgroundColor: "transparent",
-        boxShadow: "0 0",
-        color: mainColor.secondaryColor,
+        color: mainColor.otherColor,
+        backgroundColor: mainColor.thirdlyColor,
         '&:hover': {
-            backgroundColor: mainColor.otherColor,
+            backgroundColor: mainColor.primaryColor,
         },
     },
     logoCls: {
@@ -123,377 +157,341 @@ const useStyles = makeStyles(theme => ({
 }))
 
 export default function Program() {
-    const districtName = [{
-        code: '',
-        name: "東京",
-        division: "title",
-        status: true
-    },
-    {
+    const normal = [{
         code: '23',
         name: "東京",
-        division: "regular",
         status: false
     },
     {
         code: '40',
         name: "大阪",
-        division: "regular",
         status: false
     },
     {
         code: '24',
         name: "神奈川",
-        division: "regular",
         status: false
     },
     {
         code: '33',
         name: "愛知",
-        division: "regular",
         status: false
     },
     {
         code: '55',
         name: "福岡",
-        division: "regular",
         status: false
     },
-    {
+    ]
+
+    const hokaido = [{
         code: '10',
-        name: "北海道（札幌）",
-        division: "北海道",
+        name: "札幌",
         status: false
     },
     {
         code: '11',
-        name: "北海道（函館）",
-        division: "北海道",
+        name: "函館",
         status: false
     },
     {
         code: '12',
-        name: "北海道（旭川）",
-        division: "北海道",
+        name: "旭川",
         status: false
     },
     {
         code: '13',
-        name: "北海道（帯広）",
-        division: "北海道",
+        name: "帯広",
         status: false
     },
     {
         code: '14',
-        name: "北海道（釧路）",
-        division: "北海道",
+        name: "釧路",
         status: false
     },
     {
         code: '15',
-        name: "北海道（北見）",
-        division: "北海道",
+        name: "北見",
         status: false
     },
     {
         code: '16',
-        name: "北海道（室蘭）",
-        division: "北海道",
+        name: "室蘭",
         status: false
-    },
-    {
-        code: '22',
-        name: "青森",
-        division: "東北地方",
-        status: false
-    },
-    {
-        code: '20',
-        name: "岩手",
-        division: "東北地方",
-        status: false
-    },
-    {
-        code: '18',
-        name: "秋田",
-        division: "東北地方",
-        status: false
-    },
-    {
-        code: '17',
-        name: "宮城",
-        division: "東北地方",
-        status: false
-    },
-    {
-        code: '19',
-        name: "山形",
-        division: "東北地方",
-        status: false
-    },
-    {
-        code: '21',
-        name: "福島",
-        division: "東北地方",
-        status: false
-    },
-    {
-        code: '26',
-        name: "茨城",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '28',
-        name: "栃木",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '25',
-        name: "群馬",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '29',
-        name: "埼玉",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '27',
-        name: "千葉",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '23',
-        name: "東京",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '24',
-        name: "神奈川",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '32',
-        name: "山梨",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '30',
-        name: "長野",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '31',
-        name: "新潟",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '37',
-        name: "富山",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '34',
-        name: "石川",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '36',
-        name: "福井",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '35',
-        name: "静岡",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '33',
-        name: "愛知",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '39',
-        name: "岐阜",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '38',
-        name: "三重",
-        division: "関東地方",
-        status: false
-    },
-    {
-        code: '45',
-        name: "滋賀",
-        division: "近畿地方",
-        status: false
-    },
-    {
-        code: '41',
-        name: "京都",
-        division: "近畿地方",
-        status: false
-    },
-    {
-        code: '40',
-        name: "大阪",
-        division: "近畿地方",
-        status: false
-    },
-    {
-        code: '42',
-        name: "兵庫",
-        division: "近畿地方",
-        status: false
-    },
-    {
-        code: '44',
-        name: "奈良",
-        division: "近畿地方",
-        status: false
-    },
-    {
-        code: '43',
-        name: "和歌山",
-        division: "近畿地方",
-        status: false
-    },
-    {
-        code: '49',
-        name: "鳥取",
-        division: "中国地方",
-        status: false
-    },
-    {
-        code: '48',
-        name: "島根",
-        division: "中国地方",
-        status: false
-    },
-    {
-        code: '47',
-        name: "岡山",
-        division: "中国地方",
-        status: false
-    },
-    {
-        code: '46',
-        name: "広島",
-        division: "中国地方",
-        status: false
-    },
-    {
-        code: '50',
-        name: "山口",
-        division: "中国地方",
-        status: false
-    },
-    {
-        code: '52',
-        name: "香川",
-        division: "四国地方",
-        status: false
-    },
-    {
-        code: '51',
-        name: "愛媛",
-        division: "四国地方",
-        status: false
-    },
-    {
-        code: '53',
-        name: "徳島",
-        division: "四国地方",
-        status: false
-    },
-    {
-        code: '54',
-        name: "高知",
-        division: "四国地方",
-        status: false
-    },
-    {
-        code: '55',
-        name: "福岡",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '61',
-        name: "佐賀",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '57',
-        name: "長崎",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '56',
-        name: "熊本",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '60',
-        name: "大分",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '59',
-        name: "宮崎",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '58',
-        name: "鹿児島",
-        division: "九州地方",
-        status: false
-    },
-    {
-        code: '62',
-        name: "沖縄",
-        division: "沖縄",
-        status: false
-    },
+    }]
+
+    const tohoku = [
+        {
+            code: '17',
+            name: "宮城",
+            status: false
+        },
+        {
+            code: '18',
+            name: "秋田",
+            status: false
+        },
+        {
+            code: '19',
+            name: "山形",
+            status: false
+        },
+        {
+            code: '20',
+            name: "岩手",
+            status: false
+        },
+        {
+            code: '21',
+            name: "福島",
+            status: false
+        },
+        {
+            code: '22',
+            name: "青森",
+            status: false
+        },
     ]
+
+    const kanto = [
+        {
+            code: '23',
+            name: "東京",
+            status: false
+        },
+        {
+            code: '24',
+            name: "神奈川",
+            status: false
+        },
+        {
+            code: '25',
+            name: "群馬",
+            status: false
+        },
+        {
+            code: '26',
+            name: "茨城",
+            status: false
+        },
+        {
+            code: '27',
+            name: "千葉",
+            status: false
+        },
+        {
+            code: '28',
+            name: "栃木",
+            status: false
+        },
+        {
+            code: '29',
+            name: "埼玉",
+            status: false
+        },
+        {
+            code: '30',
+            name: "長野",
+            status: false
+        },
+        {
+            code: '31',
+            name: "新潟",
+            status: false
+        },
+        {
+            code: '32',
+            name: "山梨",
+            status: false
+        },
+        {
+            code: '33',
+            name: "愛知",
+            status: false
+        },
+        {
+            code: '34',
+            name: "石川",
+            status: false
+        },
+        {
+            code: '35',
+            name: "静岡",
+            status: false
+        },
+        {
+            code: '36',
+            name: "福井",
+            status: false
+        },
+        {
+            code: '37',
+            name: "富山",
+            status: false
+        },
+        {
+            code: '38',
+            name: "三重",
+            status: false
+        },
+        {
+            code: '39',
+            name: "岐阜",
+            status: false
+        },
+
+    ]
+
+    const kinki = [
+
+        {
+            code: '40',
+            name: "大阪",
+            status: false
+        },
+        {
+            code: '41',
+            name: "京都",
+            status: false
+        },
+
+        {
+            code: '42',
+            name: "兵庫",
+            status: false
+        },
+        {
+            code: '43',
+            name: "和歌山",
+            status: false
+        },
+        {
+            code: '44',
+            name: "奈良",
+            status: false
+        },
+        {
+            code: '45',
+            name: "滋賀",
+            status: false
+        },
+
+    ]
+
+    const chugoku = [
+        {
+            code: '46',
+            name: "広島",
+            status: false
+        },
+        {
+            code: '47',
+            name: "岡山",
+            status: false
+        },
+        {
+            code: '48',
+            name: "島根",
+            status: false
+        },
+        {
+            code: '49',
+            name: "鳥取",
+            status: false
+        },
+        {
+            code: '50',
+            name: "山口",
+            status: false
+        },
+    ]
+
+    const shikoku = [
+        {
+            code: '51',
+            name: "愛媛",
+            status: false
+        },
+        {
+            code: '52',
+            name: "香川",
+            status: false
+        },
+
+        {
+            code: '53',
+            name: "徳島",
+            status: false
+        },
+        {
+            code: '54',
+            name: "高知",
+            status: false
+        },
+    ]
+
+    const kyushu = [
+        {
+            code: '55',
+            name: "福岡",
+            status: false
+        },
+        {
+            code: '56',
+            name: "熊本",
+            status: false
+        },
+        {
+            code: '57',
+            name: "長崎",
+            status: false
+        },
+
+        {
+            code: '58',
+            name: "鹿児島",
+            status: false
+        },
+        {
+            code: '59',
+            name: "宮崎",
+            status: false
+        },
+        {
+            code: '60',
+            name: "大分",
+            status: false
+        },
+        {
+            code: '61',
+            name: "佐賀",
+            status: false
+        },
+    ]
+
+    const okinawa = [
+        {
+            code: '62',
+            name: "沖縄",
+            status: false
+        }
+    ]
+
     const [reqData, setReqData] = useState([])
     const [origin, setOrigin] = useState("")
     const [btndisp, setBtndisp] = useState({ display: "none" })
-    let [district, setDistrict] = useState("")
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
-    const [success, setSuccess] = useState(false)
     const [keyword, setKeyword] = useState("")
     const [info, setInfo] = useState("")
+    let [city, setCity] = useState("")
 
     const changeText = (event) => {
         setKeyword(event.target.value)
     }
 
-    const handleChange = (event) => {
-        setDistrict(event.target.value)
+    const selectChange = (event) => {
+        setCity(event.target.value)
     }
 
     const onKeyUp = (e) => {
@@ -506,13 +504,11 @@ export default function Program() {
             setInfo("KEYWORD ERROR")
             return false
         }
-        if (district === "") {
-            district = '23'
+        if (city === "") {
+            city = '23'
         }
-        let url = `${global.constants.api}/api/v1/program?kw=${encodeURIComponent(keyword)}&ac=${district}`
-        setSuccess(false)
+        let url = `${global.constants.api}/api/v1/program?kw=${encodeURIComponent(keyword)}&ac=${city}`
         setLoading(true)
-        console.log(url)
         fetch(url, {
             method: 'GET',
             dataType: 'json',
@@ -523,7 +519,6 @@ export default function Program() {
                 if (prog_info_obj.length === 0) {
                     setReqData([])
                     setError(true)
-                    setSuccess(false)
                     setLoading(false)
                     setInfo("No Data")
                 } else {
@@ -531,7 +526,6 @@ export default function Program() {
                     setOrigin("yahoo")
                     setBtndisp({ display: "block", padding: 20 })
                     setError(false)
-                    setSuccess(true)
                     setLoading(false)
                 }
             })
@@ -540,28 +534,36 @@ export default function Program() {
                     setReqData([])
                     setInfo("Server Error")
                     setError(true)
-                    setSuccess(false)
                     setLoading(false)
                 }
             )
     }
+
+    const cityList = (region) => {
+        let cTmp = []
+        for (let i in region) {
+            let data = region[i]
+            let code = data.code
+            let name = data.name
+            cTmp.push(
+                <MenuItem
+                    key={i}
+                    classes={{
+                        root: classes.customListItem
+                    }}
+                    value={code}
+                >
+                    {name}
+                </MenuItem>
+            )
+        }
+        return cTmp
+    }
     const classes = useStyles()
     let progTmp = []
     let progTitle = []
-    let districtTmp = []
     let url = reqData.ori_url
-    for (let i in districtName) {
-        let dn = districtName[i]
-        districtTmp.push(
-            <MenuItem
-                key={"d" + i}
-                value={dn.code}
-                className={classes.progItem}
-            >
-                {dn.name}
-            </MenuItem>
-        )
-    }
+
     if (error === true) {
         progTitle.push(
             <Typography component='div' key="error">
@@ -612,6 +614,20 @@ export default function Program() {
             }
         }
     }
+
+    const MyListHeader = forwardRef((props, ref) => (
+        <ListSubheader
+            ref={ref}
+            disableSticky
+            classes={{
+                root: classes.customList
+            }}
+        >
+            {props.name}
+        </ListSubheader>
+    ))
+
+
     return (
         <Typography component='div'>
             <Typography component='p' className={classes.topLogo}>
@@ -622,29 +638,51 @@ export default function Program() {
             <Typography component='div' className={classes.progressRoot}>
                 <FormControl className={classes.customForm}>
                     <Select
-                        value={district}
-                        onChange={event => handleChange(event)}
-                        name="district"
-                        displayEmpty
+                        onChange={event => selectChange(event)}
+                        classes={{
+                            select: classes.customSel,
+                            icon: classes.customSelIcon
+                        }}
                         className={classes.customUnderline}
-                        classes={{ select: classes.customSel }}
+                        value={city}
+                        displayEmpty
                     >
-                        {districtTmp}
+                        <MyListHeader name="主要" />
+                        {cityList(normal)}
+                        <MyListHeader name="北海道" />
+                        {cityList(hokaido)}
+                        <MyListHeader name="東北地方" />
+                        {cityList(tohoku)}
+                        <MyListHeader name="関東地方" />
+                        {cityList(kanto)}
+                        <MyListHeader name="近畿地方" />
+                        {cityList(kinki)}
+                        <MyListHeader name="中国地方" />
+                        {cityList(chugoku)}
+                        <MyListHeader name="四国地方" />
+                        {cityList(shikoku)}
+                        <MyListHeader name="九州地方" />
+                        {cityList(kyushu)}
+                        <MyListHeader name="沖縄" />
+                        {cityList(okinawa)}
                     </Select>
-                    <FormHelperText className={classes.progLabel}>District</FormHelperText>
+                    <FormHelperText className={classes.customHelper}>region</FormHelperText>
                 </FormControl>
-                <Input
-                    classes={{ root: classes.customInput, underline: classes.customUnderline, }}
+                <MyTextField
                     onChange={event => changeText(event)}
-                    placeholder="keyword"
-                    inputProps={{ 'aria-label': 'Description' }}
+                    helperText="keyword"
                     onKeyUp={onKeyUp}
                 />
                 <Typography component='div' className={classes.progressWrapper}>
-                    <Fab classes={{ root: classes.progressBtn }} onClick={() => progClick()}>
-                        {success ? <CheckIcon /> : <YoutubeSearchedFor />}
-                    </Fab>
-                    {loading && <CircularProgress size={48} className={classes.progressFab} />}
+                    <Button
+                        variant="contained"
+                        disabled={loading}
+                        className={classes.progressBtn}
+                        onClick={() => progClick()}
+                    >
+                        Search
+                    </Button>
+                    {loading && <CircularProgress size={24} className={classes.progressFab} />}
                 </Typography>
             </Typography>
             {progTitle}

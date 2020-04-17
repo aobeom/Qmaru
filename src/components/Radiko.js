@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Link from '@material-ui/core/Link'
 import Badge from '@material-ui/core/Badge'
-import { DateTimePicker } from "@material-ui/pickers"
+import { MobileDateTimePicker } from "@material-ui/pickers"
 import { createMuiTheme } from "@material-ui/core"
 import { ThemeProvider } from "@material-ui/styles"
 import Chip from '@material-ui/core/Chip'
@@ -27,32 +27,63 @@ const RadioTheme = createMuiTheme({
                 backgroundColor: mainColor.primaryColor,
             },
         },
+        MuiPickersYear: {
+            yearButton: {
+                '&:hover': {
+                    backgroundColor: mainColor.otherColor,
+                },
+            },
+            yearSelected: {
+                backgroundColor: mainColor.secondaryColor,
+                '&:hover': {
+                    backgroundColor: mainColor.primaryColor,
+                },
+                '&:focus': {
+                    backgroundColor: mainColor.primaryColor,
+                }
+            },
+            yearDisabled: {
+                color: mainColor.otherColor,
+            },
+        },
         MuiPickersCalendarHeader: {
-            dayLabel: {
-                color: mainColor.thirdlyColor,
+            monthText: {
+                color: mainColor.secondaryColor,
             }
         },
         MuiPickersDay: {
             day: {
                 color: mainColor.secondaryColor,
+                '&:focus': {
+                    backgroundColor: mainColor.primaryColor,
+                }
             },
             daySelected: {
                 backgroundColor: mainColor.thirdlyColor,
                 '&:hover': {
+                    backgroundColor: mainColor.primaryColor,
+                },
+                '&:focus.MuiPickersDay-daySelected': {
                     backgroundColor: mainColor.primaryColor,
                 }
             },
             dayDisabled: {
                 color: mainColor.otherColor,
             },
-            current: {
+            today: {
                 color: mainColor.thirdlyColor,
+                '&:not(.MuiPickersDay-daySelected)': {
+                    border: `1px solid ${mainColor.otherColor}`,
+                },
             },
         },
-        MuiPickersModal: {
-            dialogAction: {
-                color: mainColor.thirdlyColor,
+        MuiTypography: {
+            root: {
+                color: mainColor.secondaryColor
             },
+            colorPrimary: {
+                color: mainColor.secondaryColor
+            }
         },
         MuiPickersSlideTransition: {
             transitionContainer: {
@@ -88,22 +119,12 @@ const RadioTheme = createMuiTheme({
                 color: mainColor.secondaryColor
             }
         },
-        MuiPickersYear: {
-            root: {
-                color: mainColor.thirdlyColor
-            },
-            yearSelected: {
-                color: mainColor.secondaryColor
-            },
-            yearDisabled: {
-                color: mainColor.otherColor,
-            },
-        },
         MuiIconButton: {
             root: {
                 '&:hover': {
                     backgroundColor: mainColor.otherColor
-                }
+                },
+                color: mainColor.secondaryColor,
             }
         },
         MuiInputLabel: {
@@ -118,6 +139,11 @@ const RadioTheme = createMuiTheme({
             input: {
                 color: mainColor.tipColor,
                 textAlign: 'center'
+            }
+        },
+        MuiPickerDTToolbar: {
+            penIcon: {
+                display: "none"
             }
         },
         MuiInput: {
@@ -146,6 +172,19 @@ const RadioTheme = createMuiTheme({
                 color: mainColor.tipColor
             }
         },
+        MuiButton: {
+            textPrimary: {
+                '&:hover': {
+                    backgroundColor: mainColor.otherColor
+                },
+                color: mainColor.secondaryColor,
+            },
+            containedPrimary: {
+                '&:hover': {
+                    backgroundColor: mainColor.otherColor
+                },
+            }
+        }
     },
     palette: {
         secondary: {
@@ -156,7 +195,7 @@ const RadioTheme = createMuiTheme({
 
 const useStyles = makeStyles(theme => ({
     topLogo: {
-        paddingTop: 40,
+        paddingTop: 120,
     },
     progCard: {
         padding: 5,
@@ -299,7 +338,6 @@ export default function Radiko() {
     }
 
     const radioClick = () => {
-        console.log("Start")
         setRadioData([])
         setLoading(true)
         setTipData(false)
@@ -426,28 +464,33 @@ export default function Radiko() {
                     </TextField>
                 </Typography>
                 <Typography component='div'>
-                    <DateTimePicker
+                    <MobileDateTimePicker
                         className={classes.dateBody}
                         disableFuture
                         ampm={false}
                         autoOk
-                        minDate={'2010-12-01'}
-                        variant="inline"
+                        minDate={'2017-02-20'}
+                        maxDate={'2027-02-20'}
+                        toolbarTitle="Start DateTime"
                         helperText="Start DateTime"
-                        format="Y-MM-dd HH:mm"
+                        inputFormat="yyyy-MM-dd HH:mm"
+                        mask="____-__-__ __:__"
                         value={startAt}
                         onChange={event => startAtChange(event)}
                     />
                 </Typography>
                 <Typography component='div'>
-                    <DateTimePicker
+                    <MobileDateTimePicker
                         className={classes.dateBody}
                         disableFuture
                         ampm={false}
                         autoOk
-                        variant="inline"
+                        minDate={'2017-02-20'}
+                        maxDate={'2027-02-20'}
+                        toolbarTitle="End DateTime"
                         helperText="End DateTime"
-                        format="Y-MM-dd HH:mm"
+                        inputFormat="yyyy-MM-dd HH:mm"
+                        mask="____-__-__ __:__"
                         value={endAt}
                         onChange={event => endAtChange(event)}
                     />

@@ -21,6 +21,9 @@ import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
 import DESSART from '../static/img/dessart.png'
 import TPL from '../static/img/tpl.png'
+import AMEBLO from '../static/img/ameblo.png'
+import LINEBLOG from '../static/img/lineblog.png'
+import THETV from '../static/img/thetv.png'
 
 import '../config'
 
@@ -28,7 +31,7 @@ const mainColor = global.constants.theme
 
 const useStyles = makeStyles(theme => ({
     wrapper: {
-        paddingTop: 40,
+        paddingTop: 60,
     },
     topLogo: {
         padding: 10,
@@ -289,11 +292,15 @@ export default function Picture() {
     }
     return (
         <Typography component='div' className={classes.wrapper}>
-            <Typography component="p">
+            <Typography component="p" className={classes.topLogoGroup}>
                 <img className={classes.topLogo} src={IG} alt="ig" />
                 <img className={classes.topLogo} src={MDPR} alt="mdpr" />
                 <img className={classes.topLogo} src={TPL} alt="tpl" />
                 <img className={classes.topLogo} src={DESSART} alt="dessart" />
+                <br />
+                <img className={classes.topLogo} src={AMEBLO} alt="ameblo" />
+                <img className={classes.topLogo} src={LINEBLOG} alt="lineblog" />
+                <img className={classes.topLogo} src={THETV} alt="thetv" />
             </Typography>
             <Typography component='div' className={classes.progressRoot}>
                 <Input
