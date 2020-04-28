@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { makeStyles } from '@material-ui/styles'
 
 import Button from '@material-ui/core/Button'
@@ -156,38 +156,40 @@ export default function Drama() {
         setExpanded(expanded ? panel : false)
     }
 
-    useEffect(() => {
-        const fetchData = () => {
-            let url = `${global.constants.api}/api/v1/drama/time`
-            fetch(url, {
-                method: 'GET',
-                dataType: 'json',
-            }).then(res => res.json())
-                .then(data => {
-                    let status = data.status
-                    if (status === 0) {
-                        let tdata = data.data
-                        let time = tdata.time
-                        let sectotal = data.data.second
-                        setReqStatus(status)
-                        setTime(time)
-                        setSectotal(sectotal)
-                    } else {
-                        setReqStatus(status)
-                        setTime("2000-00-00 00:00:00")
-                        setSectotal(0)
-                    }
-                })
-                .catch(
-                    () => {
-                        setReqStatus(1)
-                        setTime("2000-00-00 00:00:00")
-                        setSectotal(0)
-                    }
-                )
-        }
-        fetchData()
+    const dramaTime = useCallback(() => {
+        let url = `${global.constants.api}/api/v1/drama/time`
+        fetch(url, {
+            method: 'GET',
+            dataType: 'json',
+        }).then(res => res.json())
+            .then(data => {
+                let status = data.status
+                if (status === 0) {
+                    let tdata = data.data
+                    let time = tdata.time
+                    let sectotal = data.data.second
+                    setReqStatus(status)
+                    setTime(time)
+                    setSectotal(sectotal)
+                } else {
+                    setReqStatus(status)
+                    setTime("2000-00-00 00:00:00")
+                    setSectotal(0)
+                }
+            })
+            .catch(
+                () => {
+                    setReqStatus(1)
+                    setTime("2000-00-00 00:00:00")
+                    setSectotal(0)
+                }
+            )
+                return () => {}
     }, [])
+
+    useEffect(() => {
+        dramaTime()
+    }, [dramaTime])
 
     useEffect(() => {
         let timeid = setInterval(() => {

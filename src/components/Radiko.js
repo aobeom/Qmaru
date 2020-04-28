@@ -195,7 +195,7 @@ const RadioTheme = createMuiTheme({
 
 const useStyles = makeStyles(theme => ({
     topLogo: {
-        paddingTop: 120,
+        paddingTop: 90,
     },
     progCard: {
         padding: 5,
