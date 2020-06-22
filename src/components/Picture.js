@@ -14,8 +14,6 @@ import Typography from '@material-ui/core/Typography'
 import LazyLoad from 'react-lazyload'
 import Divider from '@material-ui/core/Divider'
 import Skeleton from '@material-ui/lab/Skeleton'
-import Tooltip from '@material-ui/core/Tooltip'
-import Zoom from '@material-ui/core/Zoom'
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -140,10 +138,6 @@ export default function Picture() {
     const [btndisp, setBtnDisp] = useState({ display: "none" })
 
     const classes = useStyles()
-
-    const changeText = (event, newValue) => {
-        setURL(event.target.value)
-    }
 
     const onKeyUp = (e) => {
         e.keyCode === 13 && picClick()
@@ -305,7 +299,7 @@ export default function Picture() {
             <Typography component='div' className={classes.progressRoot}>
                 <Input
                     classes={{ root: classes.customInput, underline: classes.customUnderline }}
-                    onChange={event => changeText(event)}
+                    onChange={event => setURL(event.target.value)}
                     placeholder="URL"
                     autoFocus={false}
                     onKeyUp={onKeyUp}
@@ -318,20 +312,6 @@ export default function Picture() {
                     {loading && <CircularProgress size={48} className={classes.progressFab} />}
                 </Typography>
             </Typography>
-            <Tooltip
-                className={classes.tipCls}
-                classes={{
-                    tooltip: classes.tipWidth
-                }}
-                title="For unfinished news(mdpr) you can append ?update at the end of the URL to get the latest content."
-                placement="right"
-                TransitionComponent={Zoom}
-                enterTouchDelay={50}
-                leaveTouchDelay={3000}
-                interactive
-            >
-                <Button>TIPS</Button>
-            </Tooltip>
             {mediaTmp}
         </Typography>
     )

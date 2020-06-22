@@ -242,10 +242,6 @@ const useStyles = makeStyles(theme => ({
         minWidth: 240,
         textAlign: 'center'
     },
-    dateBody: {
-        minWidth: 240,
-        padding: 10,
-    },
     selectMenu: {
         color: mainColor.tipColor
     },
@@ -362,6 +358,7 @@ export default function Radiko() {
             "start_at": start_at_str,
             "end_at": end_at_str
         }
+        console.log(radio_body)
         let url = `${global.constants.api}/api/v1/radiko`
         fetch(url, {
             method: 'POST',
@@ -465,34 +462,40 @@ export default function Radiko() {
                 </Typography>
                 <Typography component='div'>
                     <MobileDateTimePicker
-                        className={classes.dateBody}
                         disableFuture
                         ampm={false}
                         autoOk
                         minDate={'2017-02-20'}
                         maxDate={'2027-02-20'}
                         toolbarTitle="Start DateTime"
-                        helperText="Start DateTime"
                         inputFormat="yyyy-MM-dd HH:mm"
                         mask="____-__-__ __:__"
                         value={startAt}
                         onChange={event => startAtChange(event)}
+                        renderInput={props => <TextField
+                            className={classes.selectBody}
+                            helperText="Start DateTime"
+                            {...props}
+                        />}
                     />
                 </Typography>
                 <Typography component='div'>
                     <MobileDateTimePicker
-                        className={classes.dateBody}
                         disableFuture
                         ampm={false}
                         autoOk
                         minDate={'2017-02-20'}
                         maxDate={'2027-02-20'}
                         toolbarTitle="End DateTime"
-                        helperText="End DateTime"
                         inputFormat="yyyy-MM-dd HH:mm"
                         mask="____-__-__ __:__"
                         value={endAt}
                         onChange={event => endAtChange(event)}
+                        renderInput={props => <TextField
+                            className={classes.selectBody}
+                            helperText="End DateTime"
+                            {...props}
+                        />}
                     />
                 </Typography>
                 <Typography component='div' className={classes.wrapperBtn}>
