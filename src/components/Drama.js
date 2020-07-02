@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/styles'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import AccessTime from '@material-ui/icons/AccessTime'
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import Accordion from '@material-ui/core/Accordion'
+import AccordionDetails from '@material-ui/core/AccordionDetails'
+import AccordionSummary from '@material-ui/core/AccordionSummary'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Chip from '@material-ui/core/Chip'
@@ -294,8 +294,8 @@ export default function Drama() {
             let dramaEps = dramaDetails["dlurls"]
             dramaTmp.push(
                 <Typography component='div' key={i} className={classes.panelSty}>
-                    <ExpansionPanel expanded={expanded === panel} onChange={handleChange(panel)}>
-                        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                    <Accordion expanded={expanded === panel} onChange={handleChange(panel)} TransitionProps={{ unmountOnExit: true }}>
+                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                             <Typography className={classes.dateInfo} component="p" color="textPrimary">
                                 {dramaDetails.date}
                             </Typography>
@@ -304,11 +304,11 @@ export default function Drama() {
                                     <Typography className={classes.aTag} dangerouslySetInnerHTML={{ __html: dramaDetails.title }} ></Typography>
                                 </Link>
                             </Typography>
-                        </ExpansionPanelSummary>
-                        <ExpansionPanelDetails>
+                        </AccordionSummary>
+                        <AccordionDetails>
                             <Eps site={dramaSite} eps={dramaEps} />
-                        </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                        </AccordionDetails>
+                    </Accordion>
                 </Typography>
             )
         }

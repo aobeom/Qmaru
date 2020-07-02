@@ -134,9 +134,9 @@ export default function Stchannel() {
         return (<Typography component='div'>
             <Box width="100%" >
                 <Skeleton width="16%" height={30} className={classes.SkeletonCls} />
-                <Skeleton width="100%" height={10} />
-                <Skeleton width="100%" height={10} />
-                <Skeleton width="80%" height={10} />
+                <Skeleton width="100%" height={20} />
+                <Skeleton width="100%" height={20} />
+                <Skeleton width="80%" height={20} />
                 <Skeleton variant="rect" width="100%" height={400} />
                 <Skeleton width="16%" height={30} className={classes.SkeletonCls} />
             </Box>
