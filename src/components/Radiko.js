@@ -289,11 +289,11 @@ const useStyles = makeStyles(theme => ({
 
 function date2string(date) {
     let Y = date.getFullYear()
-    let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1)
-    let D = (date.getDate() + 1 < 10 ? '0' + (date.getDate()) : date.getDate())
-    let h = (date.getHours() + 1 < 10 ? '0' + (date.getHours()) : date.getHours())
-    let m = (date.getMinutes() + 1 < 10 ? '0' + (date.getMinutes()) : date.getMinutes())
-    let s = '00'
+    let M = (date.getMonth() + 1).toString().padStart(2, '0')
+    let D = (date.getDate()).toString().padStart(2, '0')
+    let h = (date.getHours()).toString().padStart(2, '0')
+    let m = (date.getMinutes()).toString().padStart(2, '0')
+    let s = "00"
     return (Y + M + D + h + m + s)
 }
 
@@ -358,7 +358,7 @@ export default function Radiko() {
             "start_at": start_at_str,
             "end_at": end_at_str
         }
-        console.log(radio_body)
+
         let url = `${global.constants.api}/api/v1/radiko`
         fetch(url, {
             method: 'POST',
