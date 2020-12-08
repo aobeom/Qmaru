@@ -5,7 +5,6 @@ import Input from '@material-ui/core/Input'
 import ImageSearch from '@material-ui/icons/ImageSearch'
 import Chip from '@material-ui/core/Chip'
 import Button from '@material-ui/core/Button'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
 import Fade from '@material-ui/core/Fade'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import Fab from '@material-ui/core/Fab'
@@ -133,8 +132,6 @@ export default function Picture() {
     const [loading, setLoding] = useState(false)
     const [success, setSuccess] = useState(false)
     const [reqStatus, setReqStatus] = useState(0)
-    const [btnSta, setBtnSta] = useState({copied: false, btnSta: "contained"})
-    const [btnInfo, setBtnInfo] = useState("")
     const [btndisp, setBtnDisp] = useState({ display: "none" })
 
     const classes = useStyles()
@@ -156,10 +153,8 @@ export default function Picture() {
             setReqInfo("URL ERROR / NO RESULT FOUND")
             return false
         } else {
-            if (url.indexOf("www.showroom-live.com") !== -1 || url.indexOf("live.line.me") !== -1) {
-                uri = "/hls"
-                setBtnInfo("Copy to potplayer")
-                setBtnSta({copied: true, btnSta: "outlined"})
+            if (url.indexOf("youtube.com") !== -1 || url.indexOf("youtu.be") !== -1) {
+                uri = "/y2b"
             } else if (url.indexOf("twitter") !== -1) {
                 uri = "/twitter"
             } else {
@@ -246,18 +241,19 @@ export default function Picture() {
                     }
                 }
             }
-            if (reqData.type === "hls") {
-                let urls = reqData.entities
+            if (reqData.type === "y2b") {
+                let url = "/media/y2b/" + reqData.entities
                 mediaTmp.push(
-                    <Typography component='div' key="hls">
-                        <CopyToClipboard
-                            text={urls}
-                            onCopy={() => btnSta}
+                    <Typography component='div' key="y2b">
+                        <Button
+                            variant="contained"
+                            className={classes.customBtn}
+                            href={url}
+                            target="_blank"
+                            rel="noreferrer"
                         >
-                            <Button variant="contained" className={classes.customBtn}>
-                                {btnInfo}
-                            </Button>
-                        </CopyToClipboard>
+                            下载
+                        </Button>
                     </Typography>
                 )
             }
@@ -273,7 +269,7 @@ export default function Picture() {
         } else {
             mediaTmp.push(
                 <Typography component='div' key="nodata" style={btndisp}>
-                    <Fade in={reqStatus}>
+                    <Fade in={true}>
                         <Chip
                             className={classes.errorInfo}
                             label={reqInfo}
