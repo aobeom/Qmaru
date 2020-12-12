@@ -251,6 +251,7 @@ export default function Picture() {
                             href={url}
                             target="_blank"
                             rel="noreferrer"
+                            download
                         >
                             下载
                         </Button>
