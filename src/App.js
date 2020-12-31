@@ -178,7 +178,7 @@ export default function App() {
                     </Typography>
                     <Typography component='div' className={classes.footer}>
                         <Typography component='span' className={classes.footerSpan}>
-                            © 2017-2020
+                            © 2017-2021
                             </Typography>
                     </Typography>
                 </Typography>
