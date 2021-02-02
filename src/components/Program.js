@@ -62,8 +62,11 @@ const useStyles = makeStyles(theme => ({
         backgroundColor: mainColor.tipColor,
     },
     customForm: {
-        width: 80,
-        position: "relative",
+        width: 80
+    },
+    customKeyword: {
+        left: 4,
+        position: "relative"
     },
     customInput: {
         width: 140,
@@ -636,43 +639,47 @@ export default function Program() {
                 </Link>
             </Typography>
             <Typography component='div' className={classes.progressRoot}>
-                <FormControl className={classes.customForm}>
-                    <Select
-                        onChange={event => selectChange(event)}
-                        classes={{
-                            select: classes.customSel,
-                            icon: classes.customSelIcon
-                        }}
-                        className={classes.customUnderline}
-                        value={city}
-                        displayEmpty
-                    >
-                        <MyListHeader name="主要" />
-                        {cityList(normal)}
-                        <MyListHeader name="北海道" />
-                        {cityList(hokaido)}
-                        <MyListHeader name="東北地方" />
-                        {cityList(tohoku)}
-                        <MyListHeader name="関東地方" />
-                        {cityList(kanto)}
-                        <MyListHeader name="近畿地方" />
-                        {cityList(kinki)}
-                        <MyListHeader name="中国地方" />
-                        {cityList(chugoku)}
-                        <MyListHeader name="四国地方" />
-                        {cityList(shikoku)}
-                        <MyListHeader name="九州地方" />
-                        {cityList(kyushu)}
-                        <MyListHeader name="沖縄" />
-                        {cityList(okinawa)}
-                    </Select>
-                    <FormHelperText className={classes.customHelper}>region</FormHelperText>
-                </FormControl>
-                <MyTextField
-                    onChange={event => changeText(event)}
-                    helperText="keyword"
-                    onKeyUp={onKeyUp}
-                />
+                <Typography component='div'>
+                    <FormControl className={classes.customForm}>
+                        <Select
+                            onChange={event => selectChange(event)}
+                            classes={{
+                                select: classes.customSel,
+                                icon: classes.customSelIcon
+                            }}
+                            className={classes.customUnderline}
+                            value={city}
+                            displayEmpty
+                        >
+                            <MyListHeader name="主要" />
+                            {cityList(normal)}
+                            <MyListHeader name="北海道" />
+                            {cityList(hokaido)}
+                            <MyListHeader name="東北地方" />
+                            {cityList(tohoku)}
+                            <MyListHeader name="関東地方" />
+                            {cityList(kanto)}
+                            <MyListHeader name="近畿地方" />
+                            {cityList(kinki)}
+                            <MyListHeader name="中国地方" />
+                            {cityList(chugoku)}
+                            <MyListHeader name="四国地方" />
+                            {cityList(shikoku)}
+                            <MyListHeader name="九州地方" />
+                            {cityList(kyushu)}
+                            <MyListHeader name="沖縄" />
+                            {cityList(okinawa)}
+                        </Select>
+                        <FormHelperText className={classes.customHelper}>region</FormHelperText>
+                    </FormControl>
+                    <MyTextField
+                        className={classes.customKeyword}
+                        variant="standard"
+                        onChange={event => changeText(event)}
+                        helperText="keyword"
+                        onKeyUp={onKeyUp}
+                    />
+                </Typography>
                 <Typography component='div' className={classes.progressWrapper}>
                     <Button
                         variant="contained"

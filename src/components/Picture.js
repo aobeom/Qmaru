@@ -12,7 +12,7 @@ import CheckIcon from '@material-ui/icons/Check'
 import Typography from '@material-ui/core/Typography'
 import LazyLoad from 'react-lazyload'
 import Divider from '@material-ui/core/Divider'
-import Skeleton from '@material-ui/lab/Skeleton'
+import Skeleton from '@material-ui/core/Skeleton'
 
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
@@ -165,7 +165,9 @@ export default function Picture() {
         setLoding(true)
         setReqData("")
         setReqError(false)
-        url = `${global.constants.api}/api/v1/media${uri}?url=${encodeURIComponent(url)}`
+        let urlClear = url.split(" ")
+        let newurl = urlClear[urlClear.length-1]
+        url = `${global.constants.api}/api/v1/media${uri}?url=${encodeURIComponent(newurl)}`
         fetch(url, {
             method: 'GET',
             dataType: 'json',
@@ -231,7 +233,7 @@ export default function Picture() {
                                     offset={[-200, 0]}
                                     once
                                     placeholder={
-                                        <Skeleton variant="rect" height={200} className={classes.placeholderImg} />
+                                        <Skeleton variant="rectangular" height={200} className={classes.placeholderImg} />
                                     }>
                                     <img className={classes.resultImg} src={urls[u]} alt="" />
                                 </LazyLoad>

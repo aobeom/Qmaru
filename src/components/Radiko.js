@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 
 import MenuItem from '@material-ui/core/MenuItem'
 import Button from '@material-ui/core/Button'
@@ -8,9 +8,8 @@ import Typography from '@material-ui/core/Typography'
 import TextField from '@material-ui/core/TextField'
 import Link from '@material-ui/core/Link'
 import Badge from '@material-ui/core/Badge'
-import { MobileDateTimePicker } from "@material-ui/pickers"
-import { createMuiTheme } from "@material-ui/core"
-import { ThemeProvider } from "@material-ui/styles"
+import MobileDateTimePicker from '@material-ui/lab/MobileDateTimePicker';
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles"
 import Chip from '@material-ui/core/Chip'
 import Fade from '@material-ui/core/Fade'
 import CloudDownloadIcon from '@material-ui/icons/CloudDownload'
@@ -21,177 +20,111 @@ import radikoLogo from '../static/img/radiko.png'
 const mainColor = global.constants.theme
 
 const RadioTheme = createMuiTheme({
-    overrides: {
-        MuiPickersToolbar: {
-            toolbar: {
-                backgroundColor: mainColor.primaryColor,
-            },
-        },
-        MuiPickersYear: {
-            yearButton: {
-                '&:hover': {
-                    backgroundColor: mainColor.otherColor,
-                },
-            },
-            yearSelected: {
-                backgroundColor: mainColor.secondaryColor,
-                '&:hover': {
-                    backgroundColor: mainColor.primaryColor,
-                },
-                '&:focus': {
-                    backgroundColor: mainColor.primaryColor,
-                }
-            },
-            yearDisabled: {
-                color: mainColor.otherColor,
-            },
-        },
-        MuiPickersCalendarHeader: {
-            monthText: {
-                color: mainColor.secondaryColor,
-            }
-        },
-        MuiPickersDay: {
-            day: {
-                color: mainColor.secondaryColor,
-                '&:focus': {
-                    backgroundColor: mainColor.primaryColor,
-                }
-            },
-            daySelected: {
-                backgroundColor: mainColor.thirdlyColor,
-                '&:hover': {
-                    backgroundColor: mainColor.primaryColor,
-                },
-                '&:focus.MuiPickersDay-daySelected': {
-                    backgroundColor: mainColor.primaryColor,
-                }
-            },
-            dayDisabled: {
-                color: mainColor.otherColor,
-            },
-            today: {
-                color: mainColor.thirdlyColor,
-                '&:not(.MuiPickersDay-daySelected)': {
-                    border: `1px solid ${mainColor.otherColor}`,
-                },
-            },
-        },
-        MuiTypography: {
-            root: {
-                color: mainColor.secondaryColor
-            },
-            colorPrimary: {
-                color: mainColor.secondaryColor
-            }
-        },
-        MuiPickersSlideTransition: {
-            transitionContainer: {
-                color: mainColor.thirdlyColor
-            }
-        },
-        MuiPickersClock: {
-            clock: {
-                backgroundColor: mainColor.otherColor,
-            },
-            pin: {
-                backgroundColor: mainColor.thirdlyColor
-            },
-        },
-        MuiPickersClockPointer: {
-            noPoint: {
-                backgroundColor: mainColor.thirdlyColor
-            },
-            thumb: {
-                border: `14px solid ${mainColor.secondaryColor}`
-            },
-            pointer: {
-                backgroundColor: mainColor.thirdlyColor
-            }
-        },
-        MuiPickerDTTabs: {
-            tabs: {
-                backgroundColor: mainColor.primaryColor
-            }
-        },
-        MuiPickersClockNumber: {
-            clockNumber: {
-                color: mainColor.secondaryColor
-            }
-        },
-        MuiIconButton: {
-            root: {
-                '&:hover': {
-                    backgroundColor: mainColor.otherColor
-                },
-                color: mainColor.secondaryColor,
-            }
-        },
-        MuiInputLabel: {
-            root: {
-                color: mainColor.thirdlyColor,
-            }
-        },
-        MuiInputBase: {
-            root: {
-                color: mainColor.otherColor,
-            },
-            input: {
-                color: mainColor.tipColor,
-                textAlign: 'center'
-            }
-        },
-        MuiPickerDTToolbar: {
-            penIcon: {
-                display: "none"
-            }
-        },
-        MuiInput: {
-            underline: {
-                '&:hover:not(disabled):before': {
-                    borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
-                },
-                '&:before': {
-                    borderBottomColor: mainColor.thirdlyColor,
-                },
-                '&:after': {
-                    borderBottomColor: mainColor.tipColor,
-                }
-            }
-        },
-        MuiFormHelperText: {
-            root: {
-                color: mainColor.thirdlyColor,
-            }
-        },
-        MuiSelect: {
-            icon: {
-                color: mainColor.thirdlyColor,
-            },
-            selectMenu: {
-                color: mainColor.tipColor
-            }
-        },
+    components: {
         MuiButton: {
-            textPrimary: {
-                '&:hover': {
-                    backgroundColor: mainColor.otherColor
-                },
-                color: mainColor.secondaryColor,
-            },
-            containedPrimary: {
-                '&:hover': {
-                    backgroundColor: mainColor.otherColor
-                },
+            styleOverrides: {
+                label: {
+                    color: mainColor.textColor,
+                }
+            }
+        },
+        PrivateTabIndicator: {
+            styleOverrides: {
+                colorSecondary: {
+                    backgroundColor: mainColor.thirdlyColor,
+                }
             }
         }
-    },
-    palette: {
-        secondary: {
-            main: mainColor.otherColor,
-        },
-    },
+    }
 })
+
+const MyMobileDateTimePicker = withStyles({
+    root: {
+        // 顶部
+        '& .MuiPickersToolbar-root': {
+            backgroundColor: mainColor.primaryColor,
+        },
+        '& .MuiPickersToolbarText-root': {
+            color: mainColor.thirdlyColor,
+        },
+        '& .MuiPickersToolbarText-root.Mui-selected': {
+            color: mainColor.otherColor
+        },
+        '& .MuiSvgIcon-root': {
+            color: mainColor.otherColor
+        },
+        // 中部
+        '& .MuiDateTimePickerTabs-tabs': {
+            backgroundColor: mainColor.primaryColor,
+        },
+        // 主体
+        '& .MuiPickersCalendarHeader-switchView': {
+            color: mainColor.secondaryColor
+        },
+        '& .MuiPickersCalendarHeader-labelItem': {
+            color: mainColor.secondaryColor
+        },
+        '& .MuiPickersYear-yearButton.Mui-selected': {
+            color: mainColor.otherColor,
+            backgroundColor: mainColor.textColor,
+        },
+        '& .MuiPickersDay-root.Mui-selected': {
+            color: mainColor.otherColor,
+            backgroundColor: mainColor.textColor,
+        },
+        '& .MuiClock-pin': {
+            backgroundColor: mainColor.textColor
+        },
+        '& .MuiClockPointer-root': {
+            backgroundColor: mainColor.textColor,
+        },
+        '& .MuiClockPointer-noPoint': {
+            backgroundColor: mainColor.textColor,
+        },
+        '& .MuiClockPointer-thumb': {
+            border: `16px solid ${mainColor.textColor}`
+        },
+        '& .MuiInput-root': {
+            color: mainColor.primaryColor,
+        },
+        '& .MuiFormHelperText-root': {
+            color: mainColor.thirdlyColor,
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: mainColor.thirdlyColor,
+        },
+        '& .MuiInput-underline:hover:not(disabled):before': {
+            borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: mainColor.tipColor
+        }
+    }
+})(MobileDateTimePicker)
+
+const MyTextField = withStyles({
+    root: {
+        '& .MuiInput-root': {
+            color: mainColor.primaryColor,
+        },
+        '& .MuiFormHelperText-root': {
+            color: mainColor.thirdlyColor,
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: mainColor.thirdlyColor,
+        },
+        '& .MuiInput-underline:hover:not(disabled):before': {
+            borderBottom: `1px solid ${mainColor.secondaryColor} !important`,
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: mainColor.tipColor
+        },
+        '& .MuiSelect-icon': {
+            color: mainColor.thirdlyColor,
+        }
+    }
+})(TextField)
+
 
 const useStyles = makeStyles(theme => ({
     topLogo: {
@@ -231,13 +164,14 @@ const useStyles = makeStyles(theme => ({
         },
     },
     customBtn: {
-        color: mainColor.otherColor,
-        backgroundColor: mainColor.secondaryColor,
         margin: 6,
-        '&:hover': {
-            backgroundColor: mainColor.primaryColor,
-        },
+        // '&:hover': {
+        //     backgroundColor: mainColor.otherColor,
+        // },
     },
+    // customBtnOutline: {
+    //     border: `16px solid ${mainColor.textColor}`
+    // },
     selectBody: {
         minWidth: 240,
         textAlign: 'center'
@@ -432,9 +366,10 @@ export default function Radiko() {
                     </Link>
                 </Typography>
                 <Typography component='div'>
-                    <TextField
+                    <MyTextField
                         id="station"
                         select
+                        variant="standard"
                         value={station}
                         onChange={event => stationChange(event)}
                         className={classes.selectBody}
@@ -458,13 +393,14 @@ export default function Radiko() {
                                 {station.name}
                             </MenuItem>
                         ))}
-                    </TextField>
+                    </MyTextField>
                 </Typography>
                 <Typography component='div'>
-                    <MobileDateTimePicker
+                    <MyMobileDateTimePicker
                         disableFuture
                         ampm={false}
                         autoOk
+                        inputVariant="standard"
                         minDate={'2017-02-20'}
                         maxDate={'2027-02-20'}
                         toolbarTitle="Start DateTime"
@@ -472,7 +408,8 @@ export default function Radiko() {
                         mask="____-__-__ __:__"
                         value={startAt}
                         onChange={event => startAtChange(event)}
-                        renderInput={props => <TextField
+                        renderInput={props => <MyTextField
+                            variant="standard"
                             className={classes.selectBody}
                             helperText="Start DateTime"
                             {...props}
@@ -480,7 +417,7 @@ export default function Radiko() {
                     />
                 </Typography>
                 <Typography component='div'>
-                    <MobileDateTimePicker
+                    <MyMobileDateTimePicker
                         disableFuture
                         ampm={false}
                         autoOk
@@ -491,7 +428,8 @@ export default function Radiko() {
                         mask="____-__-__ __:__"
                         value={endAt}
                         onChange={event => endAtChange(event)}
-                        renderInput={props => <TextField
+                        renderInput={props => <MyTextField
+                            variant="standard"
                             className={classes.selectBody}
                             helperText="End DateTime"
                             {...props}
@@ -499,7 +437,7 @@ export default function Radiko() {
                     />
                 </Typography>
                 <Typography component='div' className={classes.wrapperBtn}>
-                    <Button variant="contained" className={classes.customBtn} onClick={() => radioClick()} disabled={loading}>
+                    <Button className={classes.customBtn} onClick={() => radioClick()} disabled={loading}>
                         {loading ? 'loading' : 'start'}
                     </Button>
                     {loading && <CircularProgress size={24} className={classes.buttonProgress} />}

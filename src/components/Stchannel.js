@@ -10,7 +10,7 @@ import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import Chip from '@material-ui/core/Chip'
 import Link from '@material-ui/core/Link'
-import Skeleton from '@material-ui/lab/Skeleton'
+import Skeleton from '@material-ui/core/Skeleton'
 import LazyLoad from 'react-lazyload'
 
 const mainColor = global.constants.theme
@@ -137,7 +137,7 @@ export default function Stchannel() {
                 <Skeleton width="100%" height={20} />
                 <Skeleton width="100%" height={20} />
                 <Skeleton width="80%" height={20} />
-                <Skeleton variant="rect" width="100%" height={400} />
+                <Skeleton variant="rectangular" width="100%" height={400} />
                 <Skeleton width="16%" height={30} className={classes.SkeletonCls} />
             </Box>
         </Typography>)

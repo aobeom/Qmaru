@@ -12,7 +12,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Chip from '@material-ui/core/Chip'
 import Link from '@material-ui/core/Link'
 import Divider from '@material-ui/core/Divider'
-import Skeleton from '@material-ui/lab/Skeleton'
+import Skeleton from '@material-ui/core/Skeleton'
 
 const mainColor = global.constants.theme
 

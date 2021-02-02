@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { BrowserRouter, Route, Link } from 'react-router-dom'
 import { CSSTransition } from 'react-transition-group'
-import { LocalizationProvider } from '@material-ui/pickers'
+import AdapterDateFns from '@material-ui/lab/AdapterDateFns'
+import LocalizationProvider from '@material-ui/lab/LocalizationProvider'
 import { withStyles, makeStyles } from '@material-ui/core/styles'
+import { StylesProvider } from '@material-ui/core'
 
 import Picture from './components/Picture'
 import Drama from './components/Drama'
@@ -20,7 +22,6 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import AppBar from '@material-ui/core/AppBar'
 import Typography from '@material-ui/core/Typography'
-import DateFnsUtils from '@material-ui/pickers/adapter/date-fns';
 
 const mainColor = global.constants.theme
 
@@ -109,11 +110,11 @@ export default function App() {
         function switchTab() {
             const routers = [
                 { path: "/", index: 0 },
-                { path: "/picture", index: 0  },
-                { path: "/drama", index: 1  },
-                { path: "/program", index: 2  },
-                { path: "/stchannel", index: 3  },
-                { path: "/radiko", index: 4  },
+                { path: "/picture", index: 0 },
+                { path: "/drama", index: 1 },
+                { path: "/program", index: 2 },
+                { path: "/stchannel", index: 3 },
+                { path: "/radiko", index: 4 },
             ]
             const pathname = window.location.pathname
             for (let i in routers) {
@@ -127,62 +128,64 @@ export default function App() {
     }, [])
 
     return (
-        <LocalizationProvider dateAdapter={DateFnsUtils}>
-            <BrowserRouter>
-                <Typography component='div' className={classes.wrapper}>
-                    <Typography component='div'>
-                        <AppBar position="fixed" className={classes.header}>
-                            <Tabs
-                                classes={{
-                                    flexContainer: classes.tabsWrapper,
-                                    indicator: classes.tabsIndicator
-                                }}
-                                value={tabValue}
-                                onChange={tabSwitch}
-                            >
-                                {titles.map((title, index) => (
-                                    <MyTab
-                                        key={"r" + index}
-                                        icon={title.icon}
-                                        component={Link}
-                                        to={title.title.toLowerCase()}
-                                        replace
-                                    />
-                                ))}
-                            </Tabs>
-                        </AppBar>
-                    </Typography>
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <StylesProvider injectFirst>
+                <BrowserRouter>
+                    <Typography component='div' className={classes.wrapper}>
+                        <Typography component='div'>
+                            <AppBar position="fixed" className={classes.header}>
+                                <Tabs
+                                    classes={{
+                                        flexContainer: classes.tabsWrapper,
+                                        indicator: classes.tabsIndicator
+                                    }}
+                                    value={tabValue}
+                                    onChange={tabSwitch}
+                                >
+                                    {titles.map((title, index) => (
+                                        <MyTab
+                                            key={"r" + index}
+                                            icon={title.icon}
+                                            component={Link}
+                                            to={title.title.toLowerCase()}
+                                            replace
+                                        />
+                                    ))}
+                                </Tabs>
+                            </AppBar>
+                        </Typography>
 
-                    <Typography component='div' className={classes.main}>
-                        {routers.map(({ path, Component }) => (
-                            <Route
-                                key={path}
-                                path={path}
-                                exact
-                            >
-                                {({ match }) => (
-                                    <CSSTransition
-                                        in={match !== null}
-                                        timeout={300}
-                                        classNames="spec"
-                                        unmountOnExit
-                                        appear
-                                    >
-                                        <Typography component='div' className="spec">
-                                            <Component />
-                                        </Typography>
-                                    </CSSTransition>
-                                )}
-                            </Route>
-                        ))}
-                    </Typography>
-                    <Typography component='div' className={classes.footer}>
-                        <Typography component='span' className={classes.footerSpan}>
-                            © 2017-2021
+                        <Typography component='div' className={classes.main}>
+                            {routers.map(({ path, Component }) => (
+                                <Route
+                                    key={path}
+                                    path={path}
+                                    exact
+                                >
+                                    {({ match }) => (
+                                        <CSSTransition
+                                            in={match !== null}
+                                            timeout={300}
+                                            classNames="spec"
+                                            unmountOnExit
+                                            appear
+                                        >
+                                            <Typography component='div' className="spec">
+                                                <Component />
+                                            </Typography>
+                                        </CSSTransition>
+                                    )}
+                                </Route>
+                            ))}
+                        </Typography>
+                        <Typography component='div' className={classes.footer}>
+                            <Typography component='span' className={classes.footerSpan}>
+                                © 2017 - 2021
                             </Typography>
+                        </Typography>
                     </Typography>
-                </Typography>
-            </BrowserRouter>
+                </BrowserRouter>
+            </StylesProvider>
         </LocalizationProvider>
     )
 }
