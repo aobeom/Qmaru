@@ -113,6 +113,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     progressRoot: {
+        padding: 10,
         justifyContent: "center",
         alignItems: "center"
     },
@@ -481,8 +482,6 @@ export default function Program() {
     ]
 
     const [reqData, setReqData] = useState([])
-    const [origin, setOrigin] = useState("")
-    const [btndisp, setBtndisp] = useState({ display: "none" })
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [keyword, setKeyword] = useState("")
@@ -526,8 +525,6 @@ export default function Program() {
                     setInfo("No Data")
                 } else {
                     setReqData(data.data)
-                    setOrigin("yahoo")
-                    setBtndisp({ display: "block", padding: 20 })
                     setError(false)
                     setLoading(false)
                 }
@@ -565,7 +562,6 @@ export default function Program() {
     const classes = useStyles()
     let progTmp = []
     let progTitle = []
-    let url = reqData.ori_url
 
     if (error === true) {
         progTitle.push(
@@ -578,17 +574,6 @@ export default function Program() {
             </Typography>
         )
     } else {
-        progTitle.push(
-            <Typography component='div' key="title" style={btndisp}>
-                <Link underline='none' href={url} target="_blank" rel="noopener noreferrer">
-                    <Button
-                        variant="contained" className={classes.customBtn}
-                    >
-                        {origin}
-                    </Button>
-                </Link>
-            </Typography>
-        )
         if (reqData !== 0) {
             let prog_info = reqData.entities
             for (let p in prog_info) {
@@ -597,14 +582,11 @@ export default function Program() {
                     <Typography component='div' className={classes.progCard} key={"prog" + p}>
                         <Card>
                             <CardContent classes={{ root: classes.subCardContent }}>
-                                <Typography variant="h5" component="h2" className={classes.cMain}>
+                                <Typography variant="h5" component="h4" className={classes.cMain}>
                                     {pinfo.date}
                                 </Typography>
                                 <Typography color="textSecondary" className={classes.cSub}>
-                                    {pinfo.time}
-                                </Typography>
-                                <Typography color="textSecondary" className={classes.cSub}>
-                                    {pinfo.station}
+                                    {pinfo.station}({pinfo.type})
                                 </Typography>
                                 <Typography dangerouslySetInnerHTML={{ __html: pinfo.title }} className={classes.cMain}></Typography>
                                 <Typography >
