@@ -78,7 +78,7 @@ const useStyles = makeStyles(theme => ({
     },
     footerSpan: {
         height: 50,
-        color: mainColor.primaryColor,
+        color: mainColor.thirdlyColor,
         cursor: "default",
     },
 }))
@@ -180,7 +180,7 @@ export default function App() {
                         </Typography>
                         <Typography component='div' className={classes.footer}>
                             <Typography component='span' className={classes.footerSpan}>
-                                © 2017 - 2021
+                            ©2021 Qmaru v20210303
                             </Typography>
                         </Typography>
                     </Typography>
