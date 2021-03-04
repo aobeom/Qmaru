@@ -17,7 +17,6 @@ import Skeleton from '@material-ui/core/Skeleton'
 import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
 import DESSART from '../static/img/dessart.png'
-import TPL from '../static/img/tpl.png'
 import AMEBLO from '../static/img/ameblo.png'
 import LINEBLOG from '../static/img/lineblog.png'
 import THETV from '../static/img/thetv.png'
@@ -288,7 +287,6 @@ export default function Picture() {
             <Typography component="p" className={classes.topLogoGroup}>
                 <img className={classes.topLogo} src={IG} alt="ig" />
                 <img className={classes.topLogo} src={MDPR} alt="mdpr" />
-                <img className={classes.topLogo} src={TPL} alt="tpl" />
                 <img className={classes.topLogo} src={DESSART} alt="dessart" />
                 <br />
                 <img className={classes.topLogo} src={AMEBLO} alt="ameblo" />

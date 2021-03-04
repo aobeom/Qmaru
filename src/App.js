@@ -180,7 +180,7 @@ export default function App() {
                         </Typography>
                         <Typography component='div' className={classes.footer}>
                             <Typography component='span' className={classes.footerSpan}>
-                            ©2021 Qmaru v20210303
+                            ©2021 Qmaru v20210304
                             </Typography>
                         </Typography>
                     </Typography>
