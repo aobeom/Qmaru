@@ -48,11 +48,6 @@ export default function IndexPage() {
             path: "/drama",
         },
         {
-            name: "Program",
-            info: "Just a simplified <a href='https://tv.yahoo.co.jp/' target='_blank'>Yahoo</a> tv program search.",
-            path: "/program",
-        },
-        {
             name: "STchannel",
             info: "You can get <a href='https://st-channel.jp/' target='_blank'>STchannel</a>'s video.",
             path: "/stchannel",

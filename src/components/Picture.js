@@ -14,7 +14,6 @@ import LazyLoad from 'react-lazyload'
 import Divider from '@material-ui/core/Divider'
 import Skeleton from '@material-ui/core/Skeleton'
 
-import IG from '../static/img/insta.png'
 import MDPR from '../static/img/mdpr.png'
 import DESSART from '../static/img/dessart.png'
 import AMEBLO from '../static/img/ameblo.png'
@@ -285,7 +284,6 @@ export default function Picture() {
     return (
         <Typography component='div' className={classes.wrapper}>
             <Typography component="p" className={classes.topLogoGroup}>
-                <img className={classes.topLogo} src={IG} alt="ig" />
                 <img className={classes.topLogo} src={MDPR} alt="mdpr" />
                 <img className={classes.topLogo} src={DESSART} alt="dessart" />
                 <br />

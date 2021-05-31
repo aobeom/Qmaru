@@ -8,13 +8,11 @@ import { StylesProvider } from '@material-ui/core'
 
 import Picture from './components/Picture'
 import Drama from './components/Drama'
-import Program from './components/Program'
 import Stchannel from './components/Stchannel'
 import Radiko from './components/Radiko'
 
 import PicIcon from '@material-ui/icons/Instagram'
 import DramaIcon from '@material-ui/icons/Tv'
-import ProgramIcon from '@material-ui/icons/PlaylistAddCheck'
 import STIcon from '@material-ui/icons/YouTube'
 import RadikoIcon from '@material-ui/icons/Radio'
 
@@ -88,7 +86,6 @@ export default function App() {
     const titles = [
         { title: "PICTURE", icon: <PicIcon /> },
         { title: "DRAMA", icon: <DramaIcon /> },
-        { title: "PROGRAM", icon: <ProgramIcon /> },
         { title: "STCHANNEL", icon: <STIcon /> },
         { title: "RADIKO", icon: <RadikoIcon /> }
     ]
@@ -96,7 +93,6 @@ export default function App() {
         { path: "/", Component: Picture },
         { path: "/picture", Component: Picture },
         { path: "/drama", Component: Drama },
-        { path: "/program", Component: Program },
         { path: "/stchannel", Component: Stchannel },
         { path: "/radiko", Component: Radiko },
     ]
@@ -112,9 +108,8 @@ export default function App() {
                 { path: "/", index: 0 },
                 { path: "/picture", index: 0 },
                 { path: "/drama", index: 1 },
-                { path: "/program", index: 2 },
-                { path: "/stchannel", index: 3 },
-                { path: "/radiko", index: 4 },
+                { path: "/stchannel", index: 2 },
+                { path: "/radiko", index: 3 },
             ]
             const pathname = window.location.pathname
             for (let i in routers) {
@@ -180,7 +175,7 @@ export default function App() {
                         </Typography>
                         <Typography component='div' className={classes.footer}>
                             <Typography component='span' className={classes.footerSpan}>
-                            ©2021 Qmaru v20210324
+                            ©2021 Qmaru v20210531
                             </Typography>
                         </Typography>
                     </Typography>
